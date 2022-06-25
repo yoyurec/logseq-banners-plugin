@@ -14,7 +14,7 @@ const css = (t, ...args) => String.raw(t, ...args);
 
 const pluginId = PL.id;
 
-const settingsArray:SettingSchemaDesc[] = [
+const settingsArray: SettingSchemaDesc[] = [
   {
     key: "bannerImage",
     title: "Banner Image",
@@ -49,13 +49,13 @@ function main() {
 
 
   async function addImage() {
-    const icon = (await logseq.Editor.getCurrentPage())?.properties?.pageIcon ;
-    const bannerLink = (await logseq.Editor.getCurrentPage())?.properties?.banner
+    const icon = (await logseq.Editor.getCurrentPage())?.properties?.pageIcon;
+    const bannerLink = (await logseq.Editor.getCurrentPage())?.properties?.banner;
     console.log((await logseq.Editor.getCurrentPage())?.properties)
     top?.document.getElementById("bannerImage")?.remove()
     setTimeout(() => {
       const contentContainer = top?.document.getElementsByClassName("cp__sidebar-main-content")[0]
-      
+
       if (top?.document.getElementById("bannerImage") == null) {
         let pageTitle = top?.document.getElementsByClassName("page-title")[0]
         //if page title is null then get element by class name of journal-title
@@ -65,7 +65,11 @@ function main() {
         // @ts-expect-error
         const bannerImage = top.document.createElement("img")
         bannerImage.id = "bannerImage"
-        bannerImage.src = bannerLink ?? logseq.settings?.bannerImage ?? 'https://img.freepik.com/free-vector/winter-landscape-mountains-mid-century-modern-minimalist-art-print-abstract-mountain-contemporary-aesthetic-backgrounds-landscapes-vector-illustrations_69626-620.jpg?width=2000';
+        //remove surrounding quotations if present
+        bannerImage.src = (bannerLink
+          ?? logseq.settings?.bannerImage
+          ?? 'https://img.freepik.com/free-vector/winter-landscape-mountains-mid-century-modern-minimalist-art-print-abstract-mountain-contemporary-aesthetic-backgrounds-landscapes-vector-illustrations_69626-620.jpg?width=2000')
+          .replace(/^"(.*)"$/, '$1');
         bannerImage.style.flexBasis = "100%"
         bannerImage.style.maxHeight = "300px"
         bannerImage.style.objectFit = "cover"
