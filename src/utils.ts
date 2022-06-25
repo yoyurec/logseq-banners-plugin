@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMountedState } from "react-use";
 
+
 export const useAppVisible = () => {
   const [visible, setVisible] = useState(logseq.isMainUIVisible);
   const isMounted = useMountedState();
