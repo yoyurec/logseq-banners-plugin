@@ -31,7 +31,6 @@ function main() {
       },
     };
   }
-
   logseq.provideModel(createModel());
   logseq.setMainUIInlineStyle({
     zIndex: 11,
