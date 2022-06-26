@@ -6,6 +6,7 @@ export const useAppVisible = () => {
   const [visible, setVisible] = useState(logseq.isMainUIVisible);
   const isMounted = useMountedState();
   React.useEffect(() => {
+    
     const eventName = "ui:visible:changed";
     const handler = async ({ visible }: any) => {
       if (isMounted()) {
