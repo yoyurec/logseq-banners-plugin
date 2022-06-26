@@ -49,8 +49,11 @@ function main() {
 
 
   async function addImage() {
+    //@ts-expect-error
     const icon = (await logseq.Editor.getCurrentPage())?.properties?.pageIcon;
+    //@ts-expect-error
     const bannerLink = (await logseq.Editor.getCurrentPage())?.properties?.banner;
+    //@ts-expect-error
     console.log((await logseq.Editor.getCurrentPage())?.properties)
     top?.document.getElementById("bannerImage")?.remove()
     setTimeout(() => {
@@ -73,6 +76,7 @@ function main() {
         bannerImage.style.flexBasis = "100%"
         bannerImage.style.maxHeight = "300px"
         bannerImage.style.objectFit = "cover"
+        //@ts-expect-error
         top?.document.getElementById("main-content-container")?.insertBefore(bannerImage, contentContainer)
 
         console.log("hi")

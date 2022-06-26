@@ -40,5 +40,8 @@
   "logseq": {
     "id": "logseq-banners-plugin",
     "icon": "./logo.svg"
+  },
+  "release": {
+      "branches": ["master", "main"]
   }
 }
