@@ -9,12 +9,13 @@ module.exports = {
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    // [
-    //   "@semantic-release/npm",
-    //   {
-    //     npmPublish: false,
-    //   },
-    // ],
+    [
+      "@semantic-release/npm",
+      {
+        npmPublish: false,
+        verifyConditions: false,
+      },
+    ],
     "@semantic-release/git",
     [
       "@semantic-release/exec",
