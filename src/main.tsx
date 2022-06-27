@@ -17,11 +17,18 @@ const pluginId = PL.id;
 const settingsArray: SettingSchemaDesc[] = [
   {
     key: "bannerImage",
-    title: "Banner Image",
+    title: "Default Banner Image",
     type: "string",
     description: "URL of the default banner image",
-    default: "https://img.freepik.com/free-vector/winter-landscape-mountains-mid-century-modern-minimalist-art-print-abstract-mountain-contemporary-aesthetic-backgrounds-landscapes-vector-illustrations_69626-620.jpg?width=2000",
+    default: "https://wallpaperaccess.com/full/1146672.jpg",
   },
+  {
+    key: "pageIcon",
+    title: "Default Page Icon",
+    type: "string",
+    description: "Emoji of the default page icon",
+    default: "📆",
+  }
 ]
 function main() {
   logseq.provideStyle(`
@@ -72,8 +79,7 @@ function main() {
         //remove surrounding quotations if present
         console.log(bannerLink)
         bannerImage.src = (bannerLink
-          ?? logseq.settings?.bannerImage
-          ?? 'https://img.freepik.com/free-vector/winter-landscape-mountains-mid-century-modern-minimalist-art-print-abstract-mountain-contemporary-aesthetic-backgrounds-landscapes-vector-illustrations_69626-620.jpg?width=2000')
+          ?? logseq.settings!.bannerImage ?? "https://wallpaperaccess.com/full/1146672.jpg")
           .replace(/^"(.*)"$/, '$1');
         bannerImage.style.flexBasis = "100%"
         bannerImage.style.maxHeight = "300px"
@@ -85,7 +91,7 @@ function main() {
         const iconImage = top.document.createElement("label")
 
 
-        iconImage.innerText = icon ?? "📆"
+        iconImage.innerText = icon ?? logseq.settings?.pageIcon
         iconImage.id = "helloIcon"
         iconImage.style.fontSize = "50px"
         iconImage.style.flexBasis = "100%"
