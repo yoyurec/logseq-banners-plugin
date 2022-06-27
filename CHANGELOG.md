@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.0.2...v1.1.0) (2022-06-27)
+
+
+### Features
+
+* **settings:** add option for custom page icon ([c9de1be](https://github.com/sawhney17/logseq-banners-plugin/commit/c9de1be07aa6de76b71aefa9e193769d761c8382))
+
 ## [1.0.2](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.0.1...v1.0.2) (2022-06-27)
 
 
