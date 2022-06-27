@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.0.0...v1.0.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* **ci:** initial commit ([d05b00e](https://github.com/sawhney17/logseq-banners-plugin/commit/d05b00e2d8bc6b7347306e1f645fed045d185839))
+
 ## [2.1.1](https://github.com/pengx17/logseq-plugin-template-react/compare/v2.1.0...v2.1.1) (2022-03-24)
 
 
