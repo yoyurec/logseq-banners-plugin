@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.0.1...v1.0.2) (2022-06-27)
+
+
+### Bug Fixes
+
+* **homescreen:** fix wonkiness in homescreen ([e76ff3c](https://github.com/sawhney17/logseq-banners-plugin/commit/e76ff3c4640114e12a614a768fe1f195e7f5bac4))
+
 ## [1.0.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.0.0...v1.0.1) (2022-06-27)
 
 
