@@ -3,10 +3,10 @@ import "virtual:windi.css";
 
 import React from "react";
 import * as ReactDOM from "react-dom/client";
-import App from "./App";
 
 import { logseq as PL } from "../package.json";
 import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
+import { getDateForPageWithoutBrackets } from "logseq-dateutils";
 
 // @ts-expect-error
 const css = (t, ...args) => String.raw(t, ...args);
@@ -33,32 +33,33 @@ function main() {
 }
 `)
   console.info(`#${pluginId}: MAIN`);
-  const root = ReactDOM.createRoot(document.getElementById("app")!);
-  addImage()
+  addImage(true)
   logseq.useSettingsSchema(settingsArray)
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
 
-  logseq.App.onRouteChanged(() => {
-    addImage()
+  logseq.App.onRouteChanged((e) => {
+    
+    if (e.path === "/") {
+      addImage(true)
+    }
+    else if (e.path.includes("/page")) {
+      addImage()
+    }
+    else {
+      top?.document.getElementById("bannerImage")?.remove()
+    }
     // }
   })
 
 
-  async function addImage() {
-    //@ts-expect-error
-    const icon = (await logseq.Editor.getCurrentPage())?.properties?.pageIcon;
-    //@ts-expect-error
-    const bannerLink = (await logseq.Editor.getCurrentPage())?.properties?.banner;
-    //@ts-expect-error
-    console.log((await logseq.Editor.getCurrentPage())?.properties)
-    top?.document.getElementById("bannerImage")?.remove()
-    setTimeout(() => {
+  async function addImage(dailyNote = false) {
+    setTimeout(async() => {
+      top?.document.getElementById("bannerImage")?.remove()
+      //@ts-expect-error
+      const bannerLink = dailyNote ? (await logseq.Editor.getPage(getDateForPageWithoutBrackets(new Date, (await logseq.App.getUserConfigs()).preferredDateFormat)))?.properties?.banner :(await logseq.Editor.getCurrentPage())?.properties?.banner;
+      //@ts-expect-error
+      const icon = dailyNote ? (await logseq.Editor.getPage(getDateForPageWithoutBrackets(new Date, (await logseq.App.getUserConfigs()).preferredDateFormat)))?.properties?.pageIcon :(await logseq.Editor.getCurrentPage())?.properties?.pageIcon;
       const contentContainer = top?.document.getElementsByClassName("cp__sidebar-main-content")[0]
-
+      console.log(bannerLink)
       if (top?.document.getElementById("bannerImage") == null) {
         let pageTitle = top?.document.getElementsByClassName("page-title")[0]
         //if page title is null then get element by class name of journal-title
@@ -69,6 +70,7 @@ function main() {
         const bannerImage = top.document.createElement("img")
         bannerImage.id = "bannerImage"
         //remove surrounding quotations if present
+        console.log(bannerLink)
         bannerImage.src = (bannerLink
           ?? logseq.settings?.bannerImage
           ?? 'https://img.freepik.com/free-vector/winter-landscape-mountains-mid-century-modern-minimalist-art-print-abstract-mountain-contemporary-aesthetic-backgrounds-landscapes-vector-illustrations_69626-620.jpg?width=2000')
@@ -79,7 +81,6 @@ function main() {
         //@ts-expect-error
         top?.document.getElementById("main-content-container")?.insertBefore(bannerImage, contentContainer)
 
-        console.log("hi")
         // @ts-expect-error
         const iconImage = top.document.createElement("label")
 
