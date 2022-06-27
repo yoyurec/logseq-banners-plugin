@@ -3,7 +3,6 @@ import "virtual:windi.css";
 
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 
 import { logseq as PL } from "../package.json";
 
@@ -16,13 +15,6 @@ const isDev = process.env.NODE_ENV === "development";
 const magicKey = `__${pluginId}__loaded__`;
 
 function main() {
-  console.info(`#${pluginId}: MAIN`);
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById("app")
-  );
 
   function createModel() {
     return {
