@@ -9,24 +9,24 @@ module.exports = {
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    [
-      "@semantic-release/npm",
-      {
-        npmPublish: false,
-      },
-    ],
+    // [
+    //   "@semantic-release/npm",
+    //   {
+    //     npmPublish: false,
+    //   },
+    // ],
     "@semantic-release/git",
     [
       "@semantic-release/exec",
       {
         prepareCmd:
-          "zip -qq -r logseq-plugin-template-react-${nextRelease.version}.zip dist readme.md logo.svg LICENSE package.json",
+          "zip -qq -r logseq-banners-plugin-${nextRelease.version}.zip dist readme.md logo.svg LICENSE package.json",
       },
     ],
     [
       "@semantic-release/github",
       {
-        assets: "logseq-plugin-template-react-*.zip",
+        assets: "logseq-banners-plugin-*.zip",
       },
     ],
   ],
