@@ -1,8 +1,9 @@
-# Logseq Plugin Template React
+>If this plugin helps you, I'd really appreciate your support. You can [buy me a coffee here. ](https://www.buymeacoffee.com/sawhney17)
+# Logseq Banners plugin
+Enliven your Logseq Workspace with gorgeous, custom, notion style page banners and icons
+![](./Screenshot%202022-06-27%20at%2010.46.44%20PM.png)
+## Instructions
+1. Install the plugin from the logseq plugin marketplace
+2. Configure a default fallback image and icon in settings
+3. Customize the banner image or page icon on a per page basis via the page properties of `page-icon:: 💸` and `banner:: https://wallpaperaccess.com/full/1146672.jpg`
 
-## Features
-
-- plug & play boilerplate with properly defined GitHub action defaults
-- develop with HMR, empowered by lightning fast Vite ⚡ with [vite-logseq-plugin](https://github.com/pengx17/vite-plugin-logseq)
-- windicss for styling
-- pnpm
