@@ -79,7 +79,7 @@ function main() {
         //remove surrounding quotations if present
         console.log(bannerLink)
         bannerImage.src = (bannerLink
-          ?? logseq.settings!.bannerImage ?? "https://wallpaperaccess.com/full/1146672.jpg")
+          ?? logseq.settings?.bannerImage ?? "https://wallpaperaccess.com/full/1146672.jpg")
           .replace(/^"(.*)"$/, '$1');
         bannerImage.style.flexBasis = "100%"
         bannerImage.style.maxHeight = "300px"
