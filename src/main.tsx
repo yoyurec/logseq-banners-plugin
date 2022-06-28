@@ -32,19 +32,25 @@ const settingsArray: SettingSchemaDesc[] = [
 ]
 function main() {
   logseq.provideStyle(`
-  #main-content-container {
-    flex-wrap: wrap;
-}
-  .cp__sidebar-main-content {
-    transform: translateY(-30px);
-}
-`)
+    #main-content-container {
+      flex-wrap: wrap;
+    }
+    .cp__sidebar-main-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .cp__sidebar-main-content > div {
+      transform: translateY(-30px);
+      margin-left: 0;
+      margin-right: 0;
+    }
+  `)
   console.info(`#${pluginId}: MAIN`);
   addImage(true)
   logseq.useSettingsSchema(settingsArray)
 
   logseq.App.onRouteChanged((e) => {
-    
+
     if (e.path === "/") {
       addImage(true)
     }
@@ -57,16 +63,21 @@ function main() {
     // }
   })
 
-
   async function addImage(dailyNote = false) {
-    setTimeout(async() => {
+    setTimeout(async () => {
+      const graphPath = (await logseq.App.getCurrentGraph())?.path
+
       top?.document.getElementById("bannerImage")?.remove()
       //@ts-expect-error
-      const bannerLink = dailyNote ? (await logseq.Editor.getPage(getDateForPageWithoutBrackets(new Date, (await logseq.App.getUserConfigs()).preferredDateFormat)))?.properties?.banner :(await logseq.Editor.getCurrentPage())?.properties?.banner;
+      let bannerLink = dailyNote ? (await logseq.Editor.getPage(getDateForPageWithoutBrackets(new Date, (await logseq.App.getUserConfigs()).preferredDateFormat)))?.properties?.banner : (await logseq.Editor.getCurrentPage())?.properties?.banner;
+      // if local image from assets folder
+      if (bannerLink && bannerLink.startsWith("../")) {
+        bannerLink = "file://" + graphPath + bannerLink.replace("..", "")
+      }
       //@ts-expect-error
       const icon = dailyNote ? (await logseq.Editor.getPage(getDateForPageWithoutBrackets(new Date, (await logseq.App.getUserConfigs()).preferredDateFormat)))?.properties?.pageIcon :(await logseq.Editor.getCurrentPage())?.properties?.pageIcon;
       const contentContainer = top?.document.getElementsByClassName("cp__sidebar-main-content")[0]
-      console.log(bannerLink)
+      console.log(`#${pluginId}: bannerLink - ${bannerLink}`)
       if (top?.document.getElementById("bannerImage") == null) {
         let pageTitle = top?.document.getElementsByClassName("page-title")[0]
         //if page title is null then get element by class name of journal-title
@@ -77,15 +88,16 @@ function main() {
         const bannerImage = top.document.createElement("img")
         bannerImage.id = "bannerImage"
         //remove surrounding quotations if present
-        console.log(bannerLink)
+        console.log(`#${pluginId}: bannerLink - ${bannerLink}`)
         bannerImage.src = (bannerLink
           ?? (logseq.settings?.bannerImage == "" ? "https://wallpaperaccess.com/full/1146672.jpg": logseq.settings!.bannerImage))
           .replace(/^"(.*)"$/, '$1');
         bannerImage.style.flexBasis = "100%"
         bannerImage.style.maxHeight = "300px"
         bannerImage.style.objectFit = "cover"
+        bannerImage.style.margin = "0"
         //@ts-expect-error
-        top?.document.getElementById("main-content-container")?.insertBefore(bannerImage, contentContainer)
+        contentContainer.insertBefore(bannerImage, contentContainer?.firstChild)
 
         // @ts-expect-error
         const iconImage = top.document.createElement("label")
@@ -97,8 +109,10 @@ function main() {
         iconImage.style.flexBasis = "100%"
         iconImage.style.transform = "translate(100px, -30px)"
 
-        // @ts-expect-error
-        pageTitle.insertBefore(iconImage, pageTitle?.childNodes[0])
+        if (top?.document.getElementById("helloIcon") == null) {
+          // @ts-expect-error
+          pageTitle?.parentNode.insertBefore(iconImage, pageTitle)
+        }
         // iconImage.src = "https://img.freepik.com/free-vector/winter-landscape-mountains-mid-century-modern-minimalist-art-print-abstract-mountain-contemporary-aesthetic-backgrounds-landscapes-vector-illustrations_69626-620.jpg"
 
       }
