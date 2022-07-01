@@ -7,6 +7,9 @@ Enliven your Logseq Workspace with gorgeous, custom, notion style page banners a
 2. Configure a default fallback image and icon in settings
 3. Customize the banner image or page icon on a per page basis via the page properties of `page-icon:: 💸` and `banner:: https://wallpaperaccess.com/full/1146672.jpg`
 
+
+### Customizatino
+- All customizations can be done from plugin settings
 ---
 ## Credits
-- This plugin would not be possible without the invaluable help of @yoyurec
+- This plugin would not be possible without the invaluable help of [@yoyurec](https://github.com/yoyurec)

@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.1.0...v1.2.0) (2022-07-01)
+
+
+### Features
+
+* **big-changes:** format document ([a71345b](https://github.com/sawhney17/logseq-banners-plugin/commit/a71345b558bcd845e8c2db01a59ceae06bf5a67e))
+
 # [1.1.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.0.2...v1.1.0) (2022-06-27)
 
 
