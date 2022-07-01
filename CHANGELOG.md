@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.0...v1.2.1) (2022-07-01)
+
+
+### Bug Fixes
+
+* **ci:** missing icon ([d028895](https://github.com/sawhney17/logseq-banners-plugin/commit/d02889533608fb46419df17af92839db7fd4e6aa))
+
 # [1.2.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.1.0...v1.2.0) (2022-07-01)
 
 
