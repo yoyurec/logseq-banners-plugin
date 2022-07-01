@@ -21,7 +21,7 @@ module.exports = {
       "@semantic-release/exec",
       {
         prepareCmd:
-          "zip -qq -r logseq-banners-plugin-${nextRelease.version}.zip dist readme.md logo.svg LICENSE package.json",
+          "zip -qq -r logseq-banners-plugin-${nextRelease.version}.zip dist readme.md logo.png LICENSE package.json",
       },
     ],
     [
