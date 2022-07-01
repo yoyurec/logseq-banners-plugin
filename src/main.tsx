@@ -80,21 +80,17 @@ const initStyles = () => {
   root.style.setProperty("--bannerHeight", `${bannerHeight}`);
 
   logseq.provideStyle(`
-    .is-banner-active #main-content-container {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active #main-content-container {
       flex-wrap: wrap;
       align-content: flex-start;
     }
-    .is-banner-active .cp__sidebar-main-content {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active .cp__sidebar-main-content {
       flex-basis: 100%;
-  }
-    .is-banner-active .cp__sidebar-main-content > .max-w-7xl {
-      margin-left: 0;
-      margin-right: 0;
     }
-    .content {
+    body:is([data-page="page"],[data-page="home"]) .content {
       position: relative;
     }
-    .is-banner-active #main-content-container::before {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active #main-content-container::before {
       content: "";
       width: 100%;
       height: var(--bannerHeight);
@@ -103,14 +99,14 @@ const initStyles = () => {
       background-size: cover;
       background-position: 50%;
     }
-    .is-banner-active.is-icon-active .journal-item:first-of-type > .page > .flex-col > .content > .flex-1::before,
-    .is-banner-active.is-icon-active .page > .relative > .flex-row > .flex-1::before {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active .journal-item:first-of-type > .page > .flex-col > .content > .flex-1::before,
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active .page > .relative > .flex-row > .flex-1::before {
       display: block;
       content: " ";
       padding-top: 50px;
     }
-    .is-banner-active.is-icon-active .journal-item:first-of-type > .page > .flex-col > .content > .flex-1::after,
-    .is-banner-active.is-icon-active .page > .relative > .flex-row > .flex-1::after {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active .journal-item:first-of-type > .page > .flex-col > .content > .flex-1::after,
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active .page > .relative > .flex-row > .flex-1::after {
       content: var(--pageIcon);
       font-size: 50px;
       font-weight: normal;
@@ -119,16 +115,16 @@ const initStyles = () => {
       left: -7px;
       line-height: initial;
     }
-    .is-banner-active.is-icon-active #journals .journal-item:first-child {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-child {
       margin-top: 0;
     }
-    .is-banner-active.is-icon-active #journals .journal-item h1.title::before {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item h1.title::before {
       content: "${defaultJournalIcon}";
       margin-right: 8px;
       font-size: 0.9em;
       font-weight: normal;
     }
-    .is-banner-active.is-icon-active #journals .journal-item:first-of-type h1.title::before {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-of-type h1.title::before {
       display: none;
     }
   `)
@@ -155,20 +151,21 @@ const readPluginSettings = () => {
 
 // Render
 const render = async () => {
-  // Hide banner on ever render start if no default allowed
-  if (!useDefaultBanner) {
-    body.classList.remove("is-banner-active");
-  }
-  // Hide icon on ever render start if no default allowed
+  // "Delete" icon on ever render start if no default allowed
   if (!useDefaultIcon) {
-    body.classList.remove("is-icon-active");
+    clearIcon();
+  }
+  // "Delete" banner on ever render start if no default allowed
+  if (!useDefaultBanner) {
+    clearBanner();
   }
   pageType = getPageType();
   if (!isPageTypeOk()) {
-    body.classList.remove("is-icon-active");
-    body.classList.remove("is-banner-active");
+    clearIcon();
+    clearBanner();
     return;
   }
+  console.info(`#${pluginId}: page type - ${pageType}`)
   if (pageType !== "home") {
     currentPage = await logseq.Editor.getCurrentPage();
     if (currentPage) {
@@ -255,8 +252,7 @@ const renderIcon = async () => {
     body.classList.add("is-icon-active");
     root.style.setProperty("--pageIcon", `"${pageIcon}"`);
   } else {
-    body.classList.remove("is-icon-active");
-    root.style.setProperty("--pageIcon", "");
+    clearIcon();
   }
 }
 
@@ -309,11 +305,9 @@ const renderBanner = async () => {
     body.classList.add("is-banner-active");
     root.style.setProperty("--pageBanner", `url(${pageBanner})`);
   } else {
-    body.classList.remove("is-banner-active");
-    root.style.setProperty("--pageBanner", "");
+    clearBanner();
   }
 }
-
 
 // Page props was edited
 let pagePropsObserverConfig: MutationObserverInit,
@@ -336,13 +330,26 @@ const pagePropsObserverInit = () => {
   }
   pagePropsObserver = new MutationObserver(pagePropsCallback);
 }
-
 const pagePropsObserverRun = () => {
   const content = top?.document.getElementById("main-content-container")?.getElementsByClassName("blocks-container")[0] as Node;
-  pagePropsObserver.observe(content, pagePropsObserverConfig);
+  if (content) {
+    pagePropsObserver.observe(content, pagePropsObserverConfig);
+  }
 }
 const pagePropsObserverStop = () => {
   pagePropsObserver.disconnect();
+}
+
+// Hide banner element
+const clearBanner = () => {
+  body.classList.remove("is-banner-active");
+  root.style.setProperty("--pageBanner", "");
+}
+
+// Hide icon element
+const clearIcon = () => {
+  body.classList.remove("is-icon-active");
+  root.style.setProperty("--pageIcon", "");
 }
 
 
@@ -366,6 +373,7 @@ const main = async () => {
     pagePropsObserverRun();
     // Listen for pages switch
     logseq.App.onRouteChanged(async () => {
+      // Content reloaded, so need reconnect to new content element
       pagePropsObserverStop();
       pagePropsObserverRun();
       setTimeout(() => {
@@ -378,7 +386,7 @@ const main = async () => {
       root.style.setProperty("--bannerHeight", `${bannerHeight}`);
       render();
     })
-  }, 2000);
+  }, 3000);
 
 }
 
