@@ -9,4 +9,4 @@ Enliven your Logseq Workspace with gorgeous, custom, notion style page banners a
 
 ---
 ## Credits
-- This plugin would not be possible without the invaluable help of @yoyurec
+- This plugin would not be possible without the invaluable help of [@yoyurec](https://github.com/yoyurec)
