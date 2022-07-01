@@ -138,14 +138,15 @@ const initStyles = () => {
 const readPluginSettings = () => {
   const pluginSettings = logseq.settings;
   if (pluginSettings) {
-     ({
+    ({
       bannerHeight,
       useDefaultBanner,
       useDefaultIcon,
       defaultPageBanner,
       defaultJournalBanner,
       defaultPageIcon,
-      defaultJournalIcon } = pluginSettings);
+      defaultJournalIcon
+    } = pluginSettings);
   }
   if (useDefaultBanner) {
     encodeDefaultBanners();
@@ -217,7 +218,7 @@ const encodeDefaultBanners = async () => {
   defaultJournalBanner = await getBase64FromUrl(defaultJournalBanner || settingsDefaultJournalBanner);
 }
 
-  // Default page or journal icon?
+// Default page or journal icon?
 const chooseDefaultIcon = async () => {
   return isJournal ? defaultJournalIcon : defaultPageIcon;
 }
@@ -231,7 +232,7 @@ const getPropsIcon = async () => {
 // Set icon
 const getIcon = async () => {
   let pageIcon = "";
-    // Using journal default icon, home page
+  // Using journal default icon, home page
   if (pageType === "home" && useDefaultIcon) {
     console.info(`#${pluginId}: Using journal default icon, home page`)
     return defaultJournalIcon;
@@ -251,15 +252,15 @@ const getIcon = async () => {
 const renderIcon = async () => {
   const pageIcon = await getIcon();
   if (pageIcon) {
-      body.classList.add("is-icon-active");
-      root.style.setProperty("--pageIcon", `"${pageIcon}"`);
+    body.classList.add("is-icon-active");
+    root.style.setProperty("--pageIcon", `"${pageIcon}"`);
   } else {
     body.classList.remove("is-icon-active");
     root.style.setProperty("--pageIcon", "");
   }
 }
 
-  // Default page or journal banner?
+// Default page or journal banner?
 const chooseDefaultBanner = () => {
   console.info(`#${pluginId}: Using default banner`)
   return isJournal ? defaultJournalBanner : defaultPageBanner;
@@ -364,7 +365,7 @@ const main = async () => {
     pagePropsObserverInit();
     pagePropsObserverRun();
     // Listen for pages switch
-    logseq.App.onRouteChanged( async () => {
+    logseq.App.onRouteChanged(async () => {
       pagePropsObserverStop();
       pagePropsObserverRun();
       setTimeout(() => {
