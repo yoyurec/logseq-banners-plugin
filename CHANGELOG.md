@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.1...v1.2.2) (2022-07-01)
+
+
+### Bug Fixes
+
+* **pages:** incorrect pages being shown ([4fc7997](https://github.com/sawhney17/logseq-banners-plugin/commit/4fc7997330c4cc7baf1a78f4a9e907eeef507135))
+
 ## [1.2.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.0...v1.2.1) (2022-07-01)
 
 
