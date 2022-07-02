@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.2...v1.2.3) (2022-07-02)
+
+
+### Bug Fixes
+
+* **timeout:** allow customization of timeout ([d637826](https://github.com/sawhney17/logseq-banners-plugin/commit/d6378266829cf7241e7a3a1f839f04bd0352773a))
+
 ## [1.2.2](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.1...v1.2.2) (2022-07-01)
 
 
