@@ -19,7 +19,8 @@ let bannerHeight: string,
   defaultPageBanner: string,
   defaultPageIcon: string,
   defaultJournalBanner: string,
-  defaultJournalIcon: string;
+  defaultJournalIcon: string,
+  timeout: number;
 
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
@@ -72,6 +73,13 @@ const settingsArray: SettingSchemaDesc[] = [
     type: "string",
     description: "Emoji for journals",
     default: "📅",
+  },
+  {
+    key: "timeout",
+    title: "Banner render timeout",
+    type: "number",
+    description: "If your Logseq pages too slow and render glitches - try set bigger value...500, 1000, 1500 (milliseconds). Caution! Banners will render slower (but morre stable)!",
+    default: "100",
   }
 ]
 
@@ -140,7 +148,8 @@ const readPluginSettings = () => {
       defaultPageBanner,
       defaultJournalBanner,
       defaultPageIcon,
-      defaultJournalIcon
+      defaultJournalIcon,
+      timeout
     } = pluginSettings);
   }
   if (useDefaultBanner) {
@@ -363,7 +372,7 @@ const main = async () => {
   initStyles();
   setTimeout(() => {
     render();
-  }, 100)
+  }, timeout*2)
 
   // Listeners
   setTimeout(() => {
@@ -377,7 +386,7 @@ const main = async () => {
       pagePropsObserverRun();
       setTimeout(() => {
         render();
-      }, 100)
+      }, timeout)
     })
     // Listen setting update
     logseq.onSettingsChanged(() => {
