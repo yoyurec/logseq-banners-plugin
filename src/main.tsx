@@ -319,34 +319,41 @@ const renderBanner = async () => {
 }
 
 // Page props was edited
-let pagePropsObserverConfig: MutationObserverInit,
-  pagePropsObserver: MutationObserver;
-const pagePropsObserverInit = () => {
-  pagePropsObserverConfig = {
+let propsChangedObserverConfig: MutationObserverInit,
+  propsChangedObserver: MutationObserver;
+const propsChangedObserverInit = () => {
+  propsChangedObserverConfig = {
     attributes: true,
     attributeFilter: ["class"],
     attributeOldValue: true,
     subtree: true
   }
-  const pagePropsCallback: MutationCallback = function (mutationsList) {
+  const propsChangedCallback: MutationCallback = function (mutationsList) {
+    console.info(`#${pluginId}: mutation`, mutationsList);
     for (let i = 0; i < mutationsList.length; i++) {
-      // @ts-expect-error
-      if (mutationsList[i].target?.offsetParent?.classList.contains("pre-block") && mutationsList[i].oldValue === "editor-wrapper") {
-        console.info(`#${pluginId}: page props edited`)
+      if (mutationsList[i].oldValue?.includes("pre-block")){
+        console.info(`#${pluginId}: page props - deleted`);
+        render();
+        return;
+      }
+      //@ts-expect-error
+      if (mutationsList[i]?.target?.offsetParent.classList.contains("pre-block") && mutationsList[i].oldValue === "editor-wrapper"){
+        console.info(`#${pluginId}: page props - edited or added`);
         render();
       }
     }
   }
-  pagePropsObserver = new MutationObserver(pagePropsCallback);
+  propsChangedObserver = new MutationObserver(propsChangedCallback);
 }
-const pagePropsObserverRun = () => {
-  const content = top?.document.getElementById("main-content-container")?.getElementsByClassName("blocks-container")[0] as Node;
-  if (content) {
-    pagePropsObserver.observe(content, pagePropsObserverConfig);
+const propsChangedObserverRun = () => {
+  const preBlock = top?.document.getElementsByClassName("content")[0]?.firstChild?.firstChild?.firstChild?.firstChild;
+  if (preBlock) {
+    console.info(`#${pluginId}: preBlock`, preBlock);
+    propsChangedObserver.observe(preBlock, propsChangedObserverConfig);
   }
 }
-const pagePropsObserverStop = () => {
-  pagePropsObserver.disconnect();
+const propsChangedObserverStop = () => {
+  propsChangedObserver.disconnect();
 }
 
 // Hide banner element
@@ -361,6 +368,17 @@ const clearIcon = () => {
   root.style.setProperty("--pageIcon", "");
 }
 
+// Page changed
+const routeChangedCallback = () => {
+  console.info(`#${pluginId}: page route changed`);
+  // Content reloaded, so need reconnect props listeners
+  propsChangedObserverStop();
+  setTimeout(() => {
+    propsChangedObserverRun();
+    // Rerender banner
+    render();
+  }, timeout)
+}
 
 // On Logseq ready - MAIN
 const main = async () => {
@@ -375,27 +393,24 @@ const main = async () => {
     render();
   }, timeout*2)
 
-  // Listeners
+  // Listeners late run
+  propsChangedObserverInit();
   setTimeout(() => {
-    // Listen page props edit
-    pagePropsObserverInit();
-    pagePropsObserverRun();
+    // Listen for page props
+    propsChangedObserverRun();
+
     // Listen for pages switch
     logseq.App.onRouteChanged(async () => {
-      // Content reloaded, so need reconnect to new content element
-      pagePropsObserverStop();
-      pagePropsObserverRun();
-      setTimeout(() => {
-        render();
-      }, timeout)
+      routeChangedCallback();
     })
-    // Listen setting update
+
+    // Listen settings update
     logseq.onSettingsChanged(() => {
       readPluginSettings();
       root.style.setProperty("--bannerHeight", `${bannerHeight}`);
       render();
     })
-  }, 3000);
+  }, 4000);
 
 }
 
