@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.3...v1.2.4) (2022-07-02)
+
+
+### Bug Fixes
+
+* **observer:** Props observer fix + deletion detection added. ([3c50e26](https://github.com/sawhney17/logseq-banners-plugin/commit/3c50e262bbdc9eae8d46164ac15909434aaa47f1))
+
 ## [1.2.3](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.2...v1.2.3) (2022-07-02)
 
 
