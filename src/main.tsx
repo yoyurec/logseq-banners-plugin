@@ -13,7 +13,6 @@ let isJournal: boolean;
 let currentPage;
 //@ts-expect-error
 let currentPageProps;
-
 let bannerHeight: string,
   useDefaultBanner: boolean,
   useDefaultIcon: boolean,
