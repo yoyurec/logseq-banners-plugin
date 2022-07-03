@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.4...v1.3.0) (2022-07-03)
+
+
+### Features
+
+* **icons:** custom icons by props ([c52524a](https://github.com/sawhney17/logseq-banners-plugin/commit/c52524a12883b78752208b53a0523a598bfd50dd))
+
 ## [1.2.4](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.3...v1.2.4) (2022-07-02)
 
 
