@@ -8,22 +8,39 @@ const pluginId = PL.id;
 let root: HTMLElement;
 let body: HTMLElement;
 
+interface IAssetsRecord {
+  [prop: string]: IAssets;
+}
+
+interface IAssets {
+  banner?: string;
+  pageIcon?: string;
+}
+
+interface IUseDefault {
+  banner?: boolean;
+  pageIcon?: boolean;
+}
+
 let pageType: string;
 let isJournal: boolean;
 let currentPage;
 //@ts-expect-error
 let currentPageProps;
-let bannerHeight: string,
-  useDefaultBanner: boolean,
-  useDefaultIcon: boolean,
-  defaultPageBanner: string,
-  defaultPageIcon: string,
-  defaultJournalBanner: string,
-  defaultJournalIcon: string,
-  customProp: string,
-  customPropIcons: string,
-  customPropIconsArr: string[],
-  timeout: number;
+let bannerHeight: string;
+const useDefault: IUseDefault = {};
+const defaultConfig: IAssetsRecord = {
+  "page": {
+    "banner": "",
+    "pageIcon": ""
+  },
+  "journal": {
+    "banner": "",
+    "pageIcon": ""
+  }
+};
+let customPropsConfig: IAssetsRecord;
+let  timeout: number;
 
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
@@ -78,18 +95,23 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "📅",
   },
   {
-    key: "customProp",
-    title: "Custom prop name",
-    type: "string",
-    description: "Page property name to look for. Config below",
-    default: "page-type",
-  },
-  {
-    key: "customPropIcons",
-    title: "Icons for custom pages",
-    type: "string",
-    description: "Emoji for pages with custom props values (comma separated pairs value:emoji). ",
-    default: "evrgrn:🌳, seed:🌱",
+    key: "customPropsConfig",
+    title: "Custom props",
+    type: "object",
+    description: "Advanced custom page banners and icons config",
+    default: {
+      "pageType": {
+        "evrgrn": {
+          "pageIcon": "🌳",
+          "banner": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+        },
+        "seed": {
+          "pageIcon": "🌱",
+          "banner": "https://images.unsplash.com/photo-1631949454967-6c6d07fb59cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+        }
+      },
+      "anotherCamalCasedPropName": {}
+    }
   },
   {
     key: "timeout",
@@ -141,7 +163,7 @@ const initStyles = () => {
       margin-top: 0;
     }
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item h1.title::before {
-      content: "${defaultJournalIcon}";
+      content: "${defaultConfig.journal.pageIcon}";
       margin-right: 8px;
       font-size: 0.9em;
       font-weight: normal;
@@ -158,18 +180,17 @@ const readPluginSettings = () => {
   if (pluginSettings) {
     ({
       bannerHeight,
-      useDefaultBanner,
-      useDefaultIcon,
-      defaultPageBanner,
-      defaultJournalBanner,
-      defaultPageIcon,
-      defaultJournalIcon,
-      customProp,
-      customPropIcons,
+      useDefaultBanner: useDefault.banner,
+      useDefaultIcon: useDefault.pageIcon,
+      defaultPageBanner: defaultConfig.page.banner,
+      defaultPageIcon: defaultConfig.page.pageIcon,
+      defaultJournalBanner: defaultConfig.journal.banner,
+      defaultJournalIcon: defaultConfig.journal.pageIcon,
+      customPropsConfig,
       timeout
     } = pluginSettings);
   }
-  if (useDefaultBanner) {
+  if (useDefault.banner) {
     encodeDefaultBanners();
   }
 }
@@ -177,11 +198,11 @@ const readPluginSettings = () => {
 // Render
 const render = async () => {
   // "Delete" icon on ever render start if no default allowed
-  if (!useDefaultIcon) {
+  if (!useDefault.pageIcon) {
     clearIcon();
   }
   // "Delete" banner on ever render start if no default allowed
-  if (!useDefaultBanner) {
+  if (!useDefault.banner) {
     clearBanner();
   }
   pageType = getPageType();
@@ -189,12 +210,6 @@ const render = async () => {
     clearIcon();
     clearBanner();
     return;
-  }
-  if (customProp) {
-    // camelSased
-    customProp = customProp.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-    // Icons array
-    customPropIconsArr = customPropIcons.replace(/,\s/g, ',').split(",");
   }
   if (pageType !== "home") {
     currentPage = await logseq.Editor.getCurrentPage();
@@ -241,125 +256,107 @@ const getBase64FromUrl = async (url: string): Promise<string> => {
 
 // Get and encode default banners for reusing
 const encodeDefaultBanners = async () => {
-  defaultPageBanner = await getBase64FromUrl(defaultPageBanner || settingsDefaultPageBanner);
-  defaultJournalBanner = await getBase64FromUrl(defaultJournalBanner || settingsDefaultJournalBanner);
+  defaultConfig.page.banner = await getBase64FromUrl(defaultConfig.page.banner || settingsDefaultPageBanner);
+  defaultConfig.journal.banner = await getBase64FromUrl(defaultConfig.journal.banner || settingsDefaultJournalBanner);
 }
 
-// Default page or journal icon?
-const chooseDefaultIcon = () => {
-  console.info(`#${pluginId}: Using default icon`);
-  return isJournal ? defaultJournalIcon : defaultPageIcon;
-}
-
-// Read icon from page props
-const getPropsIcon = () => {
-  console.info(`#${pluginId}: Using props icon`);
-  let propsIcon = "";
-  //@ts-expect-error
-  propsIcon = currentPageProps?.pageIcon;
-  return propsIcon;
-}
-
-// Read icon from page props
-const getCustomPropIcon = () => {
-  console.info(`#${pluginId}: Using custom icon`);
-  let customPropIcon = "";
-  //@ts-expect-error
-  const customPropValue = currentPageProps?.[customProp];
-  if (customPropValue) {
-    for (let i = 0; i < customPropIconsArr.length; i++) {
-      const settingsValue = customPropIconsArr[i].split(":");
-      if (settingsValue[0] === customPropValue || settingsValue[0] === customPropValue[0]) {
-        customPropIcon = settingsValue[1];
+// Read from cusrom page props config
+const getCustomPropsAsset = (assetType: string) => {
+  console.info(`#${pluginId}: Trying custom ${assetType}`);
+  let customPropsAsset = "";
+  for (const key of Object.keys(customPropsConfig)) {
+    //@ts-expect-error
+    const pageCustomProp = currentPageProps?.[key];
+    if (pageCustomProp) {
+      const pageCustomPropValue = Array.isArray(pageCustomProp) ? pageCustomProp[0] : pageCustomProp;
+      if (pageCustomPropValue) {
+        //@ts-expect-error
+        customPropsAsset = customPropsConfig?.[key]?.[pageCustomPropValue]?.[assetType];
       }
     }
   }
-  return customPropIcon;
-}
-
-// Set icon
-const getIcon = async () => {
-  let pageIcon = "";
-  // Using journal default icon, home page
-  if (pageType === "home" && useDefaultIcon) {
-    console.info(`#${pluginId}: Using journal default icon, home page`);
-    return defaultJournalIcon;
-  }
-  // Read from page props
-  pageIcon = await getPropsIcon();
-  // Read from custom props
-  if (!pageIcon && customProp) {
-    pageIcon = await getCustomPropIcon();
-  }
-  // Use default if no props and allows default
-  if (!pageIcon && useDefaultIcon) {
-    pageIcon = await chooseDefaultIcon();
-  }
-  console.info(`#${pluginId}: icon - ${pageIcon}`);
-  return pageIcon;
-}
-
-// Set icon CSS variable
-const renderIcon = async () => {
-  const pageIcon = await getIcon();
-  if (pageIcon) {
-    body.classList.add("is-icon-active");
-    root.style.setProperty("--pageIcon", `"${pageIcon}"`);
-  } else {
-    clearIcon();
-  }
-}
-
-// Default page or journal banner?
-const chooseDefaultBanner = () => {
-  console.info(`#${pluginId}: Using default banner`);
-  return isJournal ? defaultJournalBanner : defaultPageBanner;
+  return customPropsAsset;
 }
 
 // Read banner from page props
-const getPropsBanner = async () => {
-  console.info(`#${pluginId}: Using props banner`);
-  let propsBanner = "";
+const getPropsAsset = async (assetType: string) => {
+  console.info(`#${pluginId}: Trying props ${assetType}`);
+  let propsAsset = "";
   //@ts-expect-error
-  propsBanner = currentPageProps?.banner;
-  if (propsBanner) {
+  propsAsset = currentPageProps?.[assetType];
+  if (propsAsset && assetType === "banner") {
     //remove surrounding quotations if present
-    propsBanner = propsBanner.replace(/^"(.*)"$/, '$1');
+    propsAsset = propsAsset.replace(/^"(.*)"$/, '$1');
     // if local image from assets folder
-    if (propsBanner.startsWith("../")) {
+    if (propsAsset.startsWith("../")) {
       const graphPath = (await logseq.App.getCurrentGraph())?.path;
-      propsBanner = encodeURI("assets://" + graphPath + propsBanner.replace("..", ""));
+      propsAsset = encodeURI("assets://" + graphPath + propsAsset.replace("..", ""));
     }
   }
-  return propsBanner;
+  return propsAsset;
 }
 
-// Get banner
-const getBanner = async () => {
-  // Using journal default banner, home page
-  if (pageType === "home" && useDefaultBanner) {
-    console.info(`#${pluginId}: Using journal default banner, home page`);
-    return defaultJournalBanner;
+// Check journals home page
+const getHomeAsset = (assetType: string): string => {
+  let homeAsset = "";
+  //@ts-expect-error
+  if (pageType === "home" && useDefault[assetType]) {
+    console.info(`#${pluginId}: Using journal default ${assetType}, home page`);
+    //@ts-expect-error
+    homeAsset = defaultJournal[assetType];
   }
+  return homeAsset;
+}
+
+// Default page or journal banner?
+const chooseDefaultAsset = (assetType: string) => {
+  let defaultAsset = "";
+  console.info(`#${pluginId}: Trying default ${assetType} for ${pageType}`);
+  //@ts-expect-error
+  defaultAsset = isJournal ? defaultConfig.journal[assetType] : defaultConfig.page[assetType];
+  return defaultAsset;
+}
+
+
+// Get asset
+const getAsset = async (assetType: string) => {
+  let asset = "";
+  // Check journals home page
+  asset = getHomeAsset(assetType);
   // Read from page props
-  const pageBanner = await getPropsBanner();
-  // Use default if no props and allows default
-  if (!pageBanner && useDefaultBanner) {
-    return chooseDefaultBanner();
+  asset = await getPropsAsset(assetType);
+  // Read from custom props
+  if (!asset && customPropsConfig) {
+    asset = getCustomPropsAsset(assetType);
   }
-  console.info(`#${pluginId}: banner - ${pageBanner}`);
-  return pageBanner;
+  // Use default if no props and allows default
+  if (!asset && useDefault.pageIcon) {
+    return chooseDefaultAsset(assetType);
+  }
+  console.info(`#${pluginId}: ${assetType} - ${asset}`);
+  return asset;
 }
 
 // Set banner CSS variable
 const renderBanner = async () => {
-  const pageBanner = await getBanner();
+  const pageBanner = await getAsset("banner");
   if (pageBanner) {
     renderIcon();
     body.classList.add("is-banner-active");
     root.style.setProperty("--pageBanner", `url(${pageBanner})`);
   } else {
     clearBanner();
+  }
+}
+
+// Set icon CSS variable
+const renderIcon = async () => {
+  const pageIcon = await getAsset("pageIcon");
+  if (pageIcon) {
+    body.classList.add("is-icon-active");
+    root.style.setProperty("--pageIcon", `"${pageIcon}"`);
+  } else {
+    clearIcon();
   }
 }
 

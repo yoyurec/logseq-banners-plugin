@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [logseqDevPlugin()],
   // Makes HMR available for development
   build: {
+    sourcemap: true,
     target: "esnext",
     minify: "esbuild",
   },
