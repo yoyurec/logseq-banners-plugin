@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.3.0...v1.4.0) (2022-07-04)
+
+
+### Features
+
+* **properties:** option to hide plugin props ([b4cc59f](https://github.com/sawhney17/logseq-banners-plugin/commit/b4cc59fe63c9a723dd8303e024417c7c3aa99eac))
+
 # [1.3.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.2.4...v1.3.0) (2022-07-03)
 
 
