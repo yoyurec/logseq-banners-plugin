@@ -40,11 +40,19 @@ const defaultConfig: IAssetsRecord = {
   }
 };
 let customPropsConfig: IAssetsRecord;
-let  timeout: number;
+let timeout: number;
+let hidePluginProps: boolean;
 
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsArray: SettingSchemaDesc[] = [
+  {
+    key: "hidePluginProps",
+    title: "Hide plugin props",
+    type: "boolean",
+    description: "Show plugin props only on edit?",
+    default: "false",
+  },
   {
     key: "bannerHeight",
     title: "Banner height",
@@ -156,7 +164,7 @@ const initStyles = () => {
       z-index:2;
       line-height: initial;
     }
-    body:is([data-page="page"],[data-page="home"]).is-banner-active :is(.page-title, .journal-title) {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active :is(.ls-page-title, .page-title, .journal-title) {
       margin-top: 35px;
     }
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-child {
@@ -179,6 +187,7 @@ const readPluginSettings = () => {
   const pluginSettings = logseq.settings;
   if (pluginSettings) {
     ({
+      hidePluginProps,
       bannerHeight,
       useDefaultBanner: useDefault.banner,
       useDefaultIcon: useDefault.pageIcon,
@@ -192,6 +201,18 @@ const readPluginSettings = () => {
   }
   if (useDefault.banner) {
     encodeDefaultBanners();
+  }
+}
+
+// Hide props
+const hideProps = () => {
+  const propBlockKeys = top?.document.getElementsByClassName("page-property-key");
+  if (propBlockKeys?.length) {
+    for (let i = 0; i < propBlockKeys.length; i++) {
+      if (propBlockKeys[i].textContent === "banner" || propBlockKeys[i].textContent === "page-icon") {
+        propBlockKeys[i].parentElement!.style.display = hidePluginProps ? "none" : "block" ;
+      }
+    }
   }
 }
 
@@ -412,6 +433,7 @@ const clearIcon = () => {
 const routeChangedCallback = () => {
   console.info(`#${pluginId}: page route changed`);
   // Content reloaded, so need reconnect props listeners
+  hideProps();
   propsChangedObserverStop();
   setTimeout(() => {
     propsChangedObserverRun();
@@ -419,6 +441,13 @@ const routeChangedCallback = () => {
     render();
   }, timeout)
 }
+
+// Setting changed
+const onSettingsChangedCallback = () => {
+  readPluginSettings();
+  root.style.setProperty("--bannerHeight", `${bannerHeight}`);
+  render();
+ }
 
 // On Logseq ready - MAIN
 const main = async () => {
@@ -429,6 +458,7 @@ const main = async () => {
 
   readPluginSettings();
   initStyles();
+  hideProps();
   setTimeout(() => {
     render();
   }, timeout*2)
@@ -446,9 +476,7 @@ const main = async () => {
 
     // Listen settings update
     logseq.onSettingsChanged(() => {
-      readPluginSettings();
-      root.style.setProperty("--bannerHeight", `${bannerHeight}`);
-      render();
+      onSettingsChangedCallback();
     })
   }, 4000);
 
