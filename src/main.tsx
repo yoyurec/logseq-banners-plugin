@@ -179,7 +179,12 @@ const initStyles = () => {
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-of-type h1.title::before {
       display: none;
     }
-    .cp__right-sidebar-inner .resizer {z-index:9;}
+    .cp__right-sidebar-inner .resizer {
+      z-index:9;
+    }
+    .page-title .page-icon {
+      display: none;
+    }
   `)
 }
 
@@ -210,7 +215,7 @@ const hideProps = () => {
   const propBlockKeys = top?.document.getElementsByClassName("page-property-key");
   if (propBlockKeys?.length) {
     for (let i = 0; i < propBlockKeys.length; i++) {
-      if (propBlockKeys[i].textContent === "banner" || propBlockKeys[i].textContent === "page-icon") {
+      if (propBlockKeys[i].textContent === "banner" || propBlockKeys[i].textContent === "page-icon" || propBlockKeys[i].textContent === "icon") {
         propBlockKeys[i].parentElement!.style.display = hidePluginProps ? "none" : "block" ;
       }
     }
@@ -219,6 +224,7 @@ const hideProps = () => {
 
 // Render
 const render = async () => {
+  hideProps();
   // "Delete" icon on ever render start if no default allowed
   if (!useDefault.pageIcon) {
     clearIcon();
@@ -321,6 +327,11 @@ const getPropsAsset = async (assetType: string) => {
       const graphPath = (await logseq.App.getCurrentGraph())?.path;
       propsAsset = encodeURI("assets://" + graphPath + propsAsset.replace("..", ""));
     }
+  }
+  if (!propsAsset && assetType === "pageIcon") {
+    console.info(`#${pluginId}: Trying logseq icon props`);
+    //@ts-expect-error
+    propsAsset = currentPageProps?.icon;
   }
   return propsAsset;
 }
@@ -444,7 +455,6 @@ const clearIcon = () => {
 const routeChangedCallback = () => {
   console.info(`#${pluginId}: page route changed`);
   // Content reloaded, so need reconnect props listeners
-  hideProps();
   propsChangedObserverStop();
   setTimeout(() => {
     propsChangedObserverRun();
@@ -469,8 +479,7 @@ const main = async () => {
 
   readPluginSettings();
   initStyles();
-  hideProps();
-  setTimeout(() => {
+    setTimeout(() => {
     render();
   }, timeout*2)
 

@@ -1,6 +1,6 @@
 {
   "name": "logseq-banners-plugin",
-  "version": "1.5.1",
+  "version": "1.6.1",
   "main": "dist/index.html",
   "scripts": {
     "dev": "vite",
