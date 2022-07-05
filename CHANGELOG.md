@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.4.0...v1.5.0) (2022-07-05)
+
+
+### Features
+
+* **detection:** page child detection  ([19b8857](https://github.com/sawhney17/logseq-banners-plugin/commit/19b885784c63e36efe33c83eeaff6e10c8f3c438)), closes [#16](https://github.com/sawhney17/logseq-banners-plugin/issues/16)
+
 # [1.4.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.3.0...v1.4.0) (2022-07-04)
 
 
