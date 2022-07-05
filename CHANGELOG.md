@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.5.0...v1.5.1) (2022-07-05)
+
+
+### Bug Fixes
+
+* **journals:** home page errors ([afdfea7](https://github.com/sawhney17/logseq-banners-plugin/commit/afdfea7c01c6b36743ea53b2347bc0877c726a59)), closes [#21](https://github.com/sawhney17/logseq-banners-plugin/issues/21) [#18](https://github.com/sawhney17/logseq-banners-plugin/issues/18)
+
 # [1.5.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.4.0...v1.5.0) (2022-07-05)
 
 
