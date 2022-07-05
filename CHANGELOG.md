@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.5.1...v1.6.0) (2022-07-05)
+
+
+### Features
+
+* **icons:** integrate with Logseq in built icon property ([5cb01d6](https://github.com/sawhney17/logseq-banners-plugin/commit/5cb01d62cee3b74c6c89fdde95f2a17e6da64fef)), closes [#23](https://github.com/sawhney17/logseq-banners-plugin/issues/23)
+
 ## [1.5.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.5.0...v1.5.1) (2022-07-05)
 
 
