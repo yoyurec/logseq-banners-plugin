@@ -240,11 +240,11 @@ const render = async () => {
       const currentPageId = currentPage.page?.id;
       if (currentPageId) {
         currentPage = await logseq.Editor.getPage(currentPageId);
-        if (currentPage) {
-          isJournal = currentPage?.["journal?"];
-          //@ts-expect-error
-          currentPageProps = currentPage?.properties;
-        }
+      }
+      if (currentPage) {
+        isJournal = currentPage?.["journal?"];
+        //@ts-expect-error
+        currentPageProps = currentPage?.properties;
       }
     }
   }
@@ -332,7 +332,7 @@ const getHomeAsset = (assetType: string): string => {
   if (pageType === "home" && useDefault[assetType]) {
     console.info(`#${pluginId}: Using journal default ${assetType}, home page`);
     //@ts-expect-error
-    homeAsset = defaultJournal[assetType];
+    homeAsset = defaultConfig.journal[assetType];
   }
   return homeAsset;
 }
@@ -352,6 +352,9 @@ const getAsset = async (assetType: string) => {
   let asset = "";
   // Check journals home page
   asset = getHomeAsset(assetType);
+  if (asset) {
+    return asset;
+  }
   // Read from page props
   asset = await getPropsAsset(assetType);
   // Read from custom props
