@@ -179,6 +179,7 @@ const initStyles = () => {
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-of-type h1.title::before {
       display: none;
     }
+    .cp__right-sidebar-inner .resizer {z-index:9;}
   `)
 }
 
@@ -235,9 +236,16 @@ const render = async () => {
   if (pageType !== "home") {
     currentPage = await logseq.Editor.getCurrentPage();
     if (currentPage) {
-      isJournal = currentPage?.["journal?"];
       //@ts-expect-error
-      currentPageProps = currentPage?.properties;
+      const currentPageId = currentPage.page?.id;
+      if (currentPageId) {
+        currentPage = await logseq.Editor.getPage(currentPageId);
+        if (currentPage) {
+          isJournal = currentPage?.["journal?"];
+          //@ts-expect-error
+          currentPageProps = currentPage?.properties;
+        }
+      }
     }
   }
   renderBanner();
