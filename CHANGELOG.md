@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.6.0...v1.6.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* **defaults:** lack of persistence + broken icon config ([258488d](https://github.com/sawhney17/logseq-banners-plugin/commit/258488d28309c06950de8cfb72b58278524d6056))
+
 # [1.6.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.5.1...v1.6.0) (2022-07-05)
 
 
