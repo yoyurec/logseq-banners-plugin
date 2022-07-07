@@ -1,45 +1,36 @@
 import "@logseq/libs";
 
 import { logseq as PL } from "../package.json";
-import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
+import { SettingSchemaDesc, PageEntity, BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
 
 const pluginId = PL.id;
 
 let root: HTMLElement;
 let body: HTMLElement;
 
-interface IAssetsRecord {
-  [prop: string]: IAssets;
+type AssetsRecord = {
+  [prop: string]: Assets;
 }
 
-interface IAssets {
+type Assets = {
   banner?: string;
   pageIcon?: string;
 }
 
-interface IUseDefault {
-  banner?: boolean;
-  pageIcon?: boolean;
+type UseDefaultType = {
+  banner: boolean;
+  pageIcon: boolean;
 }
+
+type AssetType = keyof UseDefaultType;
 
 let pageType: string;
 let isJournal: boolean;
-let currentPage;
-//@ts-expect-error
-let currentPageProps;
+let currentPageProps: PageEntity | null;
 let bannerHeight: string;
-const useDefault: IUseDefault = {};
-const defaultConfig: IAssetsRecord = {
-  "page": {
-    "banner": "",
-    "pageIcon": ""
-  },
-  "journal": {
-    "banner": "",
-    "pageIcon": ""
-  }
-};
-let customPropsConfig: IAssetsRecord;
+let useDefault: UseDefaultType;
+let defaultConfig: AssetsRecord;
+let customPropsConfig: AssetsRecord;
 let timeout: number;
 let hidePluginProps: boolean;
 
@@ -69,16 +60,16 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "defaultPageBanner",
-    title: "Default banner (page)",
+    title: "Default page banner",
     type: "string",
-    description: "Banner image URL for common pages",
+    description: "Banner image URL for common page",
     default: settingsDefaultPageBanner,
   },
   {
     key: "defaultJournalBanner",
-    title: "Default banner (journal)",
+    title: "Default journal banner",
     type: "string",
-    description: "Banner image URL for journal pages",
+    description: "Banner image URL for journal page and home page",
     default: settingsDefaultJournalBanner,
   },
   {
@@ -90,16 +81,16 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "defaultPageIcon",
-    title: "Default icon (page)",
+    title: "Default page icon",
     type: "string",
-    description: "Emoji for pages",
+    description: "Emoji for common page",
     default: "📄",
   },
   {
     key: "defaultJournalIcon",
-    title: "Default icon (journal)",
+    title: "Default journal icon",
     type: "string",
-    description: "Emoji for journals",
+    description: "Emoji for journal page and home page",
     default: "📅",
   },
   {
@@ -133,21 +124,20 @@ const settingsArray: SettingSchemaDesc[] = [
 const initStyles = () => {
   root.style.setProperty("--bannerHeight", `${bannerHeight}`);
 
-  logseq.provideStyle(`
+logseq.provideStyle(`
     body:is([data-page="page"],[data-page="home"]).is-banner-active #main-content-container {
       flex-wrap: wrap;
       align-content: flex-start;
-    }
-    body:is([data-page="page"],[data-page="home"]).is-banner-active .cp__sidebar-main-content {
-      flex-basis: 100%;
     }
     body:is([data-page="page"],[data-page="home"]) .content {
       position: relative;
     }
     body:is([data-page="page"],[data-page="home"]).is-banner-active #main-content-container::before {
+      display: block;
       content: "";
       width: 100%;
       height: var(--bannerHeight);
+      margin: 0 auto;
       background-image: var(--pageBanner);
       background-repeat: no-repeat;
       background-size: cover;
@@ -190,6 +180,14 @@ const initStyles = () => {
 
 // Read settings
 const readPluginSettings = () => {
+  useDefault = {
+    banner: false,
+    pageIcon: false
+  };
+  defaultConfig = {
+    page: {},
+    journal: {}
+  }
   const pluginSettings = logseq.settings;
   if (pluginSettings) {
     ({
@@ -239,20 +237,9 @@ const render = async () => {
     clearBanner();
     return;
   }
+  currentPageProps = null;
   if (pageType !== "home") {
-    currentPage = await logseq.Editor.getCurrentPage();
-    if (currentPage) {
-      //@ts-expect-error
-      const currentPageId = currentPage.page?.id;
-      if (currentPageId) {
-        currentPage = await logseq.Editor.getPage(currentPageId);
-      }
-      if (currentPage) {
-        isJournal = currentPage?.["journal?"];
-        //@ts-expect-error
-        currentPageProps = currentPage?.properties;
-      }
-    }
+    currentPageProps = await getPageProps();
   }
   renderBanner();
 }
@@ -268,6 +255,26 @@ const isPageTypeOk = () => {
     return true;
   }
   return false;
+}
+
+const getPageProps = async () => {
+  let currentPageData: PageEntity | BlockEntity | null = null;
+  currentPageData = await logseq.Editor.getCurrentPage();
+  if (currentPageData) {
+    // Check if page is a child and get parent ID
+   //@ts-expect-error
+    const currentPageId = currentPageData.page?.id;
+    if (currentPageId) {
+      currentPageData = null;
+      currentPageData = await logseq.Editor.getPage(currentPageId);
+    }
+    if (currentPageData) {
+      //@ts-expect-error
+      currentPageProps = currentPageData.properties;
+    }
+  }
+  isJournal = currentPageData?.["journal?"];
+  return currentPageProps;
 }
 
 // Generate Base64 from image URL
@@ -291,13 +298,17 @@ const getBase64FromUrl = async (url: string): Promise<string> => {
 
 // Get and encode default banners for reusing
 const encodeDefaultBanners = async () => {
-  defaultConfig.page.banner = await getBase64FromUrl(defaultConfig.page.banner || settingsDefaultPageBanner);
-  defaultConfig.journal.banner = await getBase64FromUrl(defaultConfig.journal.banner || settingsDefaultJournalBanner);
+  if (defaultConfig.page.banner) {
+    defaultConfig.page.banner = await getBase64FromUrl(defaultConfig.page.banner);
+  }
+  if (defaultConfig.journal.banner) {
+    defaultConfig.journal.banner = await getBase64FromUrl(defaultConfig.journal.banner);
+  }
 }
 
 // Read from cusrom page props config
-const getCustomPropsAsset = (assetType: string) => {
-  console.info(`#${pluginId}: Trying custom ${assetType}`);
+const getCustomPropsAsset = (assetType: AssetType) => {
+  console.info(`#${pluginId}: Trying ${assetType} from custom JSON settings`);
   let customPropsAsset = "";
   for (const key of Object.keys(customPropsConfig)) {
     //@ts-expect-error
@@ -314,8 +325,8 @@ const getCustomPropsAsset = (assetType: string) => {
 }
 
 // Read banner from page props
-const getPropsAsset = async (assetType: string) => {
-  console.info(`#${pluginId}: Trying props ${assetType}`);
+const getPropsAsset = async (assetType: AssetType) => {
+  console.info(`#${pluginId}: Trying ${assetType} from page props`);
   let propsAsset = "";
   //@ts-expect-error
   propsAsset = currentPageProps?.[assetType];
@@ -329,7 +340,7 @@ const getPropsAsset = async (assetType: string) => {
     }
   }
   if (!propsAsset && assetType === "pageIcon") {
-    console.info(`#${pluginId}: Trying logseq icon props`);
+    console.info(`#${pluginId}: Trying icon from Logseq native icon prop`);
     //@ts-expect-error
     propsAsset = currentPageProps?.icon;
   }
@@ -337,11 +348,10 @@ const getPropsAsset = async (assetType: string) => {
 }
 
 // Check journals home page
-const getHomeAsset = (assetType: string): string => {
+const getHomeAsset = (assetType: AssetType): string => {
   let homeAsset = "";
-  //@ts-expect-error
-  if (pageType === "home" && useDefault[assetType]) {
-    console.info(`#${pluginId}: Using journal default ${assetType}, home page`);
+  if (useDefault[assetType]) {
+    console.info(`#${pluginId}: Trying ${assetType} from default settings (journal), home page`);
     //@ts-expect-error
     homeAsset = defaultConfig.journal[assetType];
   }
@@ -349,9 +359,9 @@ const getHomeAsset = (assetType: string): string => {
 }
 
 // Default page or journal banner?
-const chooseDefaultAsset = (assetType: string) => {
+const chooseDefaultAsset = (assetType: AssetType) => {
   let defaultAsset = "";
-  console.info(`#${pluginId}: Trying default ${assetType} for ${pageType}`);
+  console.info(`#${pluginId}: Trying ${assetType} from default settings`);
   //@ts-expect-error
   defaultAsset = isJournal ? defaultConfig.journal[assetType] : defaultConfig.page[assetType];
   return defaultAsset;
@@ -359,11 +369,11 @@ const chooseDefaultAsset = (assetType: string) => {
 
 
 // Get asset
-const getAsset = async (assetType: string) => {
+const getAsset = async (assetType: AssetType): Promise<string> => {
   let asset = "";
   // Check journals home page
-  asset = getHomeAsset(assetType);
-  if (asset) {
+  if (pageType === "home") {
+    asset = getHomeAsset(assetType);
     return asset;
   }
   // Read from page props
@@ -373,7 +383,7 @@ const getAsset = async (assetType: string) => {
     asset = getCustomPropsAsset(assetType);
   }
   // Use default if no props and allows default
-  if (!asset && useDefault.pageIcon) {
+  if (!asset && useDefault[assetType]) {
     return chooseDefaultAsset(assetType);
   }
   console.info(`#${pluginId}: ${assetType} - ${asset}`);
@@ -386,6 +396,7 @@ const renderBanner = async () => {
   if (pageBanner) {
     renderIcon();
     body.classList.add("is-banner-active");
+    root.style.setProperty("--bannerHeight", `${bannerHeight}`);
     root.style.setProperty("--pageBanner", `url(${pageBanner})`);
   } else {
     clearBanner();
@@ -466,7 +477,6 @@ const routeChangedCallback = () => {
 // Setting changed
 const onSettingsChangedCallback = () => {
   readPluginSettings();
-  root.style.setProperty("--bannerHeight", `${bannerHeight}`);
   render();
  }
 
