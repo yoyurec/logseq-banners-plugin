@@ -1,4 +1,4 @@
->If this plugin helps you, I'd really appreciate your support. You can [buy me a coffee here. ](https://www.buymeacoffee.com/sawhney17)
+>If this plugin helps you, I'd really appreciate your support. You can [buy me a coffee here ](https://www.buymeacoffee.com/sawhney17) :)
 # Logseq Banners plugin
 Enliven your Logseq Workspace with gorgeous, custom, notion style page banners and icons
 ![](./Screenshot%202022-06-27%20at%2010.46.44%20PM.png)
