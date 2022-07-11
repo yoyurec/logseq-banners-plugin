@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.6.1...v1.7.0) (2022-07-11)
+
+
+### Features
+
+* **settings:** Configurable banner and icon sizes ([4efefc5](https://github.com/sawhney17/logseq-banners-plugin/commit/4efefc575b307c1df3f6ca061ca12f3b367a02d9))
+
 ## [1.6.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.6.0...v1.6.1) (2022-07-07)
 
 
