@@ -12,6 +12,15 @@ Enliven your Logseq Workspace with gorgeous, custom, notion style page banners a
 ### Customization
 - All customizations can be done from plugin settings
 - Example for adwanced settings for custom page types: Plugin settings -> customPropsConfig -> "Edit settings.json"
+- Random images from Unsplash API:
+
+### Unsplash API
+Set in settings for default page/journal banner:
+* Random featured: https://source.unsplash.com/featured/1600x900
+* Photo of the day: https://source.unsplash.com/1600x900/daily
+* Search terms. Add comma separated terms after `?` at the end (for default settings or in props at specific page): https://source.unsplash.com/1600x900?red,house
+
+For ex. "Dafault journal banner" - https://source.unsplash.com/featured/1600x900?diary
 
 ---
 ## Credits
