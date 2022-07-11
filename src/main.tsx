@@ -13,6 +13,8 @@ type AssetsRecord = {
 }
 
 type Assets = {
+  iconHeight?: string,
+  bannerHeight?: string;
   banner?: string;
   pageIcon?: string;
 }
@@ -27,7 +29,6 @@ type AssetType = keyof UseDefaultType;
 let pageType: string;
 let isJournal: boolean;
 let currentPageProps: PageEntity | null;
-let bannerHeight: string;
 let useDefault: UseDefaultType;
 let defaultConfig: AssetsRecord;
 let customPropsConfig: AssetsRecord;
@@ -38,66 +39,105 @@ const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg"
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsArray: SettingSchemaDesc[] = [
   {
-    key: "hidePluginProps",
-    title: "Hide plugin props",
-    type: "boolean",
-    description: "Show plugin props only on edit?",
-    default: "false",
+    key: "bannerHeading",
+    title: "Banner settings",
+    //@ts-expect-error
+    type: "heading"
   },
   {
-    key: "bannerHeight",
-    title: "Banner height",
+    key: "pageBannerHeight",
+    title: "Banner height for common page",
     type: "string",
     description: "",
-    default: "30%",
+    default: "200px",
+  },
+  {
+    key: "journalBannerHeight",
+    title: "Banner height for journal & home page",
+    type: "string",
+    description: "",
+    default: "300px",
   },
   {
     key: "useDefaultBanner",
-    title: "Use default banners",
+    title: "",
     type: "boolean",
-    description: "Show default banner when 'banner::' property is not set?",
+    description: "Use default banner (settings below) when 'banner::' property is not set?",
     default: true,
   },
   {
     key: "defaultPageBanner",
-    title: "Default page banner",
+    title: "Default banner for common page",
     type: "string",
-    description: "Banner image URL for common page",
+    description: "",
     default: settingsDefaultPageBanner,
   },
   {
     key: "defaultJournalBanner",
-    title: "Default journal banner",
+    title: "Default banner for journal and home page",
     type: "string",
-    description: "Banner image URL for journal page and home page",
+    description: "",
     default: settingsDefaultJournalBanner,
   },
   {
+    key: "iconHeading",
+    title: "Icon settings",
+    //@ts-expect-error
+    type: "heading"
+  },
+  {
+    key: "pageIconHeight",
+    title: "Icon height for common page (in px)",
+    type: "string",
+    description: "",
+    default: "40px",
+  },
+  {
+    key: "journalIconHeight",
+    title: "Icon height for journal & home page (in px)",
+    type: "string",
+    description: "",
+    default: "50px",
+  },
+  {
     key: "useDefaultIcon",
-    title: "Use default icons",
+    title: "",
     type: "boolean",
-    description: "Show default icon when 'page-icon::' property is not set?",
+    description: "Use default icon (settings below) when 'icon::' or 'page-icon::' property is not set?",
     default: true,
   },
   {
     key: "defaultPageIcon",
-    title: "Default page icon",
+    title: "Default icon (emoji) for common page",
     type: "string",
-    description: "Emoji for common page",
+    description: "",
     default: "📄",
   },
   {
     key: "defaultJournalIcon",
-    title: "Default journal icon",
+    title: "Default icon (emoji) for journal and home page",
     type: "string",
-    description: "Emoji for journal page and home page",
+    description: "",
     default: "📅",
   },
   {
+    key: "otherHeading",
+    title: "Other settings",
+    //@ts-expect-error
+    type: "heading"
+  },
+  {
+    key: "hidePluginProps",
+    title: "",
+    type: "boolean",
+    description: "Hide plugin-related page props? (will be shown only on edit)",
+    default: "false",
+  },
+  {
     key: "customPropsConfig",
-    title: "Custom props",
+    title: "Advanced custom pages banners and icons config",
     type: "object",
-    description: "Advanced custom page banners and icons config",
+    description: "",
     default: {
       "pageType": {
         "evrgrn": {
@@ -122,9 +162,7 @@ const settingsArray: SettingSchemaDesc[] = [
 ]
 
 const initStyles = () => {
-  root.style.setProperty("--bannerHeight", `${bannerHeight}`);
-
-logseq.provideStyle(`
+  logseq.provideStyle(`
     body:is([data-page="page"],[data-page="home"]).is-banner-active #main-content-container {
       flex-wrap: wrap;
       align-content: flex-start;
@@ -146,12 +184,12 @@ logseq.provideStyle(`
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active .journal-item:first-of-type > .page > .flex-col > .content > .flex-1::before,
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active .page > .relative > .flex-row > .flex-1::before {
       content: var(--pageIcon);
-      font-size: 50px;
+      font-size: var(--iconHeight);
       font-weight: normal;
       position: absolute;
-      top: -40px;
       left: -7px;
       z-index:2;
+      transform: translateY(-55%);
       line-height: initial;
     }
     body:is([data-page="page"],[data-page="home"]).is-banner-active :is(.ls-page-title, .page-title, .journal-title) {
@@ -192,11 +230,14 @@ const readPluginSettings = () => {
   if (pluginSettings) {
     ({
       hidePluginProps,
-      bannerHeight,
       useDefaultBanner: useDefault.banner,
       useDefaultIcon: useDefault.pageIcon,
+      pageBannerHeight: defaultConfig.page.bannerHeight,
+      pageIconHeight: defaultConfig.page.iconHeight,
       defaultPageBanner: defaultConfig.page.banner,
       defaultPageIcon: defaultConfig.page.pageIcon,
+      journalBannerHeight: defaultConfig.journal.bannerHeight,
+      journalIconHeight: defaultConfig.journal.iconHeight,
       defaultJournalBanner: defaultConfig.journal.banner,
       defaultJournalIcon: defaultConfig.journal.pageIcon,
       customPropsConfig,
@@ -373,6 +414,7 @@ const getAsset = async (assetType: AssetType): Promise<string> => {
   let asset = "";
   // Check journals home page
   if (pageType === "home") {
+    isJournal = true;
     asset = getHomeAsset(assetType);
     return asset;
   }
@@ -396,6 +438,7 @@ const renderBanner = async () => {
   if (pageBanner) {
     renderIcon();
     body.classList.add("is-banner-active");
+    const bannerHeight = isJournal ? defaultConfig.journal.bannerHeight : defaultConfig.page.bannerHeight
     root.style.setProperty("--bannerHeight", `${bannerHeight}`);
     root.style.setProperty("--pageBanner", `url(${pageBanner})`);
   } else {
@@ -408,6 +451,8 @@ const renderIcon = async () => {
   const pageIcon = await getAsset("pageIcon");
   if (pageIcon) {
     body.classList.add("is-icon-active");
+    const iconHeight = isJournal ? defaultConfig.journal.iconHeight : defaultConfig.page.iconHeight
+    root.style.setProperty("--iconHeight", `${iconHeight}`);
     root.style.setProperty("--pageIcon", `"${pageIcon}"`);
   } else {
     clearIcon();
