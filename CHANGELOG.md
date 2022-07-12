@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.7.0...v1.8.0) (2022-07-12)
+
+
+### Features
+
+* **api:** Support Unsplash API ([f5a8de9](https://github.com/sawhney17/logseq-banners-plugin/commit/f5a8de975a38f9b1d49e4c3de5219742dbc240f2))
+
 # [1.7.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.6.1...v1.7.0) (2022-07-11)
 
 
