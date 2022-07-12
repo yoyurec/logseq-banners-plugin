@@ -192,7 +192,7 @@ const initStyles = () => {
       transform: translateY(-55%);
       line-height: initial;
     }
-    body:is([data-page="page"],[data-page="home"]).is-banner-active :is(.ls-page-title, .page-title, .journal-title) {
+    body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active :is(.ls-page-title, .page-title, .journal-title) {
       margin-top: 35px;
     }
     body:is([data-page="page"],[data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-child {
@@ -337,12 +337,13 @@ const getBase64FromUrl = async (url: string): Promise<string> => {
   });
 }
 
-// Get and encode default banners for reusing
+// Get and encode default banners for caching
+// skip caching if random image from Unsplash API used
 const encodeDefaultBanners = async () => {
-  if (defaultConfig.page.banner) {
+  if (defaultConfig.page.banner && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
     defaultConfig.page.banner = await getBase64FromUrl(defaultConfig.page.banner);
   }
-  if (defaultConfig.journal.banner) {
+  if (defaultConfig.journal.banner && !(defaultConfig.journal.banner?.includes("source.unsplash.com"))) {
     defaultConfig.journal.banner = await getBase64FromUrl(defaultConfig.journal.banner);
   }
 }
