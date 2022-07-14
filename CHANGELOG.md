@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.8.0...v1.8.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* Refactoring, banner Y position ([38bc189](https://github.com/sawhney17/logseq-banners-plugin/commit/38bc189e675f71cb19e1719ae3eddd8b4040ab71))
+
 # [1.8.0](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.7.0...v1.8.0) (2022-07-12)
 
 
