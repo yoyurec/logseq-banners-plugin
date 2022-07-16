@@ -24,4 +24,4 @@ For ex. "Dafault journal banner" - https://source.unsplash.com/featured/1600x900
 
 ---
 ## Credits
-- This plugin was originally created by [@sawhney17](https://github.com/sawhney17) and is currently maintaned primarily by me. 
+- This plugin was originally created by [@sawhney17](https://github.com/sawhney17) and is currently maintaned primarily by [@yoyurec](https://github.com/yoyurec. 
