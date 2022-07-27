@@ -1,16 +1,24 @@
-body:is([data-page="page"], [data-page="home"]).is-banner-active #main-content-container {
-    flex-wrap: wrap;
-    align-content: flex-start;
+/* Comomon layout */
+#main-content-container {
+    display: block;
 }
-
-body:is([data-page="page"], [data-page="home"]) .content {
+.content {
     position: relative;
 }
+#banner {
+    display: none;
+}
+.cp__sidebar-main-content {
+    margin: 0 auto;
+}
+.cp__right-sidebar-inner .resizer {
+    z-index: 9;
+}
 
-body:is([data-page="page"], [data-page="home"]).is-banner-active #main-content-container::before {
-    display: block;
-    content: "";
-    width: 100%;
+/* Banner */
+body:is([data-page="page"], [data-page="home"]).is-banner-active #banner {
+    position: relative;
+    overflow: hidden;
     height: var(--bannerHeight);
     margin: 0 auto;
     background-image: var(--pageBanner);
@@ -20,8 +28,9 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active #main-content-c
     background-position-y: var(--bannerAlign);
 }
 
-body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active .journal-item:first-of-type>.page>.flex-col>.content>.flex-1::before,
-body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active .page>.relative>.flex-row>.flex-1::before {
+/* Icon */
+body:is([data-page="page"], [data-page="home"]).is-icon-active .journal-item:first-of-type>.page>.flex-col>.content>.flex-1::before,
+body:is([data-page="page"], [data-page="home"]).is-icon-active .page>.relative>.flex-row>.flex-1::before {
     content: var(--pageIcon);
     font-size: var(--iconWidth);
     font-weight: normal;
@@ -31,31 +40,120 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active 
     transform: translateY(-55%);
     line-height: initial;
 }
-
-body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active :is(.ls-page-title, .page-title, .journal-title) {
+body:is([data-page="page"], [data-page="home"]).is-icon-active :is(.ls-page-title, .page-title, .journal-title) {
     margin-top: 35px;
 }
-
-body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-child {
+body:is([data-page="page"], [data-page="home"]).is-icon-active #journals .journal-item:first-child {
     margin-top: 0;
 }
 
-/* small icons for other home journal items */
-body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active #journals .journal-item h1.title::before {
+/* Small icons for other home journal items */
+body:is([data-page="page"], [data-page="home"]).is-icon-active #journals .journal-item h1.title::before {
     content: var(--pageIcon);
     margin-right: 8px;
     font-size: 0.9em;
     font-weight: normal;
 }
-
-body:is([data-page="page"], [data-page="home"]).is-banner-active.is-icon-active #journals .journal-item:first-of-type h1.title::before {
+body:is([data-page="page"], [data-page="home"]).is-icon-active #journals .journal-item:first-of-type h1.title::before {
     display: none;
 }
-
-.cp__right-sidebar-inner .resizer {
-    z-index: 9;
-}
-
 .page-title .page-icon {
     display: none;
+}
+
+/* Widgets */
+#banner-widgets iframe {
+    margin: 0;
+}
+
+/* Weather */
+#banner-widgets-weather {
+    --compensateHeight: 60px;
+    position: absolute;
+    top: calc(var(--compensateHeight) / 2 * -1);
+    left: var(--widgetsCalendarWidth);
+    width: 158px;
+    height: calc(var(--bannerHeight) + var(--compensateHeight));
+    min-height: 346px; /* to avoid iframe vertical scrollbars*/
+    border-left: 1px solid #33333311;
+    background-color: rgba(var(--widgetsBgColor), 0.3);
+    backdrop-filter: blur(6px);
+    filter: saturate(0.7) drop-shadow(0px 1px 0px black) brightness(0.9);
+}
+html[data-theme='dark'] #banner-widgets-weather {
+    filter: saturate(0.7) drop-shadow(0px 1px 0px black) brightness(0.8);
+}
+
+/* Pomodoro */
+#banner-widgets-pomo {
+    width: 182px;
+    height: 110px;
+    opacity: 0.6;
+    filter: saturate(0.3);
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0 0 0 6px;
+    backdrop-filter: blur(6px);
+    filter: saturate(0.5) drop-shadow(1px 0px 0px black) brightness(0.9);
+}
+html[data-theme='dark'] #banner-widgets-pomo {
+    filter: saturate(0.5) drop-shadow(1px 0px 0px black) brightness(0.8);
+}
+
+/* Calendar */
+#banner-widgets-calendar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--bannerHeight);
+    background-color: rgba(var(--widgetsBgColor), 0.3);
+    backdrop-filter: blur(6px);
+    filter: saturate(0.8) drop-shadow(0px 1px 0px black) brightness(0.9);
+}
+html[data-theme='dark'] #banner-widgets-calendar {
+    filter: saturate(0.7) drop-shadow(0px 1px 0px black) brightness(0.8);
+}
+#banner-widgets-calendar .logseq-block-calendar {
+    width: var(--widgetsCalendarWidth);
+    overflow: hidden;
+    color: rgba(255,255,255);
+    background-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+#banner-widgets-calendar .calendar-title {
+    font-size: 21px;
+    font-weight: normal;
+    color: rgba(255,255,255);
+}
+#banner-widgets-calendar .calendar-month {
+    padding-left: 8px;
+}
+#banner-widgets-calendar .calendar-nav {
+    padding: 0 8px 0 0;
+}
+#banner-widgets-calendar .calendar-nav a {
+    color: rgba(255,255,255);
+    font-weight: normal;
+}
+#banner-widgets-calendar .calendar-head {
+    font-weight: normal;
+    color: var(--widgetsTextColor);
+}
+#banner-widgets-calendar :is(th, td) {
+    border: 0;
+}
+#banner-widgets-calendar .calendar-head td {
+    font-size: 18px;
+    padding: 6px 0;
+}
+#banner-widgets-calendar .calendar-day {
+    display: block;
+    opacity: 1;
+    color: rgba(255,255,255);
+    transition: none;
+}
+#banner-widgets-calendar .calendar-day:hover {
+    background-color: rgba(var(--widgetsBgColor), 0.2);
 }

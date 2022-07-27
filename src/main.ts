@@ -51,10 +51,6 @@ const settingsWidgetsCustomHTML = `
 <iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/7QOWaH4IPGGaAr4puql2"></iframe><iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>
 `;
 
-//<iframe id="banner-widgets-weather"  src="https://indify.co/widgets/live/weather/7QOWaH4IPGGaAr4puql2" style="width: 140px;height: 390px;position: absolute;top: -90px;left: 0;backdrop-filter: blur(6px);border-right: 1px solid #606060;"></iframe> <iframe id="banner-widgets-pomo" src="https://pomofocus.io/app" style="width: 182px;height: 110px;opacity: 0.6;filter: saturate(0.3);position: absolute;right: 0;top: 0;border-radius: 0 0 0 6px;"></iframe>
-
-//<iframe id="banner-widgets-weather"  src="https://indify.co/widgets/live/weather/7QOWaH4IPGGaAr4puql2" style="height: 110px;position: absolute;top: 0;left: 0;width: calc(100% - var(--widgetsCalendarWidth, 0));"></iframe><iframe id="banner-widgets-pomo" src="https://pomofocus.io/app" style="width: 150px;height: 110px;filter: saturate(0.3);position: absolute;top: 0;left: 0;border-radius: 0 10px 10px 0;"></iframe><style>#banner-widgets-calendar{left:unset;right:0}#banner-widgets-calendar .calendar-head, #banner-widgets-calendar .calendar-title height:55px;}</style>
-
 const settingsArray: SettingSchemaDesc[] = [
   {
     key: "generalHeading",
@@ -138,7 +134,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "journalIconWidth",
-    title: "Icon height for journal & home page (in px)",
+    title: "Icon width for journal & home page (in px)",
     type: "string",
     description: "",
     default: "50px",
@@ -179,7 +175,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "pageIconWidth",
-    title: "Icon height for common page (in px)",
+    title: "Icon width for common page (in px)",
     type: "string",
     description: "",
     default: "40px",
