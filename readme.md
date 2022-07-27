@@ -1,4 +1,4 @@
-## If you ❤ what i'm doing - you can support my work! ☕
+### If you ❤ what i'm doing - you can support my work! ☕
 <a href="https://www.buymeacoffee.com/yoyurec" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 178px !important;" ></a>
 
 ## Logseq Banners plugin
@@ -64,7 +64,6 @@ For more tune use `custom.css` to position widgets iframes inside of banner area
 For ex. "Dafault journal banner" - `https://source.unsplash.com/featured/1600x900?diary`
 
 
----
-## Credits
+### Credits
 - This plugin was originally created by [@sawhney17](https://github.com/sawhney17) (buy him a coffee also! https://www.buymeacoffee.com/sawhney17 ☕)
-- Currently maintaned and extended by me [@yoyurec](https://github.com/yoyurec)
+- Currently maintaned and extended by me - [@yoyurec](https://github.com/yoyurec)
