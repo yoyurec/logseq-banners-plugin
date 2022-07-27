@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v1.8.1...v2.0.0) (2022-07-27)
+
+
+### Features
+
+* **widgets:** add possibility to set widgets inside banner area ([81f84b7](https://github.com/yoyurec/logseq-banners-plugin/commit/81f84b7224c03929af940121fbb69fe8bc0324ca))
+
+
+### BREAKING CHANGES
+
+* **widgets:** Totally reworked banner HTML layout
+
 ## [1.8.1](https://github.com/sawhney17/logseq-banners-plugin/compare/v1.8.0...v1.8.1) (2022-07-14)
 
 
