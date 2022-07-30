@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.0.0...v2.0.1) (2022-07-30)
+
+
+### Bug Fixes
+
+* **styles:** page title position ([9457892](https://github.com/yoyurec/logseq-banners-plugin/commit/945789239aac29129750c4fef7544c244ad1754c))
+
 # [2.0.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v1.8.1...v2.0.0) (2022-07-27)
 
 
