@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.0.1...v2.1.0) (2022-07-30)
+
+
+### Features
+
+* **settings:** add possibility to disable banner via page props ([02f6485](https://github.com/yoyurec/logseq-banners-plugin/commit/02f6485a736b1693a35268c236204bc17de9259a))
+
 ## [2.0.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.0.0...v2.0.1) (2022-07-30)
 
 
