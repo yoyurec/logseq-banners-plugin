@@ -46,9 +46,11 @@ let timeout: number;
 let hidePluginProps: boolean;
 
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
+// const settingsDefaultPageBanner = "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsWidgetsCustomHTML = `
-<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/7QOWaH4IPGGaAr4puql2"></iframe><iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>
+<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/7QOWaH4IPGGaAr4puql2"></iframe>
+<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>
 `;
 
 const settingsArray: SettingSchemaDesc[] = [
@@ -93,7 +95,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "widgetsCalendarWidth",
-    title: "Block calendar widget width",
+    title: "Block calendar widget width (in px)",
     type: "string",
     description: "",
     default: "310px",

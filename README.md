@@ -37,20 +37,21 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 ![](screenshots/widgets-light-02.png)
 ![](screenshots/widgets-dark-03.png)
 
-- Calendar
-    - Install "Block calendar" plugin from Logseq Marketplace
-    - Go to installed plugin settings ""Settings -> Plugin Settings -> Block calendar"
-    - Set "Always render" to `#banner-widgets-calendar` banner placeholder
-    - ![](screenshots/block-calendar-settings.png)
+* Calendar
+    * Install "Block calendar" plugin from Logseq Marketplace
+    * Go to installed plugin settings ""Settings -> Plugin Settings -> Block calendar"
+    * Set "Always render" to `#banner-widgets-calendar` banner placeholder
+    * ![](screenshots/block-calendar-settings.png)
 
-- Custom HTML (iframes, etc...)! (you can set your own, here is some pre-configured):
-    - Weather
-        - Go to [Indify – Notion Widgets](https://indify.co), Sign Up
-        - Choose "Weather widget", set your city
-        - Set "Number of days" - 2
-        - Set colors (mandatory!) for proper work with "Banners" plugin
-        - ![](screenshots/weather-config.png)
-    - Pomo-focus (from https://pomofocus.io/app)
+* Custom HTML (iframes, etc...)! (you can set your own, here is some pre-configured):
+    * Weather
+        * Go to [Indify – Notion Widgets](https://indify.co), Sign Up
+        * Choose "Weather widget", set your city
+        * Set "Number of days" - 2
+        * ⚠ Set colors (mandatory!) for proper work with "Banners" plugin
+        * ![](screenshots/weather-config.png)
+        * ⚠ Copy YOUR personal widget ID and replace mine in plugin Settings!
+    * Pomo-focus (from https://pomofocus.io/app)
 
 For more tune use `custom.css` to position widgets iframes inside of banner area via CSS `position:absolute` & `top/right/bottom/left`.
 

@@ -29,8 +29,8 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active #banner {
 }
 
 /* Icon */
-body:is([data-page="page"], [data-page="home"]).is-icon-active .journal-item:first-of-type>.page>.flex-col>.content>.flex-1::before,
-body:is([data-page="page"], [data-page="home"]).is-icon-active .page>.relative>.flex-row>.flex-1::before {
+body[data-page="home"].is-icon-active .journal-item:first-of-type>.page>.flex-col>.content>.flex-1::before,
+body[data-page="page"].is-icon-active .page>.relative>.flex-row>.flex-1::before {
     content: var(--pageIcon);
     font-size: var(--iconWidth);
     font-weight: normal;
@@ -40,21 +40,23 @@ body:is([data-page="page"], [data-page="home"]).is-icon-active .page>.relative>.
     transform: translateY(-55%);
     line-height: initial;
 }
-body:is([data-page="page"], [data-page="home"]).is-icon-active :is(.ls-page-title, .page-title, .journal-title) {
+body[data-page="home"].is-icon-active .journal-item:first-of-type .journal-title,
+body[data-page="page"].is-icon-active .page-title,
+body[data-page="page"].is-icon-active .ls-page-title.editing {
     margin-top: 35px;
 }
-body:is([data-page="page"], [data-page="home"]).is-icon-active #journals .journal-item:first-child {
+body[data-page="home"].is-icon-active #journals .journal-item:first-child {
     margin-top: 0;
 }
 
 /* Small icons for other home journal items */
-body:is([data-page="page"], [data-page="home"]).is-icon-active #journals .journal-item h1.title::before {
+body[data-page="home"].is-icon-active #journals .journal-item h1.title::before {
     content: var(--pageIcon);
     margin-right: 8px;
     font-size: 0.9em;
     font-weight: normal;
 }
-body:is([data-page="page"], [data-page="home"]).is-icon-active #journals .journal-item:first-of-type h1.title::before {
+body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.title::before {
     display: none;
 }
 .page-title .page-icon {
@@ -139,7 +141,7 @@ html[data-theme='dark'] #banner-widgets-calendar {
 }
 #banner-widgets-calendar .calendar-head {
     font-weight: normal;
-    color: var(--widgetsTextColor);
+    color: rgba(255,255,255);
 }
 #banner-widgets-calendar :is(th, td) {
     border: 0;
