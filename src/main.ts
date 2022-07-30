@@ -45,6 +45,8 @@ let widgetsConfig: WidgetsConfig;
 let timeout: number;
 let hidePluginProps: boolean;
 
+const pluginPageProps: Array<string> = ["banner", "page-icon", "icon"];
+
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
 // const settingsDefaultPageBanner = "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
@@ -319,8 +321,11 @@ const hidePageProps = () => {
   const propBlockKeys = doc.getElementsByClassName("page-property-key");
   if (propBlockKeys?.length) {
     for (let i = 0; i < propBlockKeys.length; i++) {
-      if (propBlockKeys[i].textContent === "banner" || propBlockKeys[i].textContent === "page-icon" || propBlockKeys[i].textContent === "icon") {
-        propBlockKeys[i].parentElement!.parentElement!.style.display = hidePluginProps ? "none" : "block" ;
+      const propKey = propBlockKeys[i].textContent;
+      if (propKey) {
+        if (pluginPageProps.includes(propKey)) {
+          propBlockKeys[i].parentElement!.parentElement!.style.display = hidePluginProps ? "none" : "block" ;
+        }
       }
     }
   }
@@ -349,8 +354,8 @@ const getPageAssetsData = async (): Promise<AssetData> => {
     console.info(`#${pluginId}: Homepage`);
     return pageAssetsData;
   }
-  // journal page?
   const currentPageData = await getPageData();
+  // journal page?
   isJournal = currentPageData["journal?"];
   if (isJournal) {
     console.info(`#${pluginId}: Journal page`);
@@ -590,6 +595,8 @@ const render = async () => {
 
   if (!(isHome || isPage)) {
     hidePlaceholder();
+    clearBanner();
+    clearIcon();
     return;
   }
 
@@ -597,6 +604,12 @@ const render = async () => {
 
   const pageAssetsData: AssetData = await getPageAssetsData();
   if (pageAssetsData) {
+    if (!pageAssetsData.banner) {
+      hidePlaceholder();
+      clearBanner();
+      clearIcon();
+      return;
+    }
     if (widgetsConfig.onlyOnJournals) {
       if (!(isHome || isJournal)) {
         hideWidgetsPlaceholder();

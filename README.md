@@ -12,6 +12,8 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
     * `banner:: https://wallpaperaccess.com/full/1146672.jpg`
 * To avoid Logseq show banner preview in props area - wrap it with doublequotes!
     * `banner:: "http://........"`
+* To hide banner image on some pages use:
+    * `banner:: false`
 *  Sometimes important banner parts cropped on default vertical align "50%" (center), so you can do fine tune with page props:
     * top: `banner-align:: 0%`
     * bottom: `banner-align:: 100%`
