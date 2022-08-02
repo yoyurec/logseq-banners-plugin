@@ -45,6 +45,7 @@ let defaultConfig: AssetDataList;
 let customPropsConfig: AssetDataList;
 let widgetsConfig: WidgetsConfig;
 let oldWidgetsConfig: WidgetsConfig;
+let isWidgetsCustomHTMLChanged: boolean;
 let timeout: number;
 let hidePluginProps: boolean;
 let defaultPageBannerAuto: boolean;
@@ -244,6 +245,8 @@ const initGlobalCSSVars = () => {
 
 // Read settings
 const readPluginSettings = () => {
+  isWidgetsCustomHTMLChanged = false;
+  oldWidgetsConfig = widgetsConfig;
   widgetsConfig = {
     enabled: false,
     onlyOnJournals: true,
@@ -275,6 +278,9 @@ const readPluginSettings = () => {
       customPropsConfig,
       timeout
     } = logseq.settings);
+  }
+  if (oldWidgetsConfig && widgetsConfig.customHTML !== oldWidgetsConfig.customHTML) {
+    isWidgetsCustomHTMLChanged = true;
   }
   encodeDefaultBanners();
 }
@@ -557,7 +563,6 @@ const routeChangedCallback = () => {
 
 // Setting changed
 const onSettingsChangedCallback = () => {
-  oldWidgetsConfig = widgetsConfig;
   readPluginSettings();
   initGlobalCSSVars();
   render();
@@ -619,28 +624,21 @@ const hideWidgetsPlaceholder = () => {
 
 // Render widgets
 const renderWidgets = () => {
-  if (!widgetsConfig.enabled) {
+  if (!widgetsConfig.enabled || (widgetsConfig.onlyOnJournals && !(isHome || isJournal))) {
     hideWidgetsPlaceholder();
     return;
   }
-  if (widgetsConfig.onlyOnJournals) {
-    if (!(isHome || isJournal)) {
-      hideWidgetsPlaceholder();
-    } else {
-      showWidgetsPlaceholder();
-    }
-  }
-  renderWidgetsHTML();
+  showWidgetsPlaceholder();
+  renderWidgetsCustom();
 }
 
 // Render custom widgets HTML
-const renderWidgetsHTML = () => {
-  if (!oldWidgetsConfig || (oldWidgetsConfig && (oldWidgetsConfig.customHTML !== widgetsConfig.customHTML))) {
-    return;
-  }
-  const bannerWidgetsHTML = doc.getElementById("banner-widgets-custom");
-  if (bannerWidgetsHTML) {
-      bannerWidgetsHTML.innerHTML = widgetsConfig.customHTML || "";
+const renderWidgetsCustom = () => {
+  const bannerWidgetsCustom = doc.getElementById("banner-widgets-custom");
+  if (bannerWidgetsCustom) {
+    if (bannerWidgetsCustom.innerHTML === "" || isWidgetsCustomHTMLChanged) {
+      bannerWidgetsCustom.innerHTML = widgetsConfig.customHTML || "";
+    }
   }
 }
 
@@ -674,8 +672,8 @@ const render = async () => {
       clearIcon();
       return;
     }
-    const bannerRendered = await renderImage(pageAssetsData);
-    if (bannerRendered) {
+    const isBannerRendered = await renderImage(pageAssetsData);
+    if (isBannerRendered) {
       renderIcon(pageAssetsData);
       renderWidgets();
       showPlaceholder();
@@ -693,7 +691,6 @@ const main = async () => {
   body = doc.body;
 
   body.classList.add("is-banners-plugin-loaded");
-
   readPluginSettings();
   initStyles();
   initGlobalCSSVars();
