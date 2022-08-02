@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.3.0...v2.3.1) (2022-08-02)
+
+
+### Bug Fixes
+
+* **widgets:** custom HTML re-render ([835de87](https://github.com/yoyurec/logseq-banners-plugin/commit/835de87a5a9b7907a912e6a9eef7e1efa30e7880))
+
 # [2.3.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.2.0...v2.3.0) (2022-08-02)
 
 
