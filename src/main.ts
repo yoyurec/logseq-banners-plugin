@@ -25,6 +25,7 @@ enum AssetType {
 }
 
 type WidgetsConfig = {
+  enabled: boolean;
   onlyOnJournals: boolean;
   customHTML?: string;
   calendar?: any;
@@ -43,6 +44,7 @@ let isPage: boolean;
 let defaultConfig: AssetDataList;
 let customPropsConfig: AssetDataList;
 let widgetsConfig: WidgetsConfig;
+let oldWidgetsConfig: WidgetsConfig;
 let timeout: number;
 let hidePluginProps: boolean;
 let defaultPageBannerAuto: boolean;
@@ -76,6 +78,13 @@ const settingsArray: SettingSchemaDesc[] = [
     title: "Widgets common settings",
     //@ts-expect-error
     type: "heading"
+  },
+  {
+    key: "widgetsEnabled",
+    title: "",
+    type: "boolean",
+    description: "Enable widgets?",
+    default: true,
   },
   {
     key: "widgetsOnlyOnJournals",
@@ -236,8 +245,9 @@ const initGlobalCSSVars = () => {
 // Read settings
 const readPluginSettings = () => {
   widgetsConfig = {
-    calendar: {},
-    onlyOnJournals: true
+    enabled: false,
+    onlyOnJournals: true,
+    calendar: {}
   };
   defaultConfig = {
     page: {},
@@ -248,6 +258,7 @@ const readPluginSettings = () => {
     ({
       hidePluginProps,
       defaultPageBannerAuto,
+      widgetsEnabled: widgetsConfig.enabled,
       widgetsOnlyOnJournals: widgetsConfig.onlyOnJournals,
       widgetsCustomHTML: widgetsConfig.customHTML,
       widgetsCalendarWidth: widgetsConfig.calendar.width,
@@ -417,7 +428,7 @@ const getCustomAssetData = (currentPageProps: any) => {
 }
 
 // Render banner
-const renderBanner = async (pageAssetsData: AssetData) => {
+const renderImage = async (pageAssetsData: AssetData): Promise<boolean> => {
   if (pageAssetsData.banner) {
     // Set banner CSS variable
     body.classList.add("is-banner-active");
@@ -443,11 +454,11 @@ const renderBanner = async (pageAssetsData: AssetData) => {
     }
     root.style.setProperty("--pageBanner", `url(${pageAssetsData.banner})`);
 
-    // render icon only if banner exists
-    renderIcon(pageAssetsData);
+    return true;
   } else {
     // clear old banner
     clearBanner();
+    return false;
   }
 }
 
@@ -546,11 +557,10 @@ const routeChangedCallback = () => {
 
 // Setting changed
 const onSettingsChangedCallback = () => {
-  const oldWidgetsConfig = widgetsConfig;
+  oldWidgetsConfig = widgetsConfig;
   readPluginSettings();
   initGlobalCSSVars();
   render();
-  renderWidgetsCustom(oldWidgetsConfig);
 }
 
 // Plugin unloaded
@@ -607,12 +617,30 @@ const hideWidgetsPlaceholder = () => {
   doc.getElementById("banner-widgets")!.style.display = "none";
 }
 
+// Render widgets
+const renderWidgets = () => {
+  if (!widgetsConfig.enabled) {
+    hideWidgetsPlaceholder();
+    return;
+  }
+  if (widgetsConfig.onlyOnJournals) {
+    if (!(isHome || isJournal)) {
+      hideWidgetsPlaceholder();
+    } else {
+      showWidgetsPlaceholder();
+    }
+  }
+  renderWidgetsHTML();
+}
+
 // Render custom widgets HTML
-const renderWidgetsCustom = (oldWidgetsConfig?: WidgetsConfig) => {
-  const bannerWidgetsCustom = doc.getElementById("banner-widgets-custom");
-  if (bannerWidgetsCustom
-    && (!oldWidgetsConfig || (oldWidgetsConfig && (oldWidgetsConfig.customHTML !== widgetsConfig.customHTML)))) {
-      bannerWidgetsCustom.innerHTML = widgetsConfig.customHTML || "";
+const renderWidgetsHTML = () => {
+  if (!oldWidgetsConfig || (oldWidgetsConfig && (oldWidgetsConfig.customHTML !== widgetsConfig.customHTML))) {
+    return;
+  }
+  const bannerWidgetsHTML = doc.getElementById("banner-widgets-custom");
+  if (bannerWidgetsHTML) {
+      bannerWidgetsHTML.innerHTML = widgetsConfig.customHTML || "";
   }
 }
 
@@ -634,6 +662,9 @@ const render = async () => {
   }
 
   hidePageProps();
+
+  renderPlaceholder();
+
   let pageAssetsData: AssetData | null = null;
   pageAssetsData = await getPageAssetsData();
   if (pageAssetsData) {
@@ -643,15 +674,12 @@ const render = async () => {
       clearIcon();
       return;
     }
-    if (widgetsConfig.onlyOnJournals) {
-      if (!(isHome || isJournal)) {
-        hideWidgetsPlaceholder();
-      } else {
-        showWidgetsPlaceholder();
-      }
+    const bannerRendered = await renderImage(pageAssetsData);
+    if (bannerRendered) {
+      renderIcon(pageAssetsData);
+      renderWidgets();
+      showPlaceholder();
     }
-    renderBanner(pageAssetsData);
-    showPlaceholder();
   }
 }
 
@@ -670,9 +698,7 @@ const main = async () => {
   initStyles();
   initGlobalCSSVars();
   setTimeout(() => {
-    renderPlaceholder();
     render();
-    renderWidgetsCustom();
   }, timeout*2)
 
   // Listeners late run
