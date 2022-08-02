@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.1.0...v2.2.0) (2022-08-02)
+
+
+### Features
+
+* **banner:** add Unsplash image URL autogeneration according to page title ([e092dd9](https://github.com/yoyurec/logseq-banners-plugin/commit/e092dd90e7f3b68b1f609d6d348b0b1f4d0b363b))
+
 # [2.1.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.0.1...v2.1.0) (2022-07-30)
 
 
