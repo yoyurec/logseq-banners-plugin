@@ -10,6 +10,7 @@ type AssetDataList = {
 }
 
 type AssetData = {
+  title?: string;
   banner?: string;
   bannerHeight?: string;
   bannerAlign?: string;
@@ -44,8 +45,9 @@ let customPropsConfig: AssetDataList;
 let widgetsConfig: WidgetsConfig;
 let timeout: number;
 let hidePluginProps: boolean;
+let defaultPageBannerAuto: boolean;
 
-const pluginPageProps: Array<string> = ["banner", "page-icon", "icon"];
+const pluginPageProps: Array<string> = ["banner", "banner-align","page-icon", "icon"];
 
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
 // const settingsDefaultPageBanner = "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80";
@@ -66,7 +68,7 @@ const settingsArray: SettingSchemaDesc[] = [
     key: "hidePluginProps",
     title: "",
     type: "boolean",
-    description: "Hide plugin-related page props? (will be shown only on edit)",
+    description: "Hide plugin related page props? (will be shown only on edit)",
     default: "false",
   },
   {
@@ -83,24 +85,18 @@ const settingsArray: SettingSchemaDesc[] = [
     default: true,
   },
   {
-    key: "widgetsCustomHTML",
-    title: "",
-    type: "string",
-    description: "Show custom HTML (iframe for ex.) as widget on home and journal pages",
-    default: settingsWidgetsCustomHTML,
-  },
-  {
-    key: "widgetsCalendarHeading",
-    title: "Widget calendar settings",
-    //@ts-expect-error
-    type: "heading"
-  },
-  {
     key: "widgetsCalendarWidth",
     title: "Block calendar widget width (in px)",
     type: "string",
     description: "",
     default: "310px",
+  },
+  {
+    key: "widgetsCustomHTML",
+    title: "",
+    type: "string",
+    description: "Show custom HTML (iframe for ex.) as widget on home and journal pages",
+    default: settingsWidgetsCustomHTML,
   },
   {
     key: "journalHeading",
@@ -110,7 +106,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "defaultJournalBanner",
-    title: "Default banner for journal and home page",
+    title: "Default banner for journal and home page (set empty to disable)",
     type: "string",
     description: "",
     default: settingsDefaultJournalBanner,
@@ -131,7 +127,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "defaultJournalIcon",
-    title: "Default icon (emoji) for journal and home page",
+    title: "Default icon (emoji) for journal and home page (set empty to disable)",
     type: "string",
     description: "",
     default: "📅",
@@ -151,7 +147,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "defaultPageBanner",
-    title: "Default banner for common page",
+    title: "Default banner for common page (set empty to disable)",
     type: "string",
     description: "",
     default: settingsDefaultPageBanner,
@@ -172,7 +168,7 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "defaultPageIcon",
-    title: "Default icon (emoji) for common page",
+    title: "Default icon (emoji) for common page (set empty to disable)",
     type: "string",
     description: "",
     default: "📄",
@@ -189,6 +185,13 @@ const settingsArray: SettingSchemaDesc[] = [
     title: "Adwanced settings",
     //@ts-expect-error
     type: "heading"
+  },
+  {
+    key: "defaultPageBannerAuto",
+    title: "",
+    type: "boolean",
+    description: "(experimentral) Autogenerate banner image URL according to the page tile",
+    default: "false",
   },
   {
     key: "customPropsConfig",
@@ -244,6 +247,7 @@ const readPluginSettings = () => {
   if (logseq.settings) {
     ({
       hidePluginProps,
+      defaultPageBannerAuto,
       widgetsOnlyOnJournals: widgetsConfig.onlyOnJournals,
       widgetsCustomHTML: widgetsConfig.customHTML,
       widgetsCalendarWidth: widgetsConfig.calendar.width,
@@ -286,7 +290,7 @@ const getBase64FromUrl = async (url: string): Promise<string> => {
 // Get and encode default banners for caching
 // skip caching if random image from Unsplash API used
 const encodeDefaultBanners = async () => {
-  if (defaultConfig.page.banner && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
+  if (defaultConfig.page.banner && !defaultPageBannerAuto && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
     defaultConfig.page.banner = await getBase64FromUrl(defaultConfig.page.banner);
   }
   if (defaultConfig.journal.banner && !(defaultConfig.journal.banner?.includes("source.unsplash.com"))) {
@@ -347,7 +351,7 @@ const getPageType = () => {
 }
 
 const getPageAssetsData = async (): Promise<AssetData> => {
-  let pageAssetsData = defaultConfig.journal;
+  let pageAssetsData = { ...defaultConfig.journal };
   let currentPageProps: any = {};
   // home = journal page?
   if (isHome) {
@@ -365,12 +369,16 @@ const getPageAssetsData = async (): Promise<AssetData> => {
   console.info(`#${pluginId}: Trying page props`);
   currentPageProps = currentPageData.properties;
   if (currentPageProps) {
-    // get custom config, override with high proirity page props
+    // get custom config, override it with high proirity page props
     const customAssetData = getCustomAssetData(currentPageProps);
     pageAssetsData = { ...defaultConfig.page, ...customAssetData, ...currentPageProps }
   } else {
     console.info(`#${pluginId}: Default page`);
-    pageAssetsData = defaultConfig.page;
+    pageAssetsData = { ...defaultConfig.page };
+  }
+  // Add title
+  if (currentPageData.name) {
+    pageAssetsData.title = currentPageData.name.split(" ").slice(0,3).join("-").replace(/[\])}[{(]/g, '');
   }
   console.info(`#${pluginId}: pageAssetsData -- `, pageAssetsData);
   return pageAssetsData;
@@ -416,13 +424,22 @@ const renderBanner = async (pageAssetsData: AssetData) => {
     root.style.setProperty("--bannerHeight", `${pageAssetsData.bannerHeight}`);
     root.style.setProperty("--bannerAlign", `${pageAssetsData.bannerAlign}`);
 
-
     //remove surrounding quotations if present
     pageAssetsData.banner = pageAssetsData.banner.replace(/^"(.*)"$/, '$1');
+    // experimental auto image
+    if (defaultPageBannerAuto) {
+      pageAssetsData.banner = `https://source.unsplash.com/1600x900?${pageAssetsData.title}`;
+    }
     // if local image from assets folder
     if (pageAssetsData.banner.startsWith("../")) {
       const graphPath = (await logseq.App.getCurrentGraph())?.path;
       pageAssetsData.banner = encodeURI("assets://" + graphPath + pageAssetsData.banner.replace("..", ""));
+    }
+    const bannerImage = await getImagebyURL(pageAssetsData.banner);
+    if (bannerImage) {
+      pageAssetsData.banner = bannerImage;
+    } else {
+      pageAssetsData.banner = defaultConfig.page.banner;
     }
     root.style.setProperty("--pageBanner", `url(${pageAssetsData.banner})`);
 
@@ -431,6 +448,22 @@ const renderBanner = async (pageAssetsData: AssetData) => {
   } else {
     // clear old banner
     clearBanner();
+  }
+}
+
+// Get image
+const getImagebyURL = async (url: string) => {
+  let response = await fetch(url)
+  if (response.status === 200) {
+    if (response.url.includes("source-404")) {
+      return "";
+    }
+    const imageBlob = await response.blob();
+    return URL.createObjectURL(imageBlob);
+  }
+  else {
+    console.info(`#${pluginId}: HTTP-Error: ${response.status}`);
+    return "";
   }
 }
 
@@ -601,8 +634,8 @@ const render = async () => {
   }
 
   hidePageProps();
-
-  const pageAssetsData: AssetData = await getPageAssetsData();
+  let pageAssetsData: AssetData | null = null;
+  pageAssetsData = await getPageAssetsData();
   if (pageAssetsData) {
     if (!pageAssetsData.banner) {
       hidePlaceholder();
