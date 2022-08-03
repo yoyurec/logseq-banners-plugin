@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.3.1...v2.4.0) (2022-08-03)
+
+
+### Features
+
+* **banner:** disable auto image ([2cd754d](https://github.com/yoyurec/logseq-banners-plugin/commit/2cd754d6d477e01b1cb491df5a9cec104cece1ab))
+
 ## [2.3.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.3.0...v2.3.1) (2022-08-02)
 
 
