@@ -48,7 +48,7 @@ let oldWidgetsConfig: WidgetsConfig;
 let isWidgetsCustomHTMLChanged: boolean;
 let timeout: number;
 let hidePluginProps: boolean;
-let defaultPageBannerAuto: boolean;
+// let defaultPageBannerAuto: boolean;
 
 const pluginPageProps: Array<string> = ["banner", "banner-align","page-icon", "icon"];
 
@@ -196,13 +196,13 @@ const settingsArray: SettingSchemaDesc[] = [
     //@ts-expect-error
     type: "heading"
   },
-  {
-    key: "defaultPageBannerAuto",
-    title: "",
-    type: "boolean",
-    description: "(experimentral) Autogenerate banner image URL according to the page tile",
-    default: "false",
-  },
+  // {
+  //   key: "defaultPageBannerAuto",
+  //   title: "",
+  //   type: "boolean",
+  //   description: "(experimentral) Autogenerate banner image URL according to the page tile",
+  //   default: "false",
+  // },
   {
     key: "customPropsConfig",
     title: "Advanced custom pages banners and icons config",
@@ -260,7 +260,7 @@ const readPluginSettings = () => {
   if (logseq.settings) {
     ({
       hidePluginProps,
-      defaultPageBannerAuto,
+      // defaultPageBannerAuto,
       widgetsEnabled: widgetsConfig.enabled,
       widgetsOnlyOnJournals: widgetsConfig.onlyOnJournals,
       widgetsCustomHTML: widgetsConfig.customHTML,
@@ -307,7 +307,8 @@ const getBase64FromUrl = async (url: string): Promise<string> => {
 // Get and encode default banners for caching
 // skip caching if random image from Unsplash API used
 const encodeDefaultBanners = async () => {
-  if (defaultConfig.page.banner && !defaultPageBannerAuto && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
+  if (defaultConfig.page.banner && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
+  // if (defaultConfig.page.banner && !defaultPageBannerAuto && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
     defaultConfig.page.banner = await getBase64FromUrl(defaultConfig.page.banner);
   }
   if (defaultConfig.journal.banner && !(defaultConfig.journal.banner?.includes("source.unsplash.com"))) {
@@ -444,9 +445,9 @@ const renderImage = async (pageAssetsData: AssetData): Promise<boolean> => {
     //remove surrounding quotations if present
     pageAssetsData.banner = pageAssetsData.banner.replace(/^"(.*)"$/, '$1');
     // experimental auto image
-    if (defaultPageBannerAuto) {
-      pageAssetsData.banner = `https://source.unsplash.com/1600x900?${pageAssetsData.title}`;
-    }
+    // if (defaultPageBannerAuto) {
+    //   pageAssetsData.banner = `https://source.unsplash.com/1600x900?${pageAssetsData.title}`;
+    // }
     // if local image from assets folder
     if (pageAssetsData.banner.startsWith("../")) {
       const graphPath = (await logseq.App.getCurrentGraph())?.path;
