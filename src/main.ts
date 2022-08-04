@@ -245,8 +245,8 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "40px",
   },
   {
-    key: "adwancedHeading",
-    title: "Adwanced settings",
+    key: "advancedHeading",
+    title: "Advanced settings",
     //@ts-expect-error
     type: "heading"
   },
