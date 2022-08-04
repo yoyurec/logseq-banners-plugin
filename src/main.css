@@ -151,7 +151,7 @@ html[data-theme='dark'] #banner-widgets-weather {
 /* Quote */
 #banner-widgets-quote {
     margin: 12px 10px;
-    filter: drop-shadow(0px 1px 10px rgba(var(--widgetsTextColor), 0.4));
+    filter: drop-shadow(0px 1px 10px rgba(var(--widgetsTextColor), 0.3));
 }
 #banner-widgets-quote::before {
     display: block;
