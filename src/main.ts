@@ -708,6 +708,7 @@ const renderWidgetWeather = () => {
     return false;
   }
   if (!bannerWidgetsWeather || isWidgetsWeatherChanged) {
+    bannerWidgetsWeather?.remove();
     doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/${widgetsConfig.weather.id}"></iframe>`);
   }
   return true;
