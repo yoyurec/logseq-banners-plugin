@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.4.0...v3.0.0) (2022-08-04)
+
+
+### Features
+
+* **widgets:** add  "Random quote", rework settings and styles ([baec6df](https://github.com/yoyurec/logseq-banners-plugin/commit/baec6df44df43b35788b4657d986e22531506160))
+
+
+### BREAKING CHANGES
+
+* **widgets:** Plugin setting totally reworked
+
 # [2.4.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.3.1...v2.4.0) (2022-08-03)
 
 
