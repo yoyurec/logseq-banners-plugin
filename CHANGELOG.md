@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.3...v3.0.4) (2022-08-04)
+
+
+### Bug Fixes
+
+* **quote:** remove default ">" Logseq quotes from search results ([a694a37](https://github.com/yoyurec/logseq-banners-plugin/commit/a694a378ad0487cc78b28f921215afebaf50d900))
+
 ## [3.0.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.2...v3.0.3) (2022-08-04)
 
 
