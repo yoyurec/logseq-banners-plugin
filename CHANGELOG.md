@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.1...v3.0.2) (2022-08-04)
+
+
+### Bug Fixes
+
+* **quote:** smaller shadow ([0bd9958](https://github.com/yoyurec/logseq-banners-plugin/commit/0bd99581de1d6645f88f1ee04e00bb52640d1665))
+
 ## [3.0.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.0...v3.0.1) (2022-08-04)
 
 
