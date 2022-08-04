@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@500&display=swap');
+
 /* Comomon layout */
 #main-content-container {
     display: block;
@@ -64,57 +66,32 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 }
 
 /* Widgets */
+#banner-widgets {
+    width: 100%;
+    height: 100%;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+#banner-widgets::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--widgetsCalendarWidth) * 0.93);
+    height: 100%;
+    background-color: rgba(var(--widgetsBgColor), 0.8);
+    filter: drop-shadow(0px 1px 10px rgba(var(--widgetsTextColor), 0.4));
+}
 #banner-widgets iframe {
     margin: 0;
-}
-
-/* Weather */
-#banner-widgets-weather {
-    --compensateHeight: 60px;
-    position: absolute;
-    top: calc(var(--compensateHeight) / 2 * -1);
-    left: var(--widgetsCalendarWidth);
-    width: 158px;
-    height: calc(var(--bannerHeight) + var(--compensateHeight));
-    min-height: 346px; /* to avoid iframe vertical scrollbars*/
-    border-left: 1px solid #33333311;
-    background-color: rgba(var(--widgetsBgColor), 0.3);
-    backdrop-filter: blur(6px);
-    filter: saturate(0.7) drop-shadow(0px 1px 0px black) brightness(0.9);
-}
-html[data-theme='dark'] #banner-widgets-weather {
-    filter: saturate(0.7) drop-shadow(0px 1px 0px black) brightness(0.8);
-}
-
-/* Pomodoro */
-#banner-widgets-pomo {
-    width: 182px;
-    height: 110px;
-    opacity: 0.6;
-    filter: saturate(0.3);
-    position: absolute;
-    right: 0;
-    top: 0;
-    border-radius: 0 0 0 6px;
-    backdrop-filter: blur(6px);
-    filter: saturate(0.5) drop-shadow(1px 0px 0px black) brightness(0.9);
-}
-html[data-theme='dark'] #banner-widgets-pomo {
-    filter: saturate(0.5) drop-shadow(1px 0px 0px black) brightness(0.8);
 }
 
 /* Calendar */
 #banner-widgets-calendar {
     position: absolute;
     top: 0;
-    left: 0;
-    height: var(--bannerHeight);
-    background-color: rgba(var(--widgetsBgColor), 0.3);
-    backdrop-filter: blur(6px);
-    filter: saturate(0.8) drop-shadow(0px 1px 0px black) brightness(0.9);
-}
-html[data-theme='dark'] #banner-widgets-calendar {
-    filter: saturate(0.7) drop-shadow(0px 1px 0px black) brightness(0.8);
+    left: 2px;
+    transform: scale(0.9) translate(-5%, -5%);
 }
 #banner-widgets-calendar .logseq-block-calendar {
     width: var(--widgetsCalendarWidth);
@@ -123,39 +100,107 @@ html[data-theme='dark'] #banner-widgets-calendar {
     background-color: transparent;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
+    font-weight: bold;
 }
-#banner-widgets-calendar .calendar-title {
-    font-size: 21px;
-    font-weight: normal;
-    color: rgba(255,255,255);
-}
+/* #banner-widgets-calendar .calendar-title {
+} */
 #banner-widgets-calendar .calendar-month {
     padding-left: 8px;
 }
 #banner-widgets-calendar .calendar-nav {
     padding: 0 8px 0 0;
 }
-#banner-widgets-calendar .calendar-nav a {
-    color: rgba(255,255,255);
-    font-weight: normal;
+/* #banner-widgets-calendar .calendar-nav a {
 }
 #banner-widgets-calendar .calendar-head {
-    font-weight: normal;
-    color: rgba(255,255,255);
-}
-#banner-widgets-calendar :is(th, td) {
+} */
+#banner-widgets-calendar .logseq-block-calendar th {
     border: 0;
 }
 #banner-widgets-calendar .calendar-head td {
-    font-size: 18px;
-    padding: 6px 0;
+    padding: 2px 0;
+    font-size: 16px;
+    border: 0;
 }
 #banner-widgets-calendar .calendar-day {
     display: block;
+    padding: 0 10px;
+    height: 1.8rem;
     opacity: 1;
-    color: rgba(255,255,255);
     transition: none;
 }
 #banner-widgets-calendar .calendar-day:hover {
     background-color: rgba(var(--widgetsBgColor), 0.2);
+}
+
+/* Weather */
+#banner-widgets-weather {
+    position: absolute;
+    bottom: 6px;
+    left: -162px;
+    width: 632px;
+    height: 110px;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+html[data-theme='dark'] #banner-widgets-weather {
+    filter: hue-rotate(180deg) invert(1);
+}
+
+/* Quote */
+#banner-widgets-quote {
+    margin: 12px 10px;
+    filter: drop-shadow(0px 1px 10px rgba(var(--widgetsTextColor), 0.4));
+}
+#banner-widgets-quote::before {
+    display: block;
+    content: "🙷";
+    position: relative;
+    top: 14px;
+    left: -14px;
+    height: 0;
+    line-height: 0;
+    font-size: 80px;
+    font-family: initial;
+    font-style: normal;
+    letter-spacing: -0.08em;
+    text-shadow: -1px -1px 0px rgba(var(--widgetsBgColor), 0.8);
+}
+
+#banner-widgets-quote-text {
+    max-width: 48ch;
+    padding: 3px 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    font-family: 'Fira Sans Condensed', sans-serif;
+    font-size: calc(var(--widgetsQuoteFS) * 0.8);
+    line-height: 1.2em;
+    text-align: right;
+    border-radius: 6px;
+    background: rgba(var(--widgetsBgColor), 0.8);
+    text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
+}
+
+@media (min-width: 1024px) {
+    #banner-widgets-quote-text {
+        font-size: var(--widgetsQuoteFS);
+    }
+}
+
+/* Custom */
+/* #banner-widgets-custom {
+} */
+#banner-widgets-pomo {
+    width: 182px;
+    height: 110px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0 0 0 6px;
+    filter: saturate(0.3) brightness(0.9) opacity(0.6);
+    transform: scale(0.8) translate(23px, -14px);
 }

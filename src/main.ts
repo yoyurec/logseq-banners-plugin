@@ -25,10 +25,10 @@ enum AssetType {
 }
 
 type WidgetsConfig = {
-  enabled: boolean;
-  onlyOnJournals: boolean;
-  customHTML?: string;
   calendar?: any;
+  weather?: any;
+  quote?: any;
+  custom?: any;
 }
 
 const pluginId = PL.id;
@@ -46,6 +46,7 @@ let customPropsConfig: AssetDataList;
 let widgetsConfig: WidgetsConfig;
 let oldWidgetsConfig: WidgetsConfig;
 let isWidgetsCustomHTMLChanged: boolean;
+let isWidgetsWeatherChanged: boolean;
 let timeout: number;
 let hidePluginProps: boolean;
 // let defaultPageBannerAuto: boolean;
@@ -56,7 +57,6 @@ const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg"
 // const settingsDefaultPageBanner = "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsWidgetsCustomHTML = `
-<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/7QOWaH4IPGGaAr4puql2"></iframe>
 <iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>
 `;
 
@@ -75,37 +75,91 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "false",
   },
   {
-    key: "widgetsHeading",
-    title: "Widgets common settings",
+    key: "widgetsCalendarHeading",
+    title: "Widgets: calendar",
     //@ts-expect-error
     type: "heading"
   },
   {
-    key: "widgetsEnabled",
-    title: "",
-    type: "boolean",
-    description: "Enable widgets?",
-    default: true,
-  },
-  {
-    key: "widgetsOnlyOnJournals",
-    title: "",
-    type: "boolean",
-    description: "Show widgets only on home and journals pages?",
-    default: true,
+    key: "widgetsCalendarEnabled",
+    type: "enum",
+    default: "journals",
+    title: "Show calendar?",
+    description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
+    enumChoices: ["off", "journals", "everywhere"],
+    enumPicker: "radio",
   },
   {
     key: "widgetsCalendarWidth",
     title: "Block calendar widget width (in px)",
     type: "string",
     description: "",
-    default: "310px",
+    default: "380px",
+  },
+  {
+    key: "widgetsWeatherHeading",
+    title: "Widgets: weather",
+    //@ts-expect-error
+    type: "heading"
+  },
+  {
+    key: "widgetsWeatherEnabled",
+    type: "enum",
+    default: "journals",
+    title: "Show weather?",
+    description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
+    enumChoices: ["off", "journals", "everywhere"],
+    enumPicker: "radio",
+  },
+  {
+    key: "widgetsWeatherID",
+    title: "Weather ID",
+    type: "string",
+    description: "",
+    default: "7QOWaH4IPGGaAr4puql2",
+  },
+  {
+    key: "widgetsQuoteHeading",
+    title: "Widgets: quote",
+    //@ts-expect-error
+    type: "heading"
+  },
+  {
+    key: "widgetsQuoteEnabled",
+    type: "enum",
+    default: "journals",
+    title: "Show random #quote?",
+    description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
+    enumChoices: ["off", "journals", "everywhere"],
+    enumPicker: "radio",
+  },
+  {
+    key: "widgetsQuoteTag",
+    title: "Show random quotes with this tag (case sensitive!)",
+    type: "string",
+    description: "",
+    default: "#quote",
+  },
+  {
+    key: "widgetsCustomHeading",
+    title: "Widgets: custom",
+    //@ts-expect-error
+    type: "heading"
+  },
+  {
+    key: "widgetsCustomEnabled",
+    type: "enum",
+    default: "everywhere",
+    title: "Show custom?",
+    description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
+    enumChoices: ["off", "journals", "everywhere"],
+    enumPicker: "radio",
   },
   {
     key: "widgetsCustomHTML",
     title: "",
     type: "string",
-    description: "Show custom HTML (iframe for ex.) as widget on home and journal pages",
+    description: "Show custom HTML (iframe for ex.) as widget",
     default: settingsWidgetsCustomHTML,
   },
   {
@@ -246,11 +300,13 @@ const initGlobalCSSVars = () => {
 // Read settings
 const readPluginSettings = () => {
   isWidgetsCustomHTMLChanged = false;
+  isWidgetsWeatherChanged = false;
   oldWidgetsConfig = widgetsConfig;
   widgetsConfig = {
-    enabled: false,
-    onlyOnJournals: true,
-    calendar: {}
+    calendar: {},
+    weather: {},
+    quote: {},
+    custom: {}
   };
   defaultConfig = {
     page: {},
@@ -261,10 +317,14 @@ const readPluginSettings = () => {
     ({
       hidePluginProps,
       // defaultPageBannerAuto,
-      widgetsEnabled: widgetsConfig.enabled,
-      widgetsOnlyOnJournals: widgetsConfig.onlyOnJournals,
-      widgetsCustomHTML: widgetsConfig.customHTML,
+      widgetsCalendarEnabled: widgetsConfig.calendar.enabled,
       widgetsCalendarWidth: widgetsConfig.calendar.width,
+      widgetsWeatherEnabled: widgetsConfig.weather.enabled,
+      widgetsWeatherID: widgetsConfig.weather.id,
+      widgetsQuoteEnabled: widgetsConfig.quote.enabled,
+      widgetsQuoteTag: widgetsConfig.quote.tag,
+      widgetsCustomEnabled: widgetsConfig.custom.enabled,
+      widgetsCustomHTML: widgetsConfig.custom.HTML,
       defaultPageBanner: defaultConfig.page.banner,
       pageBannerHeight: defaultConfig.page.bannerHeight,
       pageBannerAlign: defaultConfig.page.bannerAlign,
@@ -279,8 +339,13 @@ const readPluginSettings = () => {
       timeout
     } = logseq.settings);
   }
-  if (oldWidgetsConfig && widgetsConfig.customHTML !== oldWidgetsConfig.customHTML) {
-    isWidgetsCustomHTMLChanged = true;
+  if (oldWidgetsConfig) {
+    if (widgetsConfig.custom.HTML !== oldWidgetsConfig.custom.HTML) {
+      isWidgetsCustomHTMLChanged = true;
+    }
+    if (widgetsConfig.weather.id !== oldWidgetsConfig.weather.id) {
+      isWidgetsWeatherChanged = true;
+    }
   }
   encodeDefaultBanners();
 }
@@ -453,12 +518,12 @@ const renderImage = async (pageAssetsData: AssetData): Promise<boolean> => {
       const graphPath = (await logseq.App.getCurrentGraph())?.path;
       pageAssetsData.banner = encodeURI("assets://" + graphPath + pageAssetsData.banner.replace("..", ""));
     }
-    const bannerImage = await getImagebyURL(pageAssetsData.banner);
-    if (bannerImage) {
-      pageAssetsData.banner = bannerImage;
-    } else {
-      pageAssetsData.banner = defaultConfig.page.banner;
-    }
+    // const bannerImage = await getImagebyURL(pageAssetsData.banner);
+    // if (bannerImage) {
+    //   pageAssetsData.banner = bannerImage;
+    // } else {
+    //   pageAssetsData.banner = defaultConfig.page.banner;
+    // }
     root.style.setProperty("--pageBanner", `url(${pageAssetsData.banner})`);
 
     return true;
@@ -594,9 +659,7 @@ const renderPlaceholder = () => {
         `<div id="banner" style="position:relative;display:none;">
           <div id="banner-widgets">
             <div id="banner-widgets-calendar"></div>
-            <div id="banner-widgets-custom"></div>
           </div>
-
         </div>`
       );
     }
@@ -615,7 +678,7 @@ const hidePlaceholder = () => {
 
 // Show widgets placeholder
 const showWidgetsPlaceholder = () => {
-  doc.getElementById("banner-widgets")!.style.display = "block";
+  doc.getElementById("banner-widgets")!.style.display = "flex";
 }
 
 // Hide widgets placeholder
@@ -625,21 +688,110 @@ const hideWidgetsPlaceholder = () => {
 
 // Render widgets
 const renderWidgets = () => {
-  if (!widgetsConfig.enabled || (widgetsConfig.onlyOnJournals && !(isHome || isJournal))) {
+  if (
+    // hide if all widgets is "off"
+    (widgetsConfig.calendar.enabled === "off" && widgetsConfig.weather.enabled === "off" && widgetsConfig.quote.enabled === "off")
+    // or all widgets is "journals", but useron common page
+    || ((widgetsConfig.calendar.enabled === "journals" && widgetsConfig.weather.enabled === "journals" && widgetsConfig.quote.enabled === "journals") && !(isHome || isJournal))
+  ) {
     hideWidgetsPlaceholder();
     return;
   }
   showWidgetsPlaceholder();
+  renderWidgetCalendar();
+  renderWidgetWeather();
+  renderWidgetQuote();
   renderWidgetsCustom();
 }
 
-// Render custom widgets HTML
-const renderWidgetsCustom = () => {
-  const bannerWidgetsCustom = doc.getElementById("banner-widgets-custom");
-  if (bannerWidgetsCustom) {
-    if (bannerWidgetsCustom.innerHTML === "" || isWidgetsCustomHTMLChanged) {
-      bannerWidgetsCustom.innerHTML = widgetsConfig.customHTML || "";
+// Render calendar widget
+const renderWidgetCalendar = async () => {
+  const bannerWidgetsCalendar = doc.getElementById("banner-widgets-calendar");
+  if (widgetsConfig.calendar.enabled === "off" || (widgetsConfig.calendar.enabled === "journals" && !(isHome || isJournal))) {
+    bannerWidgetsCalendar!.style.display = "none";
+    return;
+  }
+  bannerWidgetsCalendar!.style.display = "block";
+}
+
+// Render weather widget
+const renderWidgetWeather = async () => {
+  const bannerWidgetsWeather = doc.getElementById("banner-widgets-weather");
+  if (widgetsConfig.weather.enabled === "off" || (widgetsConfig.weather.enabled === "journals" && !(isHome || isJournal))) {
+    bannerWidgetsWeather?.remove();
+    return;
+  }
+  if (!bannerWidgetsWeather || isWidgetsWeatherChanged) {
+    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/${widgetsConfig.weather.id}"></iframe>`);
+  }
+}
+
+// Render random quote widget
+const renderWidgetQuote = async () => {
+  if (widgetsConfig.quote.enabled === "off" || (widgetsConfig.quote.enabled === "journals" && !(isHome || isJournal))) {
+    doc.getElementById("banner-widgets-quote")?.remove();
+    return;
+  }
+  const quote = await getRandomQuote();
+  if (quote) {
+    const bannerWidgetsQuoteText = doc.getElementById("banner-widgets-quote-text");
+    if (bannerWidgetsQuoteText) {
+      bannerWidgetsQuoteText.textContent = quote;
+    } else {
+      doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote"><span id="banner-widgets-quote-text">${quote}</span></div>`);
     }
+    root.style.setProperty("--widgetsQuoteFS", getFontSize(quote.length));
+  }
+}
+
+// Calculate font size to fit block
+const getFontSize = (textLength: number): string => {
+  if(textLength > 200) {
+    return "1.2em"
+  }
+  if(textLength > 150) {
+    return "1.3em"
+  }
+  if(textLength > 100) {
+    return "1.4em"
+  }
+  return "1.44em"
+}
+
+// Get random quote
+const getRandomQuote = async () => {
+  // [(clojure.string/starts-with? ?c "#+BEGIN_QUOTE")]
+  let quote = "";
+  let query = `
+    [
+      :find (pull ?b [*])
+      :where
+          [?b :block/content ?c]
+          (or
+              [(clojure.string/starts-with? ?c "${widgetsConfig.quote.tag} ")]
+              [(clojure.string/ends-with? ?c " ${widgetsConfig.quote.tag}")]
+              [(clojure.string/starts-with? ?c "> ")]
+          )
+    ]
+  `;
+  let quotesList = await logseq.DB.datascriptQuery(query);
+  if (!quotesList.length) {
+    return "";
+  }
+  const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)][0];
+  const randomQuoteContent: string = randomQuoteBlock.content || "";
+  return randomQuoteContent.replace(/>|\*|#quote/gi, "").trim();
+}
+
+// Render custom widget
+const renderWidgetsCustom = async () => {
+  const bannerWidgetsCustom = doc.getElementById("banner-widgets-custom");
+  if (widgetsConfig.custom.enabled === "off" || (widgetsConfig.custom.enabled === "journals" && !(isHome || isJournal))) {
+    bannerWidgetsCustom?.remove();
+    return;
+  }
+  if (!bannerWidgetsCustom || isWidgetsCustomHTMLChanged) {
+    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-custom">${widgetsConfig.custom.HTML}</div>`);
   }
 }
 
