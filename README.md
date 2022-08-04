@@ -61,6 +61,7 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 * ⚠ Set colors (mandatory!) for proper work with "Banners" plugin
 * ![](screenshots/weather-config.png)
 * ⚠ Copy YOUR personal widget ID and replace default in plugin Settings!
+* Adjust weather width, so your city name is hidden on left
 
 ### Random quote
 * Set your `#tag` in plugin Settings

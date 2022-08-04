@@ -142,11 +142,13 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 /* Weather */
 #banner-widgets-weather {
     position: absolute;
-    bottom: 6px;
-    left: -162px;
-    width: 632px;
+    bottom: 0;
+    left: calc(var(--widgetsCalendarWidth) * 0.9);
+    min-width: 632px;
+    min-height: 110px;
+    width: var(--widgetsWeatherWidth);
     height: 110px;
-    transform: scale(0.8);
+    transform: scale(0.8) translate(-100%, -10%);
     pointer-events: none;
 }
 html[data-theme='dark'] #banner-widgets-weather {

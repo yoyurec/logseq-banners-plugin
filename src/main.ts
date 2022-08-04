@@ -119,6 +119,13 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "7QOWaH4IPGGaAr4puql2",
   },
   {
+    key: "widgetsWeatherWidth",
+    title: "Weather widget width (in px)",
+    type: "string",
+    description: "",
+    default: "632px",
+  },
+  {
     key: "widgetsQuoteHeading",
     title: "Widgets: quote",
     //@ts-expect-error
@@ -321,6 +328,7 @@ const readPluginSettings = () => {
       widgetsCalendarWidth: widgetsConfig.calendar.width,
       widgetsWeatherEnabled: widgetsConfig.weather.enabled,
       widgetsWeatherID: widgetsConfig.weather.id,
+      widgetsWeatherWidth: widgetsConfig.weather.width,
       widgetsQuoteEnabled: widgetsConfig.quote.enabled,
       widgetsQuoteTag: widgetsConfig.quote.tag,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
@@ -383,13 +391,20 @@ const encodeDefaultBanners = async () => {
 
 // Colors
 function hexToRGB(h: string): string {
-  let r = 0, g = 0, b = 0;
-  //@ts-expect-error
-  r = "0x" + h[1] + h[2];
-  //@ts-expect-error
-  g = "0x" + h[3] + h[4];
-  //@ts-expect-error
-  b = "0x" + h[5] + h[6];
+  let r: string | number = 0;
+  let g: string | number = 0;
+  let b:string | number = 0;
+  if (h.length == 4) {
+    // 3 digits
+    r = "0x" + h[1] + h[1];
+    g = "0x" + h[2] + h[2];
+    b = "0x" + h[3] + h[3];
+  } else if (h.length == 7) {
+    // 6 digits
+    r = "0x" + h[1] + h[2];
+    g = "0x" + h[3] + h[4];
+    b = "0x" + h[5] + h[6];
+  }
   return +r + "," + +g + "," + +b;
 }
 
@@ -399,9 +414,7 @@ const setPrimaryColors = () => {
   root.style.setProperty("--widgetsTextColor", hexToRGB(primaryTextcolor));
   const primaryBgcolor = getComputedStyle(top!.document.documentElement).getPropertyValue('--ls-primary-background-color').trim();
   root.style.setProperty("--widgetsBgColor", hexToRGB(primaryBgcolor));
-
 }
-
 
 // Hide page props
 const hidePageProps = () => {
@@ -781,6 +794,7 @@ const renderWidgetsCustom = async () => {
 const initWidgetsCSSVars = () => {
   setPrimaryColors();
   root.style.setProperty("--widgetsCalendarWidth", widgetsConfig.calendar.width);
+  root.style.setProperty("--widgetsWeatherWidth", widgetsConfig.weather.width);
 }
 
 
@@ -829,8 +843,8 @@ const main = async () => {
   body.classList.add("is-banners-plugin-loaded");
   readPluginSettings();
   initStyles();
-  initGlobalCSSVars();
   setTimeout(() => {
+    initGlobalCSSVars();
     render();
   }, timeout*2)
 
