@@ -753,7 +753,6 @@ const getRandomQuote = async () => {
           (or
               [(clojure.string/starts-with? ?c "${widgetsConfig.quote.tag} ")]
               [(clojure.string/ends-with? ?c " ${widgetsConfig.quote.tag}")]
-              [(clojure.string/starts-with? ?c "> ")]
           )
     ]
   `;
