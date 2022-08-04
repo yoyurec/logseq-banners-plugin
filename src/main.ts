@@ -676,54 +676,41 @@ const hidePlaceholder = () => {
   doc.getElementById("banner")!.style.display = "none";
 }
 
-// Show widgets placeholder
-const showWidgetsPlaceholder = () => {
-  doc.getElementById("banner-widgets")!.style.display = "flex";
-}
-
-// Hide widgets placeholder
-const hideWidgetsPlaceholder = () => {
-  doc.getElementById("banner-widgets")!.style.display = "none";
-}
-
 // Render widgets
 const renderWidgets = () => {
-  if (
-    // hide if all widgets is "off"
-    (widgetsConfig.calendar.enabled === "off" && widgetsConfig.weather.enabled === "off" && widgetsConfig.quote.enabled === "off")
-    // or all widgets is "journals", but useron common page
-    || ((widgetsConfig.calendar.enabled === "journals" && widgetsConfig.weather.enabled === "journals" && widgetsConfig.quote.enabled === "journals") && !(isHome || isJournal))
-  ) {
-    hideWidgetsPlaceholder();
-    return;
+  const isWidgetCalendarRendered = renderWidgetCalendar();
+  const isWidgetWeatherRendered = renderWidgetWeather();
+  if (isWidgetCalendarRendered || isWidgetWeatherRendered) {
+    doc.getElementById("banner-widgets")?.classList.add("banner-widgets-bg");
+  } else {
+    doc.getElementById("banner-widgets")?.classList.remove("banner-widgets-bg");
   }
-  showWidgetsPlaceholder();
-  renderWidgetCalendar();
-  renderWidgetWeather();
   renderWidgetQuote();
   renderWidgetsCustom();
 }
 
 // Render calendar widget
-const renderWidgetCalendar = async () => {
+const renderWidgetCalendar = () => {
   const bannerWidgetsCalendar = doc.getElementById("banner-widgets-calendar");
   if (widgetsConfig.calendar.enabled === "off" || (widgetsConfig.calendar.enabled === "journals" && !(isHome || isJournal))) {
     bannerWidgetsCalendar!.style.display = "none";
-    return;
+    return false;
   }
   bannerWidgetsCalendar!.style.display = "block";
+  return true;
 }
 
 // Render weather widget
-const renderWidgetWeather = async () => {
+const renderWidgetWeather = () => {
   const bannerWidgetsWeather = doc.getElementById("banner-widgets-weather");
   if (widgetsConfig.weather.enabled === "off" || (widgetsConfig.weather.enabled === "journals" && !(isHome || isJournal))) {
     bannerWidgetsWeather?.remove();
-    return;
+    return false;
   }
   if (!bannerWidgetsWeather || isWidgetsWeatherChanged) {
     doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/${widgetsConfig.weather.id}"></iframe>`);
   }
+  return true;
 }
 
 // Render random quote widget
