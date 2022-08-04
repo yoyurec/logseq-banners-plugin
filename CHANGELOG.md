@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.0...v3.0.1) (2022-08-04)
+
+
+### Bug Fixes
+
+* **quotes:** update text sizes logic ([16033dc](https://github.com/yoyurec/logseq-banners-plugin/commit/16033dc91927c6e454759166219772bf43ab8261))
+
 # [3.0.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.4.0...v3.0.0) (2022-08-04)
 
 
