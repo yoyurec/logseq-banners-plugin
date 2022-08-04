@@ -1,3 +1,10 @@
+## [3.0.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.5...v3.0.6) (2022-08-04)
+
+
+### Bug Fixes
+
+* **widgets:** weather sizes and primary colors ([a0f9640](https://github.com/yoyurec/logseq-banners-plugin/commit/a0f96405b9b648da1b7762c59049aa4f708a55b2))
+
 ## [3.0.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.4...v3.0.5) (2022-08-04)
 
 
