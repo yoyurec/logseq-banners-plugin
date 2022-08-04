@@ -42,7 +42,7 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 
 ## Customizations
 * All customizations (a lot!) can be done from plugin settings ("Settings -> Plugin Settings -> Banners") in nice grouped blocks:
-* Example for adwanced settings (JSON) for custom page types: "Settings -> Plugin Settings -> Banners -> Adwanced settings -> Advanced custom pages banners and icons config -> Edit settings.json"
+* Example for adwanced settings (JSON) for custom page types: "Settings -> Plugin Settings -> Banners -> Advanced settings -> Advanced custom pages banners and icons config -> Edit settings.json"
 
 ## Widgets
 ![](screenshots/widgets-light-01.png)
