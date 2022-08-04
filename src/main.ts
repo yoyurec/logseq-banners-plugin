@@ -750,18 +750,14 @@ const getFontSize = (textLength: number): string => {
     return "1.2em"
   }
   if(textLength > 150) {
-    return "1.3em"
+    return "1.25em"
   }
-  if(textLength > 100) {
-    return "1.4em"
-  }
-  return "1.44em"
+  return "1.3em"
 }
 
 // Get random quote
 const getRandomQuote = async () => {
   // [(clojure.string/starts-with? ?c "#+BEGIN_QUOTE")]
-  let quote = "";
   let query = `
     [
       :find (pull ?b [*])

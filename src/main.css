@@ -174,7 +174,7 @@ html[data-theme='dark'] #banner-widgets-weather {
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 7;
     -webkit-box-orient: vertical;
     font-family: 'Fira Sans Condensed', sans-serif;
     font-size: calc(var(--widgetsQuoteFS) * 0.8);

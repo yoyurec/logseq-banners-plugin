@@ -76,6 +76,6 @@ For more tune use your own `custom.css` to position widgets iframes inside of ba
 
 For ex. "Dafault journal banner" - `https://source.unsplash.com/featured/1600x900?diary`
 
-### Credits
+## Credits
 - This plugin was originally created by [@sawhney17](https://github.com/sawhney17) (buy him a coffee also! https://www.buymeacoffee.com/sawhney17 ☕)
 - Currently maintaned and extended by me - [@yoyurec](https://github.com/yoyurec)
