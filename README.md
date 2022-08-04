@@ -22,8 +22,11 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 ## Instructions
 * Install the plugin from the Logseq plugin marketplace
 * Configure a default images and icons in "Settings -> Plugin Settings -> Banners"
-* Customize the banner image on a per page basis via the page props:
+* Customize the banner image on special page via the page props:
     * `banner:: https://wallpaperaccess.com/full/1146672.jpg`
+* Local assets supported also:
+    * add image in Logseq note and just copy it's path to props 🎉
+    * for ex. `banner:: ../assets/image_1656373162335_0.png`
 * To avoid Logseq show banner preview in props area - wrap it with doublequotes!
     * `banner:: "http://........"`
 * To disable default banner - just delete URL from settings
