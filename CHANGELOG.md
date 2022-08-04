@@ -8,7 +8,7 @@
 
 ### BREAKING CHANGES
 
-* **widgets:** Plugin setting totally reworked
+* **widgets:** Plugin settings totally reworked
 
 # [2.4.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v2.3.1...v2.4.0) (2022-08-03)
 

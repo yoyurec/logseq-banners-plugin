@@ -6,18 +6,18 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 ![](screenshots/main.png)
 
 ## Features
-    * You can set image & icon via plugin settings or via page props
-    * Hide plugin related page props for more clean view
-    * Banners and icons default sizes
-    * Banners and icons default vertical align
-    * Separate settings for journals and common pages
-    * Preconfigured widgets:
-        * 📅 Calendar (via "Block calendar") plugin support
-        * 🌤 Weather
-        * 🍅 Pomodoro
-        * 💬 Random quote
-    * Options for widgets "off / journals / everywhere"
-    * Separate settings for each widget
+* You can set image & icon via plugin settings or via page props
+* Hide plugin related page props for more clean view
+* Banners and icons default sizes
+* Banners and icons default vertical align
+* Separate settings for journals and common pages
+* Preconfigured widgets:
+    * 📅 Calendar (via "Block calendar") plugin support
+    * 🌤 Weather
+    * 🍅 Pomodoro
+    * 💬 Random quote
+* Options for widgets "off / journals / everywhere"
+* Separate settings for each widget
 
 ## Instructions
 * Install the plugin from the Logseq plugin marketplace
@@ -37,7 +37,7 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
     * or use native Logseq `icon:: 💸`
 * To disable default icon - just delete emoji from settings
 
-## Customization
+## Customizations
 * All customizations (a lot!) can be done from plugin settings ("Settings -> Plugin Settings -> Banners") in nice grouped blocks:
 * Example for adwanced settings (JSON) for custom page types: "Settings -> Plugin Settings -> Banners -> Adwanced settings -> Advanced custom pages banners and icons config -> Edit settings.json"
 
@@ -46,24 +46,24 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 ![](screenshots/widgets-dark-01.png)
 
 ### Calendar
-    * Install "Block calendar" plugin from Logseq Marketplace
-    * Go to installed plugin settings ""Settings -> Plugin Settings -> Block calendar"
-    * Set "Always render" to `#banner-widgets-calendar` banner placeholder
-    * ![](screenshots/block-calendar-settings.png)
+* Install "Block calendar" plugin from Logseq Marketplace
+* Go to installed plugin settings ""Settings -> Plugin Settings -> Block calendar"
+* Set "Always render" to `#banner-widgets-calendar` banner placeholder
+* ![](screenshots/block-calendar-settings.png)
 
 ### Weather
-    * Go to [Indify – Notion Widgets](https://indify.co), Sign Up
-    * Choose "Weather widget", set your city
-    * Set "Number of days" - 2
-    * ⚠ Set colors (mandatory!) for proper work with "Banners" plugin
-    * ![](screenshots/weather-config.png)
-    * ⚠ Copy YOUR personal widget ID and replace default in plugin Settings!
+* Go to [Indify – Notion Widgets](https://indify.co), Sign Up
+* Choose "Weather widget", set your city
+* Set "Number of days" - 2
+* ⚠ Set colors (mandatory!) for proper work with "Banners" plugin
+* ![](screenshots/weather-config.png)
+* ⚠ Copy YOUR personal widget ID and replace default in plugin Settings!
 
 ### Random quote
-    * Set your `#tag` in plugin Settings
+* Set your `#tag` in plugin Settings
 
 ### Custom HTML (iframes, etc...)! (you can set your own, here is some pre-configured):
-    * Pomo-focus (from https://pomofocus.io/app)
+* Pomo-focus (from https://pomofocus.io/app)
 
 For more tune use your own `custom.css` to position widgets iframes inside of banner area via CSS `position:absolute` & `top/right/bottom/left`.
 
