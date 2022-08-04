@@ -1,3 +1,10 @@
+## [3.0.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.4...v3.0.5) (2022-08-04)
+
+
+### Bug Fixes
+
+* **widgets:** weather rerender duplicates ([e79cf82](https://github.com/yoyurec/logseq-banners-plugin/commit/e79cf82ee6b2f0cd7cdf4b9121091b26ae41d47f))
+
 ## [3.0.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.3...v3.0.4) (2022-08-04)
 
 
