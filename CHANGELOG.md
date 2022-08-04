@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.2...v3.0.3) (2022-08-04)
+
+
+### Bug Fixes
+
+* **widgets:** left side overlay visibility ([ffa1d2b](https://github.com/yoyurec/logseq-banners-plugin/commit/ffa1d2bc884d757df585cbbe25a773a2a2e0d08d))
+
 ## [3.0.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.1...v3.0.2) (2022-08-04)
 
 
