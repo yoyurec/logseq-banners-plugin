@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.8...v3.1.0) (2022-08-06)
+
+
+### Features
+
+* **weather:** widget reworked from iframe to HTML, colors fixed, city deleted ([c76cf31](https://github.com/yoyurec/logseq-banners-plugin/commit/c76cf31c10d6ddb800dcc7da1f3664aa2bccd308))
+
 ## [3.0.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.7...v3.0.8) (2022-08-06)
 
 
