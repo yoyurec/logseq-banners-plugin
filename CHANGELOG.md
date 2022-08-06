@@ -1,3 +1,10 @@
+## [3.0.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.7...v3.0.8) (2022-08-06)
+
+
+### Bug Fixes
+
+* **widgets:** primary colors generation logic ([776e690](https://github.com/yoyurec/logseq-banners-plugin/commit/776e6903e7250164ac353b77b5d7a64e812629cb))
+
 ## [3.0.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.6...v3.0.7) (2022-08-06)
 
 
