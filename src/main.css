@@ -148,13 +148,14 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     width: calc(var(--widgetsCalendarWidth) * 0.93);
     text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
 }
-html[data-theme='dark'] #banner-widgets-weather {
+/* html[data-theme='dark'] #banner-widgets-weather {
     filter: hue-rotate(180deg) invert(1);
-}
+} */
 .weatherText {
     font-size: 0.8em !important;
     font-weight: bold;
     text-align: center;
+    color: rgba(var(--widgetsTextColor)) !important;
 }
 .weather_row {
     align-items: center;
