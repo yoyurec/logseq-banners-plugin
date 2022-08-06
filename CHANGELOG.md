@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.1...v3.1.2) (2022-08-06)
+
+
+### Bug Fixes
+
+* **weather:** text color ([c1784f7](https://github.com/yoyurec/logseq-banners-plugin/commit/c1784f70e2ec83c3e4d8aba1aba46b10fd95c130))
+
 ## [3.1.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.0...v3.1.1) (2022-08-06)
 
 
