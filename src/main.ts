@@ -681,9 +681,9 @@ const hidePlaceholder = () => {
 }
 
 // Render widgets
-const renderWidgets = () => {
+const renderWidgets = async () => {
   const isWidgetCalendarRendered = renderWidgetCalendar();
-  const isWidgetWeatherRendered = renderWidgetWeather();
+  const isWidgetWeatherRendered = await renderWidgetWeather();
   if (isWidgetCalendarRendered || isWidgetWeatherRendered) {
     doc.getElementById("banner-widgets")?.classList.add("banner-widgets-bg");
   } else {
@@ -705,7 +705,7 @@ const renderWidgetCalendar = () => {
 }
 
 // Render weather widget
-const renderWidgetWeather = () => {
+const renderWidgetWeather = async () => {
   const bannerWidgetsWeather = doc.getElementById("banner-widgets-weather");
   if (widgetsConfig.weather.enabled === "off" || (widgetsConfig.weather.enabled === "journals" && !(isHome || isJournal))) {
     bannerWidgetsWeather?.remove();
@@ -713,9 +713,32 @@ const renderWidgetWeather = () => {
   }
   if (!bannerWidgetsWeather || isWidgetsWeatherChanged) {
     bannerWidgetsWeather?.remove();
-    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<iframe id="banner-widgets-weather" src="https://indify.co/widgets/live/weather/${widgetsConfig.weather.id}"></iframe>`);
+    const weatherHTML= await getWeatherHTML()
+    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-weather">${weatherHTML}</div>`);
   }
   return true;
+}
+
+const getWeatherHTML = async () => {
+  const weatherURL = `https://indify.co/widgets/live/weather/${widgetsConfig.weather.id}`;
+  let html = "";
+  let response = await fetch(weatherURL);
+  if (response && response.status === 200) {
+    html = await response.text();
+    if (html) {
+      html = html.replace(/src="/g, 'src="https://indify.co')
+                .replace(/flex-dir/g, "display:flex;flex-dir")
+                .replace(/__...../g, "");
+      var parser = new DOMParser();
+      var weatherDoc = parser.parseFromString(html, 'text/html');
+      weatherDoc.getElementById("weatherTemp")?.remove();
+      html = weatherDoc.querySelector("[class^=weather_container]")?.innerHTML || "";
+    }
+  }
+  else {
+    console.info(`#${pluginId}: HTTP-Error: ${response.status}`);
+  }
+  return html;
 }
 
 // Render random quote widget
@@ -767,7 +790,8 @@ const getRandomQuote = async () => {
   }
   const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)][0];
   const randomQuoteContent: string = randomQuoteBlock.content || "";
-  return randomQuoteContent.replace(/>|\*|#quote/gi, "").trim();
+  const regExpVal = new RegExp(`${widgetsConfig.quote.tag}`,"gi");
+  return randomQuoteContent.replace(regExpVal, "").trim();
 }
 
 // Render custom widget

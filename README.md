@@ -58,8 +58,6 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 * Go to [Indify – Notion Widgets](https://indify.co), Sign Up
 * Choose "Weather widget", set your city
 * Set "Number of days" - 2
-* ⚠ Set colors (mandatory!) for proper work with "Banners" plugin
-* ![](screenshots/weather-config.png)
 * ⚠ Copy YOUR personal widget ID and replace default in plugin Settings!
 * Adjust weather width, so your city name is hidden on left
 
