@@ -101,7 +101,7 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 #banner-widgets-calendar .logseq-block-calendar {
     width: var(--widgetsCalendarWidth);
     overflow: hidden;
-    color: rgba(255,255,255);
+    color: rgb(var(--widgetsTextColor));
     background-color: transparent;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -157,27 +157,30 @@ html[data-theme='dark'] #banner-widgets-weather {
 
 /* Quote */
 #banner-widgets-quote {
+    position: relative;
     margin: 12px 10px;
-    filter: drop-shadow(0px 1px 10px rgba(var(--widgetsTextColor), 0.3));
+    filter: drop-shadow(0px 0px 2px rgba(var(--widgetsTextColor), 0.2)) drop-shadow(-2px -2px 0px rgba(var(--widgetsBgColor), 0.8))
 }
 #banner-widgets-quote::before {
+    --widgetsQuoteIcon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3.7 6.3C5 4.8 7.2 4 10 4h1v2.8l-.8.2c-1.4.3-2.3.8-2.8 1.6a2.9 2.9 0 0 0-.5 1.4H10a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H3a1 1 0 0 1-1-1v-8s-.2-2.7 1.7-4.7zM20 20h-6a1 1 0 0 1-1-1v-8s-.2-2.7 1.7-4.7C16 4.8 18.2 4 21 4h1v2.8l-.8.2c-1.4.3-2.3.8-2.8 1.6a2.9 2.9 0 0 0-.5 1.4H21a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2z'/%3E%3C/svg%3E");
     display: block;
-    content: "🙷";
-    position: relative;
-    top: 14px;
-    left: -14px;
-    height: 0;
-    line-height: 0;
-    font-size: 80px;
-    font-family: initial;
-    font-style: normal;
-    letter-spacing: -0.08em;
-    text-shadow: -1px -1px 0px rgba(var(--widgetsBgColor), 0.8);
+    content: "";
+    position: absolute;
+    top: -18px;
+    left: -10px;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    -webkit-mask: var(--widgetsQuoteIcon) no-repeat 50% 50%;
+    mask: var(--widgetsQuoteIcon) no-repeat 50% 50%;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    background-color: rgba(var(--widgetsTextColor), 0.9);
 }
 
 #banner-widgets-quote-text {
     max-width: 48ch;
-    padding: 3px 12px;
+    padding: 6px 12px;
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
@@ -188,8 +191,9 @@ html[data-theme='dark'] #banner-widgets-weather {
     line-height: 1.2em;
     text-align: right;
     border-radius: 6px;
-    background: rgba(var(--widgetsBgColor), 0.8);
     text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
+    background-color: rgba(var(--widgetsBgColor), 0.8);
+    filter: drop-shadow(0px 1px 10px rgba(var(--widgetsTextColor), 0.4));
 }
 
 @media (min-width: 1024px) {
