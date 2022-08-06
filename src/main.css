@@ -158,17 +158,23 @@ html[data-theme='dark'] #banner-widgets-weather {
 }
 .weather_row {
     align-items: center;
+    padding: 0 12px !important;
+}
+#banner-widgets-weather > .weather_currentContainer {
+    justify-content: flex-end !important;
+    margin-right: 8px !important;
+}
+.weather_currentContainer > .weather_currentContainer {
+    flex: initial !important;
+    margin-top: 14px !important;
 }
 .weather_image {
     max-width: 46px !important;
     margin: -4px 8px !important;
 }
-.weather_currentContainer > .weather_currentContainer {
-    flex-direction: column !important;
-    flex: initial !important;
-    margin: 0 0px 0 auto !important;
-    align-items: center;
-    width: 70px;
+.weather_currentContainer > .weather_currentContainer .weather_image{
+    max-width: 56px !important;
+    margin-right: 0px !important;
 }
 
 /* Quote */
