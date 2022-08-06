@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.0...v3.1.1) (2022-08-06)
+
+
+### Bug Fixes
+
+* **weather:** today field position ([b9980f7](https://github.com/yoyurec/logseq-banners-plugin/commit/b9980f75453bc5cd761187f9e133ee42b0967e0b))
+
 # [3.1.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.8...v3.1.0) (2022-08-06)
 
 
