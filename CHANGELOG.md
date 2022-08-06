@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.2...v3.1.3) (2022-08-06)
+
+
+### Bug Fixes
+
+* **quote:** add italic text, change position ([09e4832](https://github.com/yoyurec/logseq-banners-plugin/commit/09e4832bdf15fffe6918071badbe3910820a7377))
+
 ## [3.1.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.1...v3.1.2) (2022-08-06)
 
 
