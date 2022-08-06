@@ -45,7 +45,7 @@ let defaultConfig: AssetDataList;
 let customPropsConfig: AssetDataList;
 let widgetsConfig: WidgetsConfig;
 let oldWidgetsConfig: WidgetsConfig;
-let isWidgetsCustomHTMLChanged: boolean;
+let isWidgetsCustomCodeChanged: boolean;
 let isWidgetsWeatherChanged: boolean;
 let timeout: number;
 let hidePluginProps: boolean;
@@ -56,9 +56,7 @@ const pluginPageProps: Array<string> = ["banner", "banner-align","page-icon", "i
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
 // const settingsDefaultPageBanner = "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
-const settingsWidgetsCustomHTML = `
-<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>
-`;
+const settingsWidgetsCustomCode = `<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>`;
 
 const settingsArray: SettingSchemaDesc[] = [
   {
@@ -163,11 +161,11 @@ const settingsArray: SettingSchemaDesc[] = [
     enumPicker: "radio",
   },
   {
-    key: "widgetsCustomHTML",
+    key: "widgetsCustomCode",
     title: "",
     type: "string",
     description: "Show custom HTML (iframe for ex.) as widget",
-    default: settingsWidgetsCustomHTML,
+    default: settingsWidgetsCustomCode,
   },
   {
     key: "journalHeading",
@@ -300,13 +298,13 @@ const initStyles = () => {
   logseq.provideStyle(mainStyles);
 }
 
-const initGlobalCSSVars = () => {
-  initWidgetsCSSVars();
+const setGlobalCSSVars = () => {
+  setWidgetsCSSVars();
 }
 
 // Read settings
 const readPluginSettings = () => {
-  isWidgetsCustomHTMLChanged = false;
+  isWidgetsCustomCodeChanged = false;
   isWidgetsWeatherChanged = false;
   oldWidgetsConfig = widgetsConfig;
   widgetsConfig = {
@@ -332,7 +330,7 @@ const readPluginSettings = () => {
       widgetsQuoteEnabled: widgetsConfig.quote.enabled,
       widgetsQuoteTag: widgetsConfig.quote.tag,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
-      widgetsCustomHTML: widgetsConfig.custom.HTML,
+      widgetsCustomCode: widgetsConfig.custom.code,
       defaultPageBanner: defaultConfig.page.banner,
       pageBannerHeight: defaultConfig.page.bannerHeight,
       pageBannerAlign: defaultConfig.page.bannerAlign,
@@ -348,8 +346,8 @@ const readPluginSettings = () => {
     } = logseq.settings);
   }
   if (oldWidgetsConfig) {
-    if (widgetsConfig.custom.HTML !== oldWidgetsConfig.custom.HTML) {
-      isWidgetsCustomHTMLChanged = true;
+    if (widgetsConfig.custom.code !== oldWidgetsConfig.custom.code) {
+      isWidgetsCustomCodeChanged = true;
     }
     if (widgetsConfig.weather.id !== oldWidgetsConfig.weather.id) {
       isWidgetsWeatherChanged = true;
@@ -389,31 +387,24 @@ const encodeDefaultBanners = async () => {
   }
 }
 
-// Colors
-function hexToRGB(h: string): string {
-  let r: string | number = 0;
-  let g: string | number = 0;
-  let b:string | number = 0;
-  if (h.length == 4) {
-    // 3 digits
-    r = "0x" + h[1] + h[1];
-    g = "0x" + h[2] + h[2];
-    b = "0x" + h[3] + h[3];
-  } else if (h.length == 7) {
-    // 6 digits
-    r = "0x" + h[1] + h[2];
-    g = "0x" + h[3] + h[4];
-    b = "0x" + h[5] + h[6];
-  }
-  return +r + "," + +g + "," + +b;
+// Get RGB from any color
+const getRGBValues = (color: string) => {
+  const canvas = document.createElement('canvas');
+  canvas.height = 1;
+  canvas.width = 1;
+  const context = canvas.getContext('2d');
+  context!.fillStyle = color;
+  context!.fillRect(0, 0, 1, 1);
+  const rgbaArray = context!.getImageData(0, 0, 1, 1).data;
+  return `${rgbaArray[0]}, ${rgbaArray[1]}, ${rgbaArray[2]}`;
 }
 
 // Bg colors magic
-const setPrimaryColors = () => {
+const setWidgetPrimaryColors = () => {
   const primaryTextcolor = getComputedStyle(top!.document.documentElement).getPropertyValue('--ls-primary-text-color').trim();
-  root.style.setProperty("--widgetsTextColor", hexToRGB(primaryTextcolor));
+  root.style.setProperty("--widgetsTextColor", getRGBValues(primaryTextcolor));
   const primaryBgcolor = getComputedStyle(top!.document.documentElement).getPropertyValue('--ls-primary-background-color').trim();
-  root.style.setProperty("--widgetsBgColor", hexToRGB(primaryBgcolor));
+  root.style.setProperty("--widgetsBgColor", getRGBValues(primaryBgcolor));
 }
 
 // Hide page props
@@ -643,7 +634,7 @@ const routeChangedCallback = () => {
 // Setting changed
 const onSettingsChangedCallback = () => {
   readPluginSettings();
-  initGlobalCSSVars();
+  setGlobalCSSVars();
   render();
 }
 
@@ -656,7 +647,7 @@ const onPluginUnloadCallback = () => {
 // Color mode changed
 const onThemeModeChangedCallback = () => {
   setTimeout(() => {
-    setPrimaryColors();
+    setWidgetPrimaryColors();
   }, 100)
 }
 
@@ -786,13 +777,13 @@ const renderWidgetsCustom = async () => {
     bannerWidgetsCustom?.remove();
     return;
   }
-  if (!bannerWidgetsCustom || isWidgetsCustomHTMLChanged) {
-    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-custom">${widgetsConfig.custom.HTML}</div>`);
+  if (!bannerWidgetsCustom || isWidgetsCustomCodeChanged) {
+    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-custom">${widgetsConfig.custom.code}</div>`);
   }
 }
 
-const initWidgetsCSSVars = () => {
-  setPrimaryColors();
+const setWidgetsCSSVars = () => {
+  setWidgetPrimaryColors();
   root.style.setProperty("--widgetsCalendarWidth", widgetsConfig.calendar.width);
   root.style.setProperty("--widgetsWeatherWidth", widgetsConfig.weather.width);
 }
@@ -844,7 +835,7 @@ const main = async () => {
   readPluginSettings();
   initStyles();
   setTimeout(() => {
-    initGlobalCSSVars();
+    setGlobalCSSVars();
     render();
   }, timeout*2)
 
