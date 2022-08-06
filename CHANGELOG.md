@@ -1,3 +1,10 @@
+## [3.0.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.6...v3.0.7) (2022-08-06)
+
+
+### Bug Fixes
+
+* **quote:** icon change to SVG, colors, bg ([98abbf5](https://github.com/yoyurec/logseq-banners-plugin/commit/98abbf5074e312dafdf2d702b78c12cd6bbfc693))
+
 ## [3.0.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.0.5...v3.0.6) (2022-08-04)
 
 
