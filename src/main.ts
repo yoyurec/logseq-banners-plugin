@@ -743,18 +743,13 @@ const getWeatherHTML = async () => {
 
 // Render random quote widget
 const renderWidgetQuote = async () => {
+  doc.getElementById("banner-widgets-quote")?.remove();
   if (widgetsConfig.quote.enabled === "off" || (widgetsConfig.quote.enabled === "journals" && !(isHome || isJournal))) {
-    doc.getElementById("banner-widgets-quote")?.remove();
     return;
   }
   const quote = await getRandomQuote();
   if (quote) {
-    const bannerWidgetsQuoteText = doc.getElementById("banner-widgets-quote-text");
-    if (bannerWidgetsQuoteText) {
-      bannerWidgetsQuoteText.textContent = quote;
-    } else {
-      doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote"><span id="banner-widgets-quote-text">${quote}</span></div>`);
-    }
+    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote"><span id="banner-widgets-quote-text">${quote}</span></div>`);
     root.style.setProperty("--widgetsQuoteFS", getFontSize(quote.length));
   }
 }
@@ -791,7 +786,7 @@ const getRandomQuote = async () => {
   const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)][0];
   const randomQuoteContent: string = randomQuoteBlock.content || "";
   const regExpVal = new RegExp(`${widgetsConfig.quote.tag}`,"gi");
-  return randomQuoteContent.replace(regExpVal, "").trim();
+  return randomQuoteContent.replace(regExpVal, "").replace(/\*(.*)\*/g, "<i>$1</i>").trim();
 }
 
 // Render custom widget
