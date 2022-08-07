@@ -1,3 +1,10 @@
+## [3.1.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.3...v3.1.4) (2022-08-07)
+
+
+### Bug Fixes
+
+* **quote:** blick on render ([663b7b3](https://github.com/yoyurec/logseq-banners-plugin/commit/663b7b3a4ac1fd4dbece446329357f1783786c46))
+
 ## [3.1.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.2...v3.1.3) (2022-08-06)
 
 
