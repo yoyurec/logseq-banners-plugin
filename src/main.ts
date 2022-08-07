@@ -387,7 +387,7 @@ const encodeDefaultBanners = async () => {
   }
 }
 
-// Get RGB from any color
+// Get RGB from any color space
 const getRGBValues = (color: string) => {
   const canvas = document.createElement('canvas');
   canvas.height = 1;
@@ -399,7 +399,7 @@ const getRGBValues = (color: string) => {
   return `${rgbaArray[0]}, ${rgbaArray[1]}, ${rgbaArray[2]}`;
 }
 
-// Bg colors magic
+// Primary colors vars
 const setWidgetPrimaryColors = () => {
   const primaryTextcolor = getComputedStyle(top!.document.documentElement).getPropertyValue('--ls-primary-text-color').trim();
   root.style.setProperty("--widgetsTextColor", getRGBValues(primaryTextcolor));
@@ -642,6 +642,8 @@ const onSettingsChangedCallback = () => {
 const onPluginUnloadCallback = () => {
   // clean up
   top!.document.getElementById("banner")?.remove();
+  body.classList.remove("is-banner-active");
+  body.classList.remove("is-icon-active");
 }
 
 // Color mode changed
@@ -743,14 +745,18 @@ const getWeatherHTML = async () => {
 
 // Render random quote widget
 const renderWidgetQuote = async () => {
-  doc.getElementById("banner-widgets-quote")?.remove();
   if (widgetsConfig.quote.enabled === "off" || (widgetsConfig.quote.enabled === "journals" && !(isHome || isJournal))) {
+    doc.getElementById("banner-widgets-quote")?.remove();
     return;
   }
   const quote = await getRandomQuote();
-  if (quote) {
-    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote"><span id="banner-widgets-quote-text">${quote}</span></div>`);
-    root.style.setProperty("--widgetsQuoteFS", getFontSize(quote.length));
+  root.style.setProperty("--widgetsQuoteFS", getFontSize(quote.length));
+  const quoteTextEl = doc.getElementById("banner-widgets-quote-text");
+  if (quote && quoteTextEl) {
+    quoteTextEl.remove();
+    doc.getElementById("banner-widgets-quote-block")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote-text">${quote}</div>`);
+  } else {
+    doc.getElementById("banner-widgets")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote"><div id="banner-widgets-quote-block"><div id="banner-widgets-quote-text">${quote}</div></div></div>`);
   }
 }
 
@@ -850,7 +856,6 @@ const main = async () => {
   root = doc.documentElement;
   body = doc.body;
 
-  body.classList.add("is-banners-plugin-loaded");
   readPluginSettings();
   initStyles();
   setTimeout(() => {
@@ -876,14 +881,14 @@ const main = async () => {
       onSettingsChangedCallback();
     })
 
-    // Listen plugin unload
-    logseq.beforeunload( async () => {
-      onPluginUnloadCallback();
-    })
-
     // Listen for theme mode changed
     logseq.App.onThemeModeChanged( () => {
       onThemeModeChangedCallback();
+    })
+
+    // Listen plugin unload
+    logseq.beforeunload( async () => {
+      onPluginUnloadCallback();
     })
 
   }, 4000);

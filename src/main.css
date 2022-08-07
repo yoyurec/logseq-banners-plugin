@@ -135,6 +135,9 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     opacity: 1;
     transition: none;
 }
+#banner-widgets-calendar .calendar-day-today {
+    background-color: rgba(var(--widgetsBgColor), 0.5);
+}
 #banner-widgets-calendar .calendar-day:hover {
     background-color: rgba(var(--widgetsBgColor), 0.2);
 }
@@ -201,7 +204,7 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     background-color: rgba(var(--widgetsTextColor), 0.9);
 }
 
-#banner-widgets-quote-text {
+#banner-widgets-quote-block {
     max-width: 48ch;
     padding: 6px 12px;
     text-overflow: ellipsis;
@@ -219,7 +222,7 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 }
 
 @media (min-width: 1024px) {
-    #banner-widgets-quote-text {
+    #banner-widgets-quote-block {
         font-size: var(--widgetsQuoteFS);
     }
 }
