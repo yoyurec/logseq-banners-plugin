@@ -1,3 +1,10 @@
+## [3.1.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.5...v3.1.6) (2022-08-08)
+
+
+### Performance Improvements
+
+* **banner:** placeholder visibility on routheChange and initial styles ([5e39b05](https://github.com/yoyurec/logseq-banners-plugin/commit/5e39b052457b606a95638c77733087c2269738f9))
+
 ## [3.1.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.4...v3.1.5) (2022-08-08)
 
 
