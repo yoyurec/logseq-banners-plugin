@@ -618,10 +618,10 @@ const routeChangedCallback = () => {
   console.info(`#${pluginId}: page route changed`);
   // Content reloaded, so need reconnect props listeners
   propsChangedObserverStop();
+  // Rerender banner
+  render();
   setTimeout(() => {
     propsChangedObserverRun();
-    // Rerender banner
-    render();
   }, timeout)
 }
 
@@ -654,10 +654,9 @@ const renderPlaceholder = () => {
   if (!doc.getElementById("banner")) {
     const container = doc.getElementById("main-content-container");
     if (container) {
-      container.setAttribute("style", "display:block;margin-left:auto;margin-right:auto;");
       container.insertAdjacentHTML(
         "afterbegin",
-        `<div id="banner" style="position:relative;display:none;">
+        `<div id="banner">
           <div id="banner-widgets">
             <div id="banner-widgets-calendar"></div>
           </div>
@@ -813,7 +812,6 @@ const render = async () => {
   getPageType();
 
   if (!(isHome || isPage)) {
-    hidePlaceholder();
     clearBanner();
     clearIcon();
     return;
@@ -821,13 +819,10 @@ const render = async () => {
 
   hidePageProps();
 
-  renderPlaceholder();
-
   let pageAssetsData: AssetData | null = null;
   pageAssetsData = await getPageAssetsData();
   if (pageAssetsData) {
     if (!pageAssetsData.banner) {
-      hidePlaceholder();
       clearBanner();
       clearIcon();
       return;
@@ -852,6 +847,10 @@ const main = async () => {
 
   readPluginSettings();
   initStyles();
+
+  renderPlaceholder();
+  hidePlaceholder();
+
   setTimeout(() => {
     setGlobalCSSVars();
     render();

@@ -8,7 +8,14 @@
     position: relative;
 }
 #banner {
+    position: relative;
     display: none;
+    height: 0;
+    margin: 0 auto;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 50%;
 }
 .cp__sidebar-main-content {
     margin: 0 auto;
@@ -19,14 +26,8 @@
 
 /* Banner */
 body:is([data-page="page"], [data-page="home"]).is-banner-active #banner {
-    position: relative;
-    overflow: hidden;
     height: var(--bannerHeight);
-    margin: 0 auto;
     background-image: var(--pageBanner);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 50%;
     background-position-y: var(--bannerAlign);
 }
 
