@@ -155,13 +155,14 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 /* html[data-theme='dark'] #banner-widgets-weather {
     filter: hue-rotate(180deg) invert(1);
 } */
-.weatherText {
+#banner-widgets-weather .weather_text {
     font-size: 0.8em !important;
     font-weight: bold;
     text-align: center;
+    word-break: keep-all;
     color: rgba(var(--widgetsTextColor)) !important;
 }
-.weather_row {
+#banner-widgets-weather .weather_row {
     align-items: center;
     padding: 0 12px !important;
 }
@@ -169,18 +170,19 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     justify-content: flex-end !important;
     margin-right: 8px !important;
 }
-.weather_currentContainer > .weather_currentContainer {
+#banner-widgets-weather .weather_currentContainer > .weather_currentContainer {
     flex: initial !important;
     margin-top: 14px !important;
 }
-.weather_image {
+#banner-widgets-weather .weather_image {
     max-width: 46px !important;
     margin: -4px 8px !important;
 }
-.weather_currentContainer > .weather_currentContainer .weather_image{
+#banner-widgets-weather .weather_currentContainer > .weather_currentContainer .weather_image{
     max-width: 56px !important;
     margin-right: 0px !important;
 }
+
 
 /* Quote */
 #banner-widgets-quote {
