@@ -117,13 +117,6 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "7QOWaH4IPGGaAr4puql2",
   },
   {
-    key: "widgetsWeatherWidth",
-    title: "Weather widget width (in px)",
-    type: "string",
-    description: "",
-    default: "632px",
-  },
-  {
     key: "widgetsQuoteHeading",
     title: "Widgets: quote",
     //@ts-expect-error
@@ -306,7 +299,7 @@ const setGlobalCSSVars = () => {
 const readPluginSettings = () => {
   isWidgetsCustomCodeChanged = false;
   isWidgetsWeatherChanged = false;
-  oldWidgetsConfig = widgetsConfig;
+  oldWidgetsConfig = { ...widgetsConfig };
   widgetsConfig = {
     calendar: {},
     weather: {},
@@ -326,7 +319,6 @@ const readPluginSettings = () => {
       widgetsCalendarWidth: widgetsConfig.calendar.width,
       widgetsWeatherEnabled: widgetsConfig.weather.enabled,
       widgetsWeatherID: widgetsConfig.weather.id,
-      widgetsWeatherWidth: widgetsConfig.weather.width,
       widgetsQuoteEnabled: widgetsConfig.quote.enabled,
       widgetsQuoteTag: widgetsConfig.quote.tag,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
@@ -345,15 +337,17 @@ const readPluginSettings = () => {
       timeout
     } = logseq.settings);
   }
-  if (oldWidgetsConfig) {
-    if (widgetsConfig.custom.code !== oldWidgetsConfig.custom.code) {
-      isWidgetsCustomCodeChanged = true;
-    }
-    if (widgetsConfig.weather.id !== oldWidgetsConfig.weather.id) {
-      isWidgetsWeatherChanged = true;
-    }
-  }
   encodeDefaultBanners();
+}
+
+// Toggle features on settings changes
+const toggleFeatures = () => {
+  if (widgetsConfig.custom.code !== oldWidgetsConfig.custom.code) {
+    isWidgetsCustomCodeChanged = true;
+  }
+  if (widgetsConfig.weather.id !== oldWidgetsConfig.weather.id) {
+    isWidgetsWeatherChanged = true;
+  }
 }
 
 // Generate Base64 from image URL
@@ -635,6 +629,7 @@ const routeChangedCallback = () => {
 const onSettingsChangedCallback = () => {
   readPluginSettings();
   setGlobalCSSVars();
+  toggleFeatures();
   render();
 }
 
@@ -778,10 +773,10 @@ const getRandomQuote = async () => {
     [
       :find (pull ?b [*])
       :where
-          [?b :block/content ?c]
+          [?b :block/content ?content]
           (or
-              [(clojure.string/starts-with? ?c "${widgetsConfig.quote.tag} ")]
-              [(clojure.string/ends-with? ?c " ${widgetsConfig.quote.tag}")]
+              [(clojure.string/starts-with? ?content "${widgetsConfig.quote.tag} ")]
+              [(clojure.string/ends-with? ?content " ${widgetsConfig.quote.tag}")]
           )
     ]
   `;
@@ -810,7 +805,6 @@ const renderWidgetsCustom = async () => {
 const setWidgetsCSSVars = () => {
   setWidgetPrimaryColors();
   root.style.setProperty("--widgetsCalendarWidth", widgetsConfig.calendar.width);
-  root.style.setProperty("--widgetsWeatherWidth", widgetsConfig.weather.width);
 }
 
 

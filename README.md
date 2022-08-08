@@ -59,7 +59,6 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
 * Choose "Weather widget", set your city
 * Set "Number of days" - 2
 * ⚠ Copy YOUR personal widget ID and replace default in plugin Settings!
-* Adjust weather width, so your city name is hidden on left
 
 ### Random quote
 * Set your `#tag` in plugin Settings
