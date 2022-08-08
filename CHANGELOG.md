@@ -1,3 +1,10 @@
+## [3.1.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.6...v3.1.7) (2022-08-08)
+
+
+### Bug Fixes
+
+* **weather:** add text no word wrap ([68b48d2](https://github.com/yoyurec/logseq-banners-plugin/commit/68b48d2ace1e09dc0f992597d23c263e8c45d606))
+
 ## [3.1.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.5...v3.1.6) (2022-08-08)
 
 
