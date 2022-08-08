@@ -16,7 +16,7 @@ Enliven your Logseq Workspace with gorgeous, custom, Notion style page banners a
     * 🌤 Weather
     * 🍅 Pomodoro
     * 💬 Random quote
-* Options for widgets "off / journals / everywhere"
+* Options for widgets `off / journals / everywhere`
 * Separate settings for each widget
 
 ## Instructions
@@ -76,6 +76,14 @@ For more tune use your own `custom.css` to position widgets iframes inside of ba
     * Search terms. Add comma separated terms after `?` at the end (for default settings or in props at specific page): `https://source.unsplash.com/1600x900?red,house`
 
 For ex. "Dafault journal banner" - `https://source.unsplash.com/featured/1600x900?diary`
+
+## What is Logseq?
+Logseq is a privacy-first, open-source knowledge base. Visit https://logseq.com for more information.
+
+## Support
+* Read about Logseq plugin updates on Dicscord - https://discord.com/channels/725182569297215569/896368413243494430
+* Ask about Logseq plugins on Dicscord - https://discord.com/channels/725182569297215569/752845167030960141
+* If you have any questions, issues or feature request, use the issue submission on GitHub: https://github.com/yoyurec/logseq-banners-plugin/issues
 
 ## Credits
 - This plugin was originally created by [@sawhney17](https://github.com/sawhney17) (buy him a coffee also! https://www.buymeacoffee.com/sawhney17 ☕)
