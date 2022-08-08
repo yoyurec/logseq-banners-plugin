@@ -1,3 +1,10 @@
+## [3.1.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.4...v3.1.5) (2022-08-08)
+
+
+### Bug Fixes
+
+* **widgets:** configuration change listener ([181f226](https://github.com/yoyurec/logseq-banners-plugin/commit/181f22649f5767ec83ea9aa93a87c839a049ad8a))
+
 ## [3.1.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.3...v3.1.4) (2022-08-07)
 
 
