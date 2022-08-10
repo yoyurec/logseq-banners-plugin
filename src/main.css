@@ -152,6 +152,8 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     align-items: flex-end;
     width: calc(var(--widgetsCalendarWidth) * 0.93);
     text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 #banner-widgets-weather .weather_text {
     font-size: 0.8em !important;
