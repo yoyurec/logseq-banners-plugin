@@ -1,3 +1,10 @@
+## [3.1.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.7...v3.1.8) (2022-08-10)
+
+
+### Bug Fixes
+
+* **weather:** sizes and colors detection timeout ([6245ca1](https://github.com/yoyurec/logseq-banners-plugin/commit/6245ca1bb0c283d9f5c0633daaf65221adf82aca))
+
 ## [3.1.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.6...v3.1.7) (2022-08-08)
 
 
