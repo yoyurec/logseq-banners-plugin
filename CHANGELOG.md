@@ -1,3 +1,10 @@
+## [3.1.10](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.9...v3.1.10) (2022-08-10)
+
+
+### Bug Fixes
+
+* **weather:** font unbold ([441406f](https://github.com/yoyurec/logseq-banners-plugin/commit/441406fe6435a94565f79c11e8c0565ad8248afd))
+
 ## [3.1.9](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.8...v3.1.9) (2022-08-10)
 
 
