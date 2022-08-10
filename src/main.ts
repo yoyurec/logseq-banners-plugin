@@ -645,7 +645,7 @@ const onPluginUnloadCallback = () => {
 const onThemeModeChangedCallback = () => {
   setTimeout(() => {
     setWidgetPrimaryColors();
-  }, 100)
+  }, 300)
 }
 
 // Render placeholder
@@ -802,7 +802,9 @@ const renderWidgetsCustom = async () => {
 }
 
 const setWidgetsCSSVars = () => {
-  setWidgetPrimaryColors();
+  setTimeout(() => {
+    setWidgetPrimaryColors();
+  }, 300)
   root.style.setProperty("--widgetsCalendarWidth", widgetsConfig.calendar.width);
 }
 
