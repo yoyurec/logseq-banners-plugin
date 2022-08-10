@@ -1,3 +1,10 @@
+## [3.1.9](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.8...v3.1.9) (2022-08-10)
+
+
+### Bug Fixes
+
+* **weather:** font family system ([1696556](https://github.com/yoyurec/logseq-banners-plugin/commit/1696556fc327cc94a8d66b6cf08f5c380a17ba2e))
+
 ## [3.1.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.7...v3.1.8) (2022-08-10)
 
 
