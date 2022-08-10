@@ -157,7 +157,6 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 }
 #banner-widgets-weather .weather_text {
     font-size: 0.8em !important;
-    font-weight: bold;
     text-align: center;
     word-break: keep-all;
     color: rgba(var(--widgetsTextColor)) !important;
