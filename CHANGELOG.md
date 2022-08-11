@@ -1,3 +1,10 @@
+## [3.1.12](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.11...v3.1.12) (2022-08-11)
+
+
+### Bug Fixes
+
+* **banners:** default size 300px -> 280px ([5133198](https://github.com/yoyurec/logseq-banners-plugin/commit/5133198bdb403d001d936a6b649bca03c712aa19))
+
 ## [3.1.11](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.10...v3.1.11) (2022-08-11)
 
 
