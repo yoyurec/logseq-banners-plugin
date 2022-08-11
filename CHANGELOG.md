@@ -1,3 +1,10 @@
+## [3.1.11](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.10...v3.1.11) (2022-08-11)
+
+
+### Bug Fixes
+
+* **weather:** today forecast vertical align ([4654196](https://github.com/yoyurec/logseq-banners-plugin/commit/46541960fda9fd82fa62858a425058ebe8e298dd))
+
 ## [3.1.10](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.9...v3.1.10) (2022-08-10)
 
 
