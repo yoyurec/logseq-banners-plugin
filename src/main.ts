@@ -178,7 +178,7 @@ const settingsArray: SettingSchemaDesc[] = [
     title: "Banner height for journal & home page",
     type: "string",
     description: "",
-    default: "300px",
+    default: "280px",
   },
   {
     key: "journalBannerAlign",
@@ -219,7 +219,7 @@ const settingsArray: SettingSchemaDesc[] = [
     title: "Banner height for common page",
     type: "string",
     description: "",
-    default: "200px",
+    default: "280px",
   },
   {
     key: "pageBannerAlign",
