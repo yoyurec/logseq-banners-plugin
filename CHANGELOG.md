@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.0...v3.3.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **quote:** text line height ([137c577](https://github.com/yoyurec/logseq-banners-plugin/commit/137c577e4b2e7e9d7c196d0a67d96fe0c10b70b8))
+
 # [3.3.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.2.0...v3.3.0) (2022-08-15)
 
 
