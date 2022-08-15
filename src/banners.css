@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@500&display=swap");
 
 /* Comomon layout */
 #main-content-container {
@@ -32,7 +32,7 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active #banner {
 }
 
 /* Icon */
-body[data-page="home"].is-icon-active .journal-item:first-of-type>.page>.flex-col>.content>.flex-1::before,
+body[data-page="home"].is-icon-active .journal-item:first-of-type>.page>.flex-col:first-child>.content>.flex-1::before,
 body[data-page="page"].is-icon-active .page>.relative>.flex-row>.flex-1::before {
     content: var(--pageIcon);
     font-size: var(--iconWidth);
@@ -208,16 +208,14 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     mask-size: cover;
     background-color: rgba(var(--widgetsTextColor), 0.9);
 }
-
 #banner-widgets-quote-block {
     max-width: 48ch;
-    padding: 6px 12px;
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 7;
     -webkit-box-orient: vertical;
-    font-family: 'Fira Sans Condensed', sans-serif;
+    font-family: "Fira Sans Condensed", sans-serif;
     font-size: calc(var(--widgetsQuoteFS) * 0.8);
     line-height: 1.2em;
     text-align: right;
@@ -225,11 +223,15 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
     background-color: rgba(var(--widgetsBgColor), 0.7);
 }
-
 @media (min-width: 1024px) {
     #banner-widgets-quote-block {
         font-size: var(--widgetsQuoteFS);
     }
+}
+#banner-widgets-quote-link {
+    display: block;
+    padding: 6px 12px;
+    color: var(--ls-primary-text-color);
 }
 
 /* Custom */

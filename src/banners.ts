@@ -1,9 +1,9 @@
 import "@logseq/libs";
 
 import { logseq as PL } from "../package.json";
-import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
+import { SettingSchemaDesc, AppGraphInfo } from "@logseq/libs/dist/LSPlugin.user";
 
-import mainStyles from "./main.css?raw";
+import mainStyles from "./banners.css?raw";
 
 type AssetDataList = {
   [prop: string]: AssetData;
@@ -41,6 +41,7 @@ let isJournal: boolean;
 let isHome: boolean;
 let isPage: boolean;
 
+let currentGraph: AppGraphInfo | null;
 let defaultConfig: AssetDataList;
 let customPropsConfig: AssetDataList;
 let widgetsConfig: WidgetsConfig;
@@ -61,185 +62,192 @@ const settingsWidgetsCustomCode = `<iframe id="banner-widgets-pomo" src="https:/
 const settingsArray: SettingSchemaDesc[] = [
   {
     key: "generalHeading",
-    title: "General settings",
+    title: "⚙ General settings",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "hidePluginProps",
     title: "",
-    type: "boolean",
     description: "Hide plugin related page props? (will be shown only on edit)",
-    default: "false",
+    type: "boolean",
+    default: true,
   },
   {
     key: "widgetsCalendarHeading",
-    title: "Widgets: calendar",
+    title: "📅 Widgets: calendar",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "widgetsCalendarEnabled",
-    type: "enum",
-    default: "journals",
     title: "Show calendar?",
     description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
-    enumChoices: ["off", "journals", "everywhere"],
+    type: "enum",
     enumPicker: "radio",
+    enumChoices: ["off", "journals", "everywhere"],
+    default: "journals",
   },
   {
     key: "widgetsCalendarWidth",
     title: "Block calendar widget width (in px)",
-    type: "string",
     description: "",
+    type: "string",
     default: "380px",
   },
   {
     key: "widgetsWeatherHeading",
-    title: "Widgets: weather",
+    title: "⛅ Widgets: weather",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "widgetsWeatherEnabled",
-    type: "enum",
-    default: "journals",
     title: "Show weather?",
     description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
-    enumChoices: ["off", "journals", "everywhere"],
+    type: "enum",
     enumPicker: "radio",
+    enumChoices: ["off", "journals", "everywhere"],
+    default: "journals",
   },
   {
     key: "widgetsWeatherID",
     title: "Weather ID",
-    type: "string",
     description: "",
+    type: "string",
     default: "7QOWaH4IPGGaAr4puql2",
   },
   {
     key: "widgetsQuoteHeading",
-    title: "Widgets: quote",
+    title: "💬 Widgets: quote",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "widgetsQuoteEnabled",
-    type: "enum",
-    default: "journals",
     title: "Show random #quote?",
     description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
-    enumChoices: ["off", "journals", "everywhere"],
+    type: "enum",
     enumPicker: "radio",
+    enumChoices: ["off", "journals", "everywhere"],
+    default: "journals",
   },
   {
     key: "widgetsQuoteTag",
     title: "Show random quotes with this tag (case sensitive!)",
-    type: "string",
     description: "",
+    type: "string",
     default: "#quote",
   },
   {
+    key: "widgetsQuoteCleanup",
+    title: "Cleanup RegEx for quote text",
+    description: "",
+    type: "string",
+    default: "(^(TODO|NOW))|(==)|(\^\^)|(id::.*)|(SCHEDULED:.<.*>)",
+  },
+  {
     key: "widgetsCustomHeading",
-    title: "Widgets: custom",
+    title: "📊 Widgets: custom",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "widgetsCustomEnabled",
-    type: "enum",
-    default: "everywhere",
     title: "Show custom?",
     description: "⚠ check readme for instructions! https://github.com/yoyurec/logseq-banners-plugin",
-    enumChoices: ["off", "journals", "everywhere"],
+    type: "enum",
     enumPicker: "radio",
+    enumChoices: ["off", "journals", "everywhere"],
+    default: "everywhere",
   },
   {
     key: "widgetsCustomCode",
     title: "",
-    type: "string",
     description: "Show custom HTML (iframe for ex.) as widget",
+    type: "string",
     default: settingsWidgetsCustomCode,
   },
   {
     key: "journalHeading",
-    title: "Journal and home settings",
+    title: "📆 Journal and home settings",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "defaultJournalBanner",
     title: "Default banner for journal and home page (set empty to disable)",
-    type: "string",
     description: "",
+    type: "string",
     default: settingsDefaultJournalBanner,
   },
   {
     key: "journalBannerHeight",
     title: "Banner height for journal & home page",
-    type: "string",
     description: "",
+    type: "string",
     default: "280px",
   },
   {
     key: "journalBannerAlign",
     title: "Default banner vertical align for journal and home page",
-    type: "string",
     description: "",
+    type: "string",
     default: "50%"
   },
   {
     key: "defaultJournalIcon",
     title: "Default icon (emoji) for journal and home page (set empty to disable)",
-    type: "string",
     description: "",
+    type: "string",
     default: "📅",
   },
   {
     key: "journalIconWidth",
     title: "Icon width for journal & home page (in px)",
-    type: "string",
     description: "",
+    type: "string",
     default: "50px",
   },
   {
     key: "pageHeading",
-    title: "Common page settings",
+    title: "📄 Common page settings",
     //@ts-expect-error
     type: "heading"
   },
   {
     key: "defaultPageBanner",
     title: "Default banner for common page (set empty to disable)",
-    type: "string",
     description: "",
+    type: "string",
     default: settingsDefaultPageBanner,
   },
   {
     key: "pageBannerHeight",
     title: "Banner height for common page",
-    type: "string",
     description: "",
+    type: "string",
     default: "280px",
   },
   {
     key: "pageBannerAlign",
     title: "Default banner vertical align for common page",
-    type: "string",
     description: "",
+    type: "string",
     default: "50%"
   },
   {
     key: "defaultPageIcon",
     title: "Default icon (emoji) for common page (set empty to disable)",
-    type: "string",
     description: "",
+    type: "string",
     default: "📄",
   },
   {
     key: "pageIconWidth",
     title: "Icon width for common page (in px)",
-    type: "string",
     description: "",
+    type: "string",
     default: "40px",
   },
   {
@@ -258,8 +266,8 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "customPropsConfig",
     title: "Advanced custom pages banners and icons config",
-    type: "object",
     description: "",
+    type: "object",
     default: {
       "pageType": {
         "evrgrn": {
@@ -281,8 +289,8 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "timeout",
     title: "Banner render timeout",
-    type: "number",
     description: "If your Logseq pages too slow and render glitches - try set bigger value...500, 1000, 1500 (milliseconds). Caution! Banners will render slower (but morre stable)!",
+    type: "number",
     default: "100",
   }
 ]
@@ -321,6 +329,7 @@ const readPluginSettings = () => {
       widgetsWeatherID: widgetsConfig.weather.id,
       widgetsQuoteEnabled: widgetsConfig.quote.enabled,
       widgetsQuoteTag: widgetsConfig.quote.tag,
+      widgetsQuoteCleanup: widgetsConfig.quote.cleanup,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
       widgetsCustomCode: widgetsConfig.custom.code,
       defaultPageBanner: defaultConfig.page.banner,
@@ -513,8 +522,7 @@ const renderImage = async (pageAssetsData: AssetData): Promise<boolean> => {
     // }
     // if local image from assets folder
     if (pageAssetsData.banner.startsWith("../")) {
-      const graphPath = (await logseq.App.getCurrentGraph())?.path;
-      pageAssetsData.banner = encodeURI("assets://" + graphPath + pageAssetsData.banner.replace("..", ""));
+      pageAssetsData.banner = encodeURI("assets://" + currentGraph?.path + pageAssetsData.banner.replace("..", ""));
     }
     // const bannerImage = await getImagebyURL(pageAssetsData.banner);
     // if (bannerImage) {
@@ -633,6 +641,18 @@ const onSettingsChangedCallback = () => {
   render();
 }
 
+// Color mode changed
+const onThemeModeChangedCallback = () => {
+  setTimeout(() => {
+    setWidgetPrimaryColors();
+  }, 300)
+}
+
+// Graph changed
+const onCurrentGraphChangedCallback = async () => {
+  currentGraph = (await logseq.App.getCurrentGraph());
+}
+
 // Plugin unloaded
 const onPluginUnloadCallback = () => {
   // clean up
@@ -641,12 +661,6 @@ const onPluginUnloadCallback = () => {
   body.classList.remove("is-icon-active");
 }
 
-// Color mode changed
-const onThemeModeChangedCallback = () => {
-  setTimeout(() => {
-    setWidgetPrimaryColors();
-  }, 300)
-}
 
 // Render placeholder
 const renderPlaceholder = () => {
@@ -770,23 +784,35 @@ const getRandomQuote = async () => {
   // [(clojure.string/starts-with? ?c "#+BEGIN_QUOTE")]
   let query = `
     [
-      :find (pull ?b [*])
+      :find ?content ?page-title
       :where
-          [?b :block/content ?content]
+          [?id :block/content ?content]
           (or
-              [(clojure.string/starts-with? ?content "${widgetsConfig.quote.tag} ")]
-              [(clojure.string/ends-with? ?content " ${widgetsConfig.quote.tag}")]
+              [(clojure.string/starts-with? ?content "#quote ")]
+              [(clojure.string/ends-with? ?content " #quote")]
           )
+          [?id :block/page ?page-id]
+          [?page-id :block/original-name ?page-title]
     ]
   `;
   let quotesList = await logseq.DB.datascriptQuery(query);
   if (!quotesList.length) {
     return "";
   }
-  const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)][0];
-  const randomQuoteContent: string = randomQuoteBlock.content || "";
-  const regExpVal = new RegExp(`${widgetsConfig.quote.tag}`,"gi");
-  return randomQuoteContent.replace(regExpVal, "").replace(/\*(.*)\*/g, "<i>$1</i>").trim();
+  const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)];
+  let quoteHTML = randomQuoteBlock[0];
+  // Delete searched tag
+  const regExpTag = new RegExp(`${widgetsConfig.quote.tag}`,"gi");
+  quoteHTML = quoteHTML.replace(regExpTag, "").replace(/\n/g, "").trim();
+  // Cleanup
+  const regExpCleanup = new RegExp(`${widgetsConfig.quote.cleanup}`,"g");
+  quoteHTML = quoteHTML.replace(regExpCleanup, "").trim();
+  // Add Markdown bold & italic to HTML
+  quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>");
+  const pageTitle = randomQuoteBlock[1];
+  const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?page=${pageTitle}`);
+  quoteHTML = `<a href=${pageURL} title="${pageTitle}" id="banner-widgets-quote-link">${quoteHTML}</a>`;
+  return quoteHTML;
 }
 
 // Render custom widget
@@ -824,7 +850,7 @@ const render = async () => {
   let pageAssetsData: AssetData | null = null;
   pageAssetsData = await getPageAssetsData();
   if (pageAssetsData) {
-    if (!pageAssetsData.banner) {
+    if (!pageAssetsData.banner || pageAssetsData.banner === "false" || pageAssetsData.banner === "none" || pageAssetsData.banner === '""'  || pageAssetsData.banner === "''") {
       clearBanner();
       clearIcon();
       return;
@@ -842,18 +868,20 @@ const render = async () => {
 const main = async () => {
   console.info(`#${pluginId}: MAIN`);
 
+  currentGraph = (await logseq.App.getCurrentGraph());
+
   logseq.useSettingsSchema(settingsArray);
   doc = top!.document;
   root = doc.documentElement;
   body = doc.body;
 
-  readPluginSettings();
   initStyles();
 
   renderPlaceholder();
   hidePlaceholder();
 
   setTimeout(() => {
+    readPluginSettings();
     setGlobalCSSVars();
     render();
   }, timeout*2)
@@ -879,6 +907,11 @@ const main = async () => {
     // Listen for theme mode changed
     logseq.App.onThemeModeChanged( () => {
       onThemeModeChangedCallback();
+    })
+
+    // Listen for grapth changed
+    logseq.App.onCurrentGraphChanged( () => {
+      onCurrentGraphChangedCallback();
     })
 
     // Listen plugin unload
