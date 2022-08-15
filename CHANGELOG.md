@@ -1,3 +1,10 @@
+## [3.3.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.3...v3.3.4) (2022-08-15)
+
+
+### Bug Fixes
+
+* **quote:** delete empty placeholder ([accf186](https://github.com/yoyurec/logseq-banners-plugin/commit/accf18611c35285615163f273b630482229747a6))
+
 ## [3.3.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.2...v3.3.3) (2022-08-15)
 
 
