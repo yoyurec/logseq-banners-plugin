@@ -1,3 +1,10 @@
+## [3.3.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.1...v3.3.2) (2022-08-15)
+
+
+### Bug Fixes
+
+* **quotes:** query search value ([beeb587](https://github.com/yoyurec/logseq-banners-plugin/commit/beeb587fcb5c97aeb52b319136f41d4e682cb51f))
+
 ## [3.3.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.0...v3.3.1) (2022-08-15)
 
 
