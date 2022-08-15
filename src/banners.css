@@ -217,7 +217,6 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     -webkit-box-orient: vertical;
     font-family: "Fira Sans Condensed", sans-serif;
     font-size: calc(var(--widgetsQuoteFS) * 0.8);
-    line-height: 1.2em;
     text-align: right;
     border-radius: 6px;
     text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
@@ -233,8 +232,9 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     padding: 6px 12px;
     color: var(--ls-primary-text-color);
 }
-#banner-widgets-quote-link {
+#banner-widgets-quote-text {
     font-size: var(--widgetsQuoteSize, 100%);
+    line-height: 1.2em;
 }
 
 /* Custom */
