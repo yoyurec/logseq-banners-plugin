@@ -766,10 +766,14 @@ const renderWidgetQuote = async () => {
     return;
   }
   const quote = await getRandomQuote();
+  if (!quote) {
+    doc.getElementById("banner-widgets-quote")?.remove();
+    return;
+  }
   root.style.setProperty("--widgetsQuoteFS", getFontSize(quote.length));
   root.style.setProperty("--widgetsQuoteSize", widgetsConfig.quote.size);
   const quoteTextEl = doc.getElementById("banner-widgets-quote-text");
-  if (quote && quoteTextEl) {
+  if (quoteTextEl) {
     quoteTextEl.remove();
     doc.getElementById("banner-widgets-quote-block")?.insertAdjacentHTML("beforeend", `<div id="banner-widgets-quote-text">${quote}</div>`);
   } else {
