@@ -140,6 +140,13 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "#quote",
   },
   {
+    key: "widgetsQuoteSize",
+    title: "Quote font size (relative to default calculated, in %)",
+    description: "",
+    type: "string",
+    default: "100%",
+  },
+  {
     key: "widgetsQuoteCleanup",
     title: "Cleanup RegEx for quote text",
     description: "",
@@ -329,6 +336,7 @@ const readPluginSettings = () => {
       widgetsWeatherID: widgetsConfig.weather.id,
       widgetsQuoteEnabled: widgetsConfig.quote.enabled,
       widgetsQuoteTag: widgetsConfig.quote.tag,
+      widgetsQuoteSize: widgetsConfig.quote.size,
       widgetsQuoteCleanup: widgetsConfig.quote.cleanup,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
       widgetsCustomCode: widgetsConfig.custom.code,
@@ -759,6 +767,7 @@ const renderWidgetQuote = async () => {
   }
   const quote = await getRandomQuote();
   root.style.setProperty("--widgetsQuoteFS", getFontSize(quote.length));
+  root.style.setProperty("--widgetsQuoteSize", widgetsConfig.quote.size);
   const quoteTextEl = doc.getElementById("banner-widgets-quote-text");
   if (quote && quoteTextEl) {
     quoteTextEl.remove();

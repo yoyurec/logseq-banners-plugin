@@ -233,6 +233,9 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     padding: 6px 12px;
     color: var(--ls-primary-text-color);
 }
+#banner-widgets-quote-link {
+    font-size: var(--widgetsQuoteSize, 100%);
+}
 
 /* Custom */
 /* #banner-widgets-custom {
