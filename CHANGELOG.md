@@ -1,3 +1,10 @@
+# [3.3.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.2.0...v3.3.0) (2022-08-15)
+
+
+### Features
+
+* **quote:** option to set quote text relative font size ([2db0606](https://github.com/yoyurec/logseq-banners-plugin/commit/2db0606477c7ceb763f27e1bb717000fc47e7caa))
+
 # [3.2.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.12...v3.2.0) (2022-08-15)
 
 
