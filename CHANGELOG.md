@@ -1,3 +1,10 @@
+## [3.3.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.2...v3.3.3) (2022-08-15)
+
+
+### Bug Fixes
+
+* **weather:** more compact text and icons ([a4accbc](https://github.com/yoyurec/logseq-banners-plugin/commit/a4accbc9821d3b84258e77f894b4c24bd2b5228d))
+
 ## [3.3.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.1...v3.3.2) (2022-08-15)
 
 
