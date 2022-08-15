@@ -797,8 +797,8 @@ const getRandomQuote = async () => {
       :where
           [?id :block/content ?content]
           (or
-              [(clojure.string/starts-with? ?content "#quote ")]
-              [(clojure.string/ends-with? ?content " #quote")]
+              [(clojure.string/starts-with? ?content "${widgetsConfig.quote.tag} ")]
+              [(clojure.string/ends-with? ?content " ${widgetsConfig.quote.tag}")]
           )
           [?id :block/page ?page-id]
           [?page-id :block/original-name ?page-title]
