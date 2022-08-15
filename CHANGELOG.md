@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.12...v3.2.0) (2022-08-15)
+
+
+### Features
+
+* **quote:** text cleanup with RegEx, text linked to original page ([b692e06](https://github.com/yoyurec/logseq-banners-plugin/commit/b692e066d54e737524bd40cc5bc6487a4fa68a20))
+
 ## [3.1.12](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.1.11...v3.1.12) (2022-08-11)
 
 
