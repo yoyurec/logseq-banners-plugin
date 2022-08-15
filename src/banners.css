@@ -146,13 +146,18 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 /* Weather */
 #banner-widgets-weather {
     position: absolute;
-    bottom: 4px;
+    bottom: 0;
     left: 0;
     display: flex;
     align-items: center;
     width: calc(var(--widgetsCalendarWidth) * 0.93);
+    padding: 0 10px;
     text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
+    line-height: 1.2;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+#banner-widgets-weather .weather_dailyForecastContainerWithDots {
+    margin-bottom: 32px !important;
 }
 #banner-widgets-weather .weather_text {
     font-size: 0.8em !important;
@@ -160,9 +165,11 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     word-break: keep-all;
     color: rgba(var(--widgetsTextColor)) !important;
 }
+#banner-widgets-weather .weather_dailyContainer .weather_text {
+    display: inline;
+}
 #banner-widgets-weather .weather_row {
     align-items: center;
-    padding: 0 12px !important;
 }
 #banner-widgets-weather > .weather_currentContainer {
     justify-content: flex-end !important;
@@ -171,16 +178,32 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 #banner-widgets-weather .weather_currentContainer > .weather_currentContainer {
     flex: initial !important;
 }
-#banner-widgets-weather .weather_image {
-    margin: -4px 8px !important;
+#banner-widgets-weather .weather_degreeRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+#banner-widgets-weather .col-xl {
+    white-space: nowrap;
+}
+#banner-widgets-weather .col-xl:last-child::before {
+    content: "\00a0(";
+}
+#banner-widgets-weather .col-xl:last-child::after {
+    content: ")";
+}
+#banner-widgets-weather .weather_dailyContainer .weather_image {
+    width: 32px;
+    height: 32px;
 }
 #banner-widgets-weather .weather_text + div {
     overflow: hidden;
-    height: 30px;
+    height: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
-#banner-widgets-weather .weather_currentContainer > .weather_currentContainer .weather_image{
+#banner-widgets-weather .weather_currentContainer > .weather_currentContainer .weather_image {
     max-width: 50px !important;
     margin-right: 0px !important;
 }
