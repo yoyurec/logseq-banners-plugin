@@ -865,7 +865,7 @@ const render = async () => {
   let pageAssetsData: AssetData | null = null;
   pageAssetsData = await getPageAssetsData();
   if (pageAssetsData) {
-    if (!pageAssetsData.banner || pageAssetsData.banner === "false" || pageAssetsData.banner === "none" || pageAssetsData.banner === '""'  || pageAssetsData.banner === "''") {
+    if (!pageAssetsData.banner || pageAssetsData.banner === "false" || pageAssetsData.banner === "off" || pageAssetsData.banner === "none" || pageAssetsData.banner === '""'  || pageAssetsData.banner === "''") {
       clearBanner();
       clearIcon();
       return;

@@ -42,6 +42,7 @@ body[data-page="page"].is-icon-active .page>.relative>.flex-row>.flex-1::before 
     z-index: 2;
     transform: translateY(-55%);
     line-height: initial;
+    opacity: 0.9;
 }
 body[data-page="home"].is-icon-active .journal-item:first-of-type .journal-title,
 body[data-page="page"].is-icon-active .page-title,
