@@ -27,6 +27,14 @@
 /* Banner */
 body:is([data-page="page"], [data-page="home"]).is-banner-active #banner {
     height: var(--bannerHeight);
+}
+body:is([data-page="page"], [data-page="home"]).is-banner-active #banner::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
     background-image: var(--pageBanner);
     background-position-y: var(--bannerAlign);
 }
