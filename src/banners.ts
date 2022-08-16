@@ -147,11 +147,11 @@ const settingsArray: SettingSchemaDesc[] = [
     default: "100%",
   },
   {
-    key: "widgetsQuoteCleanup",
+    key: "widgetsQuoteCleanupRegEx",
     title: "Cleanup RegEx for quote text",
     description: "",
     type: "string",
-    default: "(^(TODO|NOW))|(==)|(\^\^)|(id::.*)|(SCHEDULED:.<.*>)",
+    default: "(^(TODO|NOW))|(id::.*)|(SCHEDULED:.<.*>)",
   },
   {
     key: "widgetsCustomHeading",
@@ -337,7 +337,7 @@ const readPluginSettings = () => {
       widgetsQuoteEnabled: widgetsConfig.quote.enabled,
       widgetsQuoteTag: widgetsConfig.quote.tag,
       widgetsQuoteSize: widgetsConfig.quote.size,
-      widgetsQuoteCleanup: widgetsConfig.quote.cleanup,
+      widgetsQuoteCleanupRegEx: widgetsConfig.quote.cleanup,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
       widgetsCustomCode: widgetsConfig.custom.code,
       defaultPageBanner: defaultConfig.page.banner,
@@ -820,6 +820,8 @@ const getRandomQuote = async () => {
   // Cleanup
   const regExpCleanup = new RegExp(`${widgetsConfig.quote.cleanup}`,"g");
   quoteHTML = quoteHTML.replace(regExpCleanup, "").trim();
+  // Delete mark
+  quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
   // Add Markdown bold & italic to HTML
   quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>");
   const pageTitle = randomQuoteBlock[1];
