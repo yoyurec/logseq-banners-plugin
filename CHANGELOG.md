@@ -1,3 +1,10 @@
+## [3.3.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.4...v3.3.5) (2022-08-16)
+
+
+### Bug Fixes
+
+* **quote:** regEx and mark cleanup ([1fd9dce](https://github.com/yoyurec/logseq-banners-plugin/commit/1fd9dced484e1aa70d9d687ef615307e5d764dcf))
+
 ## [3.3.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.3...v3.3.4) (2022-08-15)
 
 

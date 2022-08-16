@@ -1,7 +1,7 @@
 {
   "name": "logseq-banners-plugin",
   "description": "Enliven your notes with custom Notion style banners and icons!",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "author": "yoyurec <yoyurec@gmail.com>",
   "main": "dist/index.html",
   "scripts": {
