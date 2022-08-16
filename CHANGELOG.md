@@ -1,3 +1,10 @@
+## [3.3.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.6...v3.3.7) (2022-08-16)
+
+
+### Bug Fixes
+
+* **banners:** move image to pseudoelement ([ceaf3f8](https://github.com/yoyurec/logseq-banners-plugin/commit/ceaf3f804f13b531374274fa72b7823d444fdf2a))
+
 ## [3.3.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.5...v3.3.6) (2022-08-16)
 
 
