@@ -1,3 +1,10 @@
+## [3.3.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.5...v3.3.6) (2022-08-16)
+
+
+### Bug Fixes
+
+* **icon:** add little opacity for better dark mode ([6793769](https://github.com/yoyurec/logseq-banners-plugin/commit/679376918d1be8081b6f3e08783934098d7c8c00))
+
 ## [3.3.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.4...v3.3.5) (2022-08-16)
 
 
