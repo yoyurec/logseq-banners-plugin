@@ -1,3 +1,10 @@
+## [3.3.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.7...v3.3.8) (2022-08-17)
+
+
+### Bug Fixes
+
+* **quote:** add max-with for responsive size ([14b556a](https://github.com/yoyurec/logseq-banners-plugin/commit/14b556ae6e42e57e8e1c9bc6634907c3743087cf))
+
 ## [3.3.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.6...v3.3.7) (2022-08-16)
 
 
