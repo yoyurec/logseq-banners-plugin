@@ -35,9 +35,10 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active #banner::before
     bottom: 0;
     left: 0;
     content: "";
+    background-repeat: no-repeat;
+    background-size: cover;
     background-image: var(--pageBanner);
     background-position-y: var(--bannerAlign);
-    background-repeat: no-repeat;
 }
 
 /* Icon */
