@@ -37,6 +37,7 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active #banner::before
     content: "";
     background-image: var(--pageBanner);
     background-position-y: var(--bannerAlign);
+    background-repeat: no-repeat;
 }
 
 /* Icon */
@@ -221,6 +222,7 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
 /* Quote */
 #banner-widgets-quote {
     position: relative;
+    max-width: calc(100% - var(--widgetsCalendarWidth));
     margin: 6px 8px;
     filter: drop-shadow(0px 0px 2px rgba(var(--widgetsTextColor), 0.2)) drop-shadow(-2px -2px 0px rgba(var(--widgetsBgColor), 0.8))
 }
@@ -241,7 +243,6 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     background-color: rgba(var(--widgetsTextColor), 0.9);
 }
 #banner-widgets-quote-block {
-    max-width: 48ch;
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
@@ -265,6 +266,7 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     color: var(--ls-primary-text-color);
 }
 #banner-widgets-quote-text {
+    max-width: 48ch;
     font-size: var(--widgetsQuoteSize, 100%);
     line-height: 1.2em;
 }

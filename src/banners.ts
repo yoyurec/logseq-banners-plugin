@@ -823,7 +823,7 @@ const getRandomQuote = async () => {
   // Delete mark
   quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
   // Add Markdown bold & italic to HTML
-  quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>");
+  quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>").replace(/_(.*)_/g, "<i>$1</i>");
   const pageTitle = randomQuoteBlock[1];
   const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?page=${pageTitle}`);
   quoteHTML = `<a href=${pageURL} title="${pageTitle}" id="banner-widgets-quote-link">${quoteHTML}</a>`;
