@@ -266,7 +266,7 @@ body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.t
     color: var(--ls-primary-text-color);
 }
 #banner-widgets-quote-text {
-    max-width: 48ch;
+    max-width: var(--widgetsQuoteMaxWidth, 48ch);
     font-size: var(--widgetsQuoteSize, 100%);
     line-height: 1.2em;
 }
