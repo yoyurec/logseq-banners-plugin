@@ -1,3 +1,10 @@
+## [3.4.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.0...v3.4.1) (2022-08-17)
+
+
+### Bug Fixes
+
+* **banner:** image size ([775fadc](https://github.com/yoyurec/logseq-banners-plugin/commit/775fadc660117314850145c31036a6613504749e))
+
 # [3.4.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.8...v3.4.0) (2022-08-17)
 
 
