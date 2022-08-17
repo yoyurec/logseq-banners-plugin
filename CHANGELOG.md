@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.8...v3.4.0) (2022-08-17)
+
+
+### Features
+
+* **quote:** add text mix with option ([418d16e](https://github.com/yoyurec/logseq-banners-plugin/commit/418d16ef6004ec75fc8cd67f5fbfc863335774fd))
+
 ## [3.3.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.3.7...v3.3.8) (2022-08-17)
 
 
