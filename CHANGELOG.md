@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.1...v3.4.2) (2022-08-25)
+
+
+### Bug Fixes
+
+* **icon:** default icon was hidden ([2bd6dfb](https://github.com/yoyurec/logseq-banners-plugin/commit/2bd6dfba64cf916866d823d1d6f3ceb1edcebd6c))
+
 ## [3.4.1](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.0...v3.4.1) (2022-08-17)
 
 
