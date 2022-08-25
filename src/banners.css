@@ -73,7 +73,7 @@ body[data-page="home"].is-icon-active #journals .journal-item h1.title::before {
 body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.title::before {
     display: none;
 }
-.page-title .page-icon {
+.is-icon-active .page-title .page-icon {
     display: none;
 }
 
