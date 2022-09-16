@@ -16,21 +16,21 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@logseq/libs": "^0.0.6"
+    "@logseq/libs": "0.0.8"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^9.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^8.20.0",
-    "semantic-release": "^19.0.3",
-    "typescript": "^4.7.4",
-    "vite": "2.9.14",
+    "eslint": "^8.23.1",
+    "semantic-release": "^19.0.5",
+    "typescript": "^4.8.3",
+    "vite": "3.1.1",
     "vite-plugin-logseq": "^1.1.2"
   },
   "logseq": {

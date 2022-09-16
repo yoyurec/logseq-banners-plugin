@@ -48,7 +48,7 @@ let widgetsConfig: WidgetsConfig;
 let oldWidgetsConfig: WidgetsConfig;
 let isWidgetsCustomCodeChanged: boolean;
 let isWidgetsWeatherChanged: boolean;
-let timeout: number;
+// let timeout: number;
 let hidePluginProps: boolean;
 // let defaultPageBannerAuto: boolean;
 
@@ -63,8 +63,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "generalHeading",
     title: "⚙ General settings",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "hidePluginProps",
@@ -76,8 +77,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "widgetsCalendarHeading",
     title: "📅 Widgets: calendar",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "widgetsCalendarEnabled",
@@ -98,8 +100,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "widgetsWeatherHeading",
     title: "⛅ Widgets: weather",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "widgetsWeatherEnabled",
@@ -120,8 +123,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "widgetsQuoteHeading",
     title: "💬 Widgets: quote",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "widgetsQuoteEnabled",
@@ -163,8 +167,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "widgetsCustomHeading",
     title: "📊 Widgets: custom",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "widgetsCustomEnabled",
@@ -185,8 +190,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "journalHeading",
     title: "📆 Journal and home settings",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "defaultJournalBanner",
@@ -226,8 +232,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "pageHeading",
     title: "📄 Common page settings",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   {
     key: "defaultPageBanner",
@@ -267,8 +274,9 @@ const settingsArray: SettingSchemaDesc[] = [
   {
     key: "advancedHeading",
     title: "Advanced settings",
-    //@ts-expect-error
-    type: "heading"
+    description: "",
+    type: "heading",
+    default: null
   },
   // {
   //   key: "defaultPageBannerAuto",
@@ -299,14 +307,15 @@ const settingsArray: SettingSchemaDesc[] = [
       },
       "anotherCamalCasedPropName": {}
     }
-  },
-  {
-    key: "timeout",
-    title: "Banner render timeout",
-    description: "If your Logseq pages too slow and render glitches - try set bigger value...500, 1000, 1500 (milliseconds). Caution! Banners will render slower (but morre stable)!",
-    type: "number",
-    default: "100",
   }
+  // ,
+  // {
+  //   key: "timeout",
+  //   title: "Banner render timeout",
+  //   description: "If your Logseq pages too slow and render glitches - try set bigger value...500, 1000, 1500 (milliseconds). Caution! Banners will render slower (but morre stable)!",
+  //   type: "number",
+  //   default: "100",
+  // }
 ]
 
 const initStyles = () => {
@@ -358,8 +367,9 @@ const readPluginSettings = () => {
       journalBannerAlign: defaultConfig.journal.bannerAlign,
       defaultJournalIcon: defaultConfig.journal.pageIcon,
       journalIconWidth: defaultConfig.journal.iconWidth,
-      customPropsConfig,
-      timeout
+      customPropsConfig
+      // ,
+      // timeout
     } = logseq.settings);
   }
   encodeDefaultBanners();
@@ -646,7 +656,7 @@ const routeChangedCallback = () => {
   render();
   setTimeout(() => {
     propsChangedObserverRun();
-  }, timeout)
+  }, 200)
 }
 
 // Setting changed
@@ -854,7 +864,7 @@ const renderWidgetsCustom = async () => {
 const setWidgetsCSSVars = () => {
   setTimeout(() => {
     setWidgetPrimaryColors();
-  }, 300)
+  }, 500)
   root.style.setProperty("--widgetsCalendarWidth", widgetsConfig.calendar.width);
 }
 
@@ -908,7 +918,7 @@ const main = async () => {
     readPluginSettings();
     setGlobalCSSVars();
     render();
-  }, timeout*2)
+  }, 500)
 
   // Listeners late run
   propsChangedObserverInit();
