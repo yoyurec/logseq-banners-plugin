@@ -1,3 +1,10 @@
+## [3.4.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.2...v3.4.3) (2022-09-16)
+
+
+### Bug Fixes
+
+* **init:** timeouts changed ([331fdb4](https://github.com/yoyurec/logseq-banners-plugin/commit/331fdb4ec95cbc4cbd2aa3b01d9d2a69973fcb40))
+
 ## [3.4.2](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.1...v3.4.2) (2022-08-25)
 
 
