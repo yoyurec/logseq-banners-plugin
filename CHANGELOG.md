@@ -1,3 +1,10 @@
+## [3.4.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.4...v3.4.5) (2022-10-01)
+
+
+### Bug Fixes
+
+* **titles:** upd more rules for sure ([824eb36](https://github.com/yoyurec/logseq-banners-plugin/commit/824eb3644759b4f556de53971788f55ab938527a))
+
 ## [3.4.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.3...v3.4.4) (2022-10-01)
 
 
