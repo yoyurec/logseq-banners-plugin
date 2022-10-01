@@ -1,3 +1,10 @@
+## [3.4.4](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.3...v3.4.4) (2022-10-01)
+
+
+### Bug Fixes
+
+* **titles:** sidebar favs and recent items margin ([0c82cd7](https://github.com/yoyurec/logseq-banners-plugin/commit/0c82cd76bad5f584bbd84820ac532044661e7a8d))
+
 ## [3.4.3](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.2...v3.4.3) (2022-09-16)
 
 
