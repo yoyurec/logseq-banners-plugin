@@ -54,9 +54,9 @@ body[data-page="page"].is-icon-active .page>.relative>.flex-row>.flex-1::before 
     line-height: initial;
     opacity: 0.9;
 }
-body[data-page="home"].is-icon-active .journal-item:first-of-type .journal-title,
-body[data-page="page"].is-icon-active .page-title,
-body[data-page="page"].is-icon-active .ls-page-title.editing {
+body[data-page="home"].is-icon-active #main-content-container .journal-item:first-of-type .journal-title,
+body[data-page="page"].is-icon-active #main-content-container .page-title,
+body[data-page="page"].is-icon-active #main-content-container .ls-page-title.editing {
     margin-top: 35px;
 }
 body[data-page="home"].is-icon-active #journals .journal-item:first-child {

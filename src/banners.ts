@@ -3,7 +3,7 @@ import "@logseq/libs";
 import { logseq as PL } from "../package.json";
 import { SettingSchemaDesc, AppGraphInfo } from "@logseq/libs/dist/LSPlugin.user";
 
-import mainStyles from "./banners.css?raw";
+import mainStyles from "./banners.css";
 
 type AssetDataList = {
   [prop: string]: AssetData;
