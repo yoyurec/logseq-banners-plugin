@@ -162,7 +162,7 @@ const settingsArray: SettingSchemaDesc[] = [
     title: "Cleanup RegEx for quote text",
     description: "",
     type: "string",
-    default: "(^(TODO|NOW))|(id::.*)|(SCHEDULED:.<.*>)",
+    default: "(^(TODO|NOW))|([a-z-]+::.*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])",
   },
   {
     key: "widgetsCustomHeading",
@@ -456,7 +456,7 @@ const getPageType = () => {
   isPage = false;
   isHome = false;
   const pageType = body.getAttribute("data-page");
-  if (pageType === "home") {
+  if (pageType === "home" || pageType === "all-journals") {
     isHome = true;
     isPage = false;
   }
@@ -835,7 +835,7 @@ const getRandomQuote = async () => {
   let quoteHTML = randomQuoteBlock[0];
   // Delete searched tag
   const regExpTag = new RegExp(`${widgetsConfig.quote.tag}`,"gi");
-  quoteHTML = quoteHTML.replace(regExpTag, "").replace(/\n/g, "").trim();
+  quoteHTML = quoteHTML.replace(regExpTag, "").trim();
   // Cleanup
   const regExpCleanup = new RegExp(`${widgetsConfig.quote.cleanup}`,"g");
   quoteHTML = quoteHTML.replace(regExpCleanup, "").trim();
@@ -843,6 +843,9 @@ const getRandomQuote = async () => {
   quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
   // Add Markdown bold & italic to HTML
   quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>").replace(/_(.*)_/g, "<i>$1</i>");
+  // Keep lines breaks
+  quoteHTML = quoteHTML.replace("\n", "<br/>");
+  
   const pageTitle = randomQuoteBlock[1];
   const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?page=${pageTitle}`);
   quoteHTML = `<a href=${pageURL} title="${pageTitle}" id="banner-widgets-quote-link">${quoteHTML}</a>`;
