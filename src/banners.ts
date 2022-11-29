@@ -841,7 +841,7 @@ const getRandomQuote = async () => {
   // Delete mark
   quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
   // Add Markdown bold & italic to HTML
-  quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>").replace(/_(.*)_/g, "<i>$1</i>");
+  quoteHTML = quoteHTML.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/\*(.*?)\*/g, "<i>$1</i>").replace(/_(.*?)_/g, "<i>$1</i>");
   // Keep lines breaks
   quoteHTML = quoteHTML.replaceAll("\n", "<br/>");
   
