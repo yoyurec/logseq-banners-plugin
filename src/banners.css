@@ -25,10 +25,10 @@
 }
 
 /* Banner */
-body:is([data-page="page"], [data-page="home"]).is-banner-active #banner {
+body:is([data-page="page"], [data-page="home"], [data-page="all-journals"]).is-banner-active #banner {
     height: var(--bannerHeight);
 }
-body:is([data-page="page"], [data-page="home"]).is-banner-active #banner::before {
+body:is([data-page="page"], [data-page="home"], [data-page="all-journals"]).is-banner-active #banner::before {
     position: absolute;
     top: 0;
     right: 0;
@@ -43,6 +43,7 @@ body:is([data-page="page"], [data-page="home"]).is-banner-active #banner::before
 
 /* Icon */
 body[data-page="home"].is-icon-active .journal-item:first-of-type>.page>.flex-col:first-child>.content>.flex-1::before,
+body[data-page="all-journals"].is-icon-active .journal-item:first-of-type>.page>.flex-col:first-child>.content>.flex-1::before,
 body[data-page="page"].is-icon-active .page>.relative>.flex-row>.flex-1::before {
     content: var(--pageIcon);
     font-size: var(--iconWidth);
@@ -55,22 +56,26 @@ body[data-page="page"].is-icon-active .page>.relative>.flex-row>.flex-1::before 
     opacity: 0.9;
 }
 body[data-page="home"].is-icon-active #main-content-container .journal-item:first-of-type .journal-title,
+body[data-page="all-journals"].is-icon-active #main-content-container .journal-item:first-of-type .journal-title,
 body[data-page="page"].is-icon-active #main-content-container .page-title,
 body[data-page="page"].is-icon-active #main-content-container .ls-page-title.editing {
     margin-top: 35px;
 }
-body[data-page="home"].is-icon-active #journals .journal-item:first-child {
+body[data-page="home"].is-icon-active #journals .journal-item:first-child,
+body[data-page="all-journals"].is-icon-active #journals .journal-item:first-child {
     margin-top: 0;
 }
 
 /* Small icons for other home journal items */
-body[data-page="home"].is-icon-active #journals .journal-item h1.title::before {
+body[data-page="home"].is-icon-active #journals .journal-item h1.title::before,
+body[data-page="all-journals"].is-icon-active #journals .journal-item h1.title::before {
     content: var(--pageIcon);
     margin-right: 8px;
     font-size: 0.9em;
     font-weight: normal;
 }
-body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.title::before {
+body[data-page="home"].is-icon-active #journals .journal-item:first-of-type h1.title::before,
+body[data-page="all-journals"].is-icon-active #journals .journal-item:first-of-type h1.title::before {
     display: none;
 }
 .is-icon-active #main-content-container .page-title .page-icon {

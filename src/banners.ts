@@ -162,7 +162,7 @@ const settingsArray: SettingSchemaDesc[] = [
     title: "Cleanup RegEx for quote text",
     description: "",
     type: "string",
-    default: "(^(TODO|NOW))|(id::.*)|(SCHEDULED:.<.*>)",
+    default: "(^(TODO|NOW))|(\n[a-z-]+::[^\n]*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])|(#[\w-_+]+)",
   },
   {
     key: "widgetsCustomHeading",
@@ -456,7 +456,7 @@ const getPageType = () => {
   isPage = false;
   isHome = false;
   const pageType = body.getAttribute("data-page");
-  if (pageType === "home") {
+  if (pageType === "home" || pageType === "all-journals") {
     isHome = true;
     isPage = false;
   }
@@ -813,18 +813,17 @@ const getFontSize = (textLength: number): string => {
 
 // Get random quote
 const getRandomQuote = async () => {
-  // [(clojure.string/starts-with? ?c "#+BEGIN_QUOTE")]
   let query = `
     [
-      :find ?content ?page-title
+      :find ?content ?block-id
       :where
-          [?id :block/content ?content]
-          (or
-              [(clojure.string/starts-with? ?content "${widgetsConfig.quote.tag} ")]
-              [(clojure.string/ends-with? ?content " ${widgetsConfig.quote.tag}")]
-          )
-          [?id :block/page ?page-id]
-          [?page-id :block/original-name ?page-title]
+        [?b :block/refs ?r]
+        [?r :block/name "${widgetsConfig.quote.tag.replace('#', '')}"]
+
+        [?b :block/uuid ?block-uuid]
+        [(str ?block-uuid) ?block-id]
+
+        [?b :block/content ?content]
     ]
   `;
   let quotesList = await logseq.DB.datascriptQuery(query);
@@ -834,18 +833,21 @@ const getRandomQuote = async () => {
   const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)];
   let quoteHTML = randomQuoteBlock[0];
   // Delete searched tag
-  const regExpTag = new RegExp(`${widgetsConfig.quote.tag}`,"gi");
-  quoteHTML = quoteHTML.replace(regExpTag, "").replace(/\n/g, "").trim();
+  const regExpTag = new RegExp(`\\b${widgetsConfig.quote.tag}\\b`,"gi");
+  quoteHTML = quoteHTML.replace(regExpTag, "").trim();
   // Cleanup
   const regExpCleanup = new RegExp(`${widgetsConfig.quote.cleanup}`,"g");
   quoteHTML = quoteHTML.replace(regExpCleanup, "").trim();
   // Delete mark
   quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
   // Add Markdown bold & italic to HTML
-  quoteHTML = quoteHTML.replace(/\*\*(.*)\*\*/g, "<b>$1</b>").replace(/\*(.*)\*/g, "<i>$1</i>").replace(/_(.*)_/g, "<i>$1</i>");
-  const pageTitle = randomQuoteBlock[1];
-  const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?page=${pageTitle}`);
-  quoteHTML = `<a href=${pageURL} title="${pageTitle}" id="banner-widgets-quote-link">${quoteHTML}</a>`;
+  quoteHTML = quoteHTML.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/\*(.*?)\*/g, "<i>$1</i>").replace(/_(.*?)_/g, "<i>$1</i>");
+  // Keep lines breaks
+  quoteHTML = quoteHTML.replaceAll("\n", "<br/>");
+  
+  const blockId = randomQuoteBlock[1];
+  const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?block-id=${blockId}`);
+  quoteHTML = `<a href=${pageURL}" id="banner-widgets-quote-link">${quoteHTML}</a>`;
   return quoteHTML;
 }
 
