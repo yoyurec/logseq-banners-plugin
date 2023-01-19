@@ -1,3 +1,11 @@
+## [3.4.8](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.7...v3.4.8) (2023-01-19)
+
+
+### Bug Fixes
+
+* **optionalError:** release failing ([2e0a5fd](https://github.com/yoyurec/logseq-banners-plugin/commit/2e0a5fd0e3dcfd1190ee7ffbb8a45bfc8f04d565))
+* **settings:** add a command to rebuild regex ([39b17a0](https://github.com/yoyurec/logseq-banners-plugin/commit/39b17a0770ed0a3bd7679b632df75246d66fce83))
+
 ## [3.4.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.6...v3.4.7) (2023-01-19)
 
 
