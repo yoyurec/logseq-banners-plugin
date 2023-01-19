@@ -847,7 +847,10 @@ const getRandomQuote = async () => {
   
   const blockId = randomQuoteBlock[1];
   const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?block-id=${blockId}`);
-  quoteHTML = `<a href=${pageURL}" id="banner-widgets-quote-link">${quoteHTML}</a>`;
+  console.log("Some things are here")
+  console.log(`logseq://graph/${currentGraph?.name}?block-id=${blockId}`)
+  console.log(pageURL)
+  quoteHTML = `<a href=${pageURL} id="banner-widgets-quote-link">${quoteHTML}</a>`;
   return quoteHTML;
 }
 
