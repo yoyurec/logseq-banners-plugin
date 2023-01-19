@@ -1,3 +1,10 @@
+## [3.4.7](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.6...v3.4.7) (2023-01-19)
+
+
+### Bug Fixes
+
+* **quote:** block link not working ([3270935](https://github.com/yoyurec/logseq-banners-plugin/commit/32709357ba6df521e0ae395e3faeeccc520cf18c))
+
 ## [3.4.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.5...v3.4.6) (2023-01-19)
 
 
