@@ -1,3 +1,10 @@
+## [3.4.6](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.5...v3.4.6) (2023-01-19)
+
+
+### Bug Fixes
+
+* **release:** trigger release ([ef9fbb3](https://github.com/yoyurec/logseq-banners-plugin/commit/ef9fbb3b598cbe43b2b865ccc6c0a474a4d9c51b))
+
 ## [3.4.5](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.4...v3.4.5) (2022-10-01)
 
 
