@@ -928,6 +928,12 @@ const main = async () => {
   // Listeners late run
   propsChangedObserverInit();
 
+  logseq.App.registerCommandPalette({
+    key: 'rebuild-regex-banner-plugin',
+    label: 'Rebuild Regex for Banner Plugin',
+  }, async (e) => {
+    logseq.settings.widgetsQuoteCleanupRegEx = `(^(TODO|NOW))|(\n[a-z-]+::[^\n]*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])|(#[\w-_+]+)`
+  });
   // Secondary listeners
   setTimeout(() => {
     // Listen for page props
