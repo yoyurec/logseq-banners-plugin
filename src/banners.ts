@@ -59,7 +59,17 @@ const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg"
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsWidgetsCustomCode = `<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>`;
 
-const widgetsQuoteCleanupRegEx: RegExp = /(^(TODO|NOW))|(\n[a-z-]+::[^\n]*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])|(#[\w-_+]+)/g;
+const widgetsQuoteCleanupRegExps: RegExp[] = [
+  /\n[^:]+::[^\n]*/g,
+  /\nDEADLINE:.<[^>]+>/g,
+  /\nSCHEDULED:.<[^>]+>/g,
+  /\[\[/g,
+  /\]\]/g,
+  /#[^ ]+/g,
+  /#\[\[[^\]]+\]\]/g,
+  /==/g,
+  /\^\^/g,
+];
 
 const settingsArray: SettingSchemaDesc[] = [
   {
@@ -803,39 +813,79 @@ const getFontSize = (textLength: number): string => {
   return "1.3em"
 }
 
-const getRandomQuote = async () => {
-  let tag = widgetsConfig.quote.tag.replace('#', '');
-  let query = `
-    [
-      :find ?content ?block-id
-      :where
-        [?b :block/refs ?r]
-        [?r :block/name "${tag}"]
+const replaceAsync = async (str: string, regex: RegExp, asyncFn: (match: any, ...args: any) => Promise<any>) => {
+  const promises: Promise<any>[] = []
+  str.replace(regex, (match, ...args) => {
+    promises.push(asyncFn(match, args))
+    return match
+  })
+  const data = await Promise.all(promises)
+  return str.replace(regex, () => data.shift())
+}
 
-        [?b :block/uuid ?block-uuid]
-        [(str ?block-uuid) ?block-id]
+const cleanQuote = (text: string) => {
+  const tag = widgetsConfig.quote.tag.replace('#', '');
 
-        [?b :block/content ?content]
-    ]
-  `;
-  let quotesList = await logseq.DB.datascriptQuery(query);
-  if (!quotesList.length) {
-    return "";
+  // Delete searched tag
+  const regExpTag = new RegExp(`#${tag}\\b`, "gi");
+  text = text.replaceAll(regExpTag, "").trim();
+
+  // Cleanup
+  for (const cleanupRegexp of widgetsQuoteCleanupRegExps) {
+    text = text.replaceAll(cleanupRegexp, "").trim();
   }
+
+  // Add Markdown bold & italic to HTML
+  text = text.replaceAll(/\*\*(.*?)\*\*/g, "<b>$1</b>").replaceAll(/__(.*?)__/g, "<b>$1</b>");
+  text = text.replaceAll(/\*(.*?)\*/g, "<i>$1</i>").replaceAll(/_(.*?)_/g, "<i>$1</i>");
+
+  // Keep lines breaks
+  text = text.replaceAll("\n", "<br/>");
+
+  return text;
+}
+
+const getRandomQuote = async () => {
+  const tag = widgetsConfig.quote.tag.replace('#', '');
+  const query = `[
+    :find ?content ?block-id
+    :where
+      [?b :block/refs ?r]
+      [?r :block/name "${tag}"]
+      (not (?b :block/marker))
+
+      [?b :block/uuid ?block-uuid]
+      [(str ?block-uuid) ?block-id]
+
+      [?b :block/content ?content]
+  ]`;
+  const quotesList = await logseq.DB.datascriptQuery(query);
+  if (!quotesList.length) {
+    return null;
+  }
+
   const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)];
   let quoteHTML = randomQuoteBlock[0];
-  // Delete searched tag
-  const regExpTag = new RegExp(`\\b#${tag}\\b`, "gi");
-  quoteHTML = quoteHTML.replace(regExpTag, "").trim();
-  // Cleanup
-  quoteHTML = quoteHTML.replace(widgetsQuoteCleanupRegEx, "").trim();
-  // Delete mark
-  quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
-  // Add Markdown bold & italic to HTML
-  quoteHTML = quoteHTML.replace(/\*(.*?)\*/g, "<i>$1</i>").replace(/_(.*?)_/g, "<i>$1</i>");
-  quoteHTML = quoteHTML.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/__(.*?)__/g, "<b>$1</b>");
-  // Keep lines breaks
-  quoteHTML = quoteHTML.replaceAll("\n", "<br/>");
+
+  // Check is content refers to another block
+  quoteHTML = await replaceAsync(quoteHTML,
+    /\(\((\w{8}-\w{4}-\w{4}-\w{4}-\w{12})\)\)/g,
+    async (matched: string, [uuid]: any) => {
+      const query = `[
+        :find ?content
+        :where
+          [?b :block/uuid #uuid "${uuid}"]
+          [?b :block/content ?content]
+      ]`;
+      const ref = await logseq.DB.datascriptQuery(query);
+      if (ref.length) {
+        return cleanQuote(ref[0][0]);
+      }
+      return matched;
+    }
+  );
+
+  quoteHTML = cleanQuote(quoteHTML);
   
   const blockId = randomQuoteBlock[1];
   const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?block-id=${blockId}`);
