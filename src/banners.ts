@@ -65,8 +65,8 @@ const widgetsQuoteCleanupRegExps: RegExp[] = [
   /\nSCHEDULED:.<[^>]+>/g,
   /\[\[/g,
   /\]\]/g,
-  /#[^ ]+/g,
-  /#\[\[[^\]]+\]\]/g,
+  /#[^ #\n]+/g,
+  /#\[\[[^\]\n]+\]\]/g,
   /==/g,
   /\^\^/g,
 ];
