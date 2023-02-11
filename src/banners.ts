@@ -59,6 +59,8 @@ const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg"
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsWidgetsCustomCode = `<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>`;
 
+const widgetsQuoteCleanupRegEx: RegExp = /(^(TODO|NOW))|(\n[a-z-]+::[^\n]*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])|(#[\w-_+]+)/g;
+
 const settingsArray: SettingSchemaDesc[] = [
   {
     key: "generalHeading",
@@ -156,13 +158,6 @@ const settingsArray: SettingSchemaDesc[] = [
     description: "",
     type: "string",
     default: "100%",
-  },
-  {
-    key: "widgetsQuoteCleanupRegEx",
-    title: "Cleanup RegEx for quote text",
-    description: "",
-    type: "string",
-    default: "(^(TODO|NOW))|(\n[a-z-]+::[^\n]*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])|(#[\w-_+]+)",
   },
   {
     key: "widgetsCustomHeading",
@@ -354,7 +349,6 @@ const readPluginSettings = () => {
       widgetsQuoteTag: widgetsConfig.quote.tag,
       widgetsQuoteMaxWidth: widgetsConfig.quote.maxwidth,
       widgetsQuoteSize: widgetsConfig.quote.size,
-      widgetsQuoteCleanupRegEx: widgetsConfig.quote.cleanup,
       widgetsCustomEnabled: widgetsConfig.custom.enabled,
       widgetsCustomCode: widgetsConfig.custom.code,
       defaultPageBanner: defaultConfig.page.banner,
@@ -810,12 +804,13 @@ const getFontSize = (textLength: number): string => {
 }
 
 const getRandomQuote = async () => {
+  let tag = widgetsConfig.quote.tag.replace('#', '');
   let query = `
     [
       :find ?content ?block-id
       :where
         [?b :block/refs ?r]
-        [?r :block/name "${widgetsConfig.quote.tag.replace('#', '')}"]
+        [?r :block/name "${tag}"]
 
         [?b :block/uuid ?block-uuid]
         [(str ?block-uuid) ?block-id]
@@ -830,15 +825,15 @@ const getRandomQuote = async () => {
   const randomQuoteBlock = quotesList[Math.floor(Math.random() * quotesList.length)];
   let quoteHTML = randomQuoteBlock[0];
   // Delete searched tag
-  const regExpTag = new RegExp(`\\b${widgetsConfig.quote.tag}\\b`,"gi");
+  const regExpTag = new RegExp(`\\b#${tag}\\b`, "gi");
   quoteHTML = quoteHTML.replace(regExpTag, "").trim();
   // Cleanup
-  const regExpCleanup = new RegExp(`${widgetsConfig.quote.cleanup}`,"g");
-  quoteHTML = quoteHTML.replace(regExpCleanup, "").trim();
+  quoteHTML = quoteHTML.replace(widgetsQuoteCleanupRegEx, "").trim();
   // Delete mark
   quoteHTML = quoteHTML.replace(/(==)|(\^\^)/g, "");
   // Add Markdown bold & italic to HTML
-  quoteHTML = quoteHTML.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/\*(.*?)\*/g, "<i>$1</i>").replace(/_(.*?)_/g, "<i>$1</i>");
+  quoteHTML = quoteHTML.replace(/\*(.*?)\*/g, "<i>$1</i>").replace(/_(.*?)_/g, "<i>$1</i>");
+  quoteHTML = quoteHTML.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/__(.*?)__/g, "<b>$1</b>");
   // Keep lines breaks
   quoteHTML = quoteHTML.replaceAll("\n", "<br/>");
   
@@ -917,14 +912,6 @@ const main = async () => {
 
   // Listeners late run
   propsChangedObserverInit();
-
-  logseq.App.registerCommandPalette({
-    key: 'rebuild-regex-banner-plugin',
-    label: 'Rebuild Regex for Banner Plugin',
-  }, async (e) => {
-    logseq.settings!.widgetsQuoteCleanupRegEx = `(^(TODO|NOW))|(\n[a-z-]+::[^\n]*)|(SCHEDULED:.<.*>)|(\[\[)|(\]\])|(#[\w-_+]+)`
-  });
-
 
   // Secondary listeners
   setTimeout(() => {
