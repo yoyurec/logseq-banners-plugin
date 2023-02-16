@@ -509,7 +509,6 @@ const getPageData = async (): Promise<any> => {
   currentPageData = await logseq.Editor.getCurrentPage();
   if (currentPageData) {
     // Check if page is a child and get parent ID
-   //@ts-expect-error
     const currentPageId = currentPageData.page?.id;
     if (currentPageId) {
       currentPageData = null;
@@ -886,7 +885,7 @@ const getRandomQuote = async () => {
   );
 
   quoteHTML = cleanQuote(quoteHTML);
-  
+
   const blockId = randomQuoteBlock[1];
   const pageURL = encodeURI(`logseq://graph/${currentGraph?.name}?block-id=${blockId}`);
   quoteHTML = `<a href=${pageURL} id="banner-widgets-quote-link">${quoteHTML}</a>`;
