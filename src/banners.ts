@@ -48,26 +48,24 @@ let widgetsConfig: WidgetsConfig;
 let oldWidgetsConfig: WidgetsConfig;
 let isWidgetsCustomCodeChanged: boolean;
 let isWidgetsWeatherChanged: boolean;
-// let timeout: number;
 let hidePluginProps: boolean;
-// let defaultPageBannerAuto: boolean;
+let additionalSettings: any;
 
 const pluginPageProps: Array<string> = ["banner", "banner-align","page-icon", "icon"];
 
 const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg";
-// const settingsDefaultPageBanner = "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80";
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsWidgetsCustomCode = `<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>`;
 
 const widgetsQuoteCleanupRegExps: RegExp[] = [
-  /\n[^:]+::[^\n]*/g,
-  /\nDEADLINE:.<[^>]+>/g,
+  /\n[^:]+::[^\n]*/g,  // properties
+  /\nDEADLINE:.<[^>]+>/g,  // task attrs
   /\nSCHEDULED:.<[^>]+>/g,
-  /\[\[/g,
+  /\[\[/g,  // internal links brackets
   /\]\]/g,
-  /#[^ #\n]+/g,
-  /#\[\[[^\]\n]+\]\]/g,
-  /==/g,
+  /#[^ #\n]+/g,  // tags
+  /#\[\[[^\]\n]+\]\]/g,  // tags with brackets
+  /==/g,  // markdown hightlights (marks)
   /\^\^/g,
 ];
 
@@ -278,21 +276,14 @@ const settingsArray: SettingSchemaDesc[] = [
   },
   {
     key: "advancedHeading",
-    title: "Advanced settings",
+    title: "☢️ Advanced settings",
     description: "",
     type: "heading",
     default: null
   },
-  // {
-  //   key: "defaultPageBannerAuto",
-  //   title: "",
-  //   type: "boolean",
-  //   description: "(experimentral) Autogenerate banner image URL according to the page tile",
-  //   default: "false",
-  // },
   {
     key: "customPropsConfig",
-    title: "Advanced custom pages banners and icons config",
+    title: "Custom pages banners and icons config",
     description: "",
     type: "object",
     default: {
@@ -312,15 +303,20 @@ const settingsArray: SettingSchemaDesc[] = [
       },
       "anotherCamalCasedPropName": {}
     }
+  },
+  {
+    // settings inside this object shouldn't be display in UI
+    key: "additional",
+    title: "A set of additional settings intended for more sensitive plugin tuning",
+    description: "",
+    type: "object",
+    default: {
+      quoteWidget: {
+        cleanupRegExps_before: [],
+        cleanupRegExps_after: []
+      }
+    }
   }
-  // ,
-  // {
-  //   key: "timeout",
-  //   title: "Banner render timeout",
-  //   description: "If your Logseq pages too slow and render glitches - try set bigger value...500, 1000, 1500 (milliseconds). Caution! Banners will render slower (but morre stable)!",
-  //   type: "number",
-  //   default: "100",
-  // }
 ]
 
 const initStyles = () => {
@@ -350,7 +346,6 @@ const readPluginSettings = () => {
   if (logseq.settings) {
     ({
       hidePluginProps,
-      // defaultPageBannerAuto,
       widgetsCalendarEnabled: widgetsConfig.calendar.enabled,
       widgetsCalendarWidth: widgetsConfig.calendar.width,
       widgetsWeatherEnabled: widgetsConfig.weather.enabled,
@@ -371,9 +366,8 @@ const readPluginSettings = () => {
       journalBannerAlign: defaultConfig.journal.bannerAlign,
       defaultJournalIcon: defaultConfig.journal.pageIcon,
       journalIconWidth: defaultConfig.journal.iconWidth,
-      customPropsConfig
-      // ,
-      // timeout
+      customPropsConfig,
+      additional: additionalSettings
     } = logseq.settings);
   }
   encodeDefaultBanners();
@@ -412,7 +406,6 @@ const getBase64FromUrl = async (url: string): Promise<string> => {
 // skip caching if random image from Unsplash API used
 const encodeDefaultBanners = async () => {
   if (defaultConfig.page.banner && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
-  // if (defaultConfig.page.banner && !defaultPageBannerAuto && !(defaultConfig.page.banner?.includes("source.unsplash.com"))) {
     defaultConfig.page.banner = await getBase64FromUrl(cleanBannerURL(defaultConfig.page.banner));
   }
   if (defaultConfig.journal.banner && !(defaultConfig.journal.banner?.includes("source.unsplash.com"))) {
@@ -509,6 +502,7 @@ const getPageData = async (): Promise<any> => {
   currentPageData = await logseq.Editor.getCurrentPage();
   if (currentPageData) {
     // Check if page is a child and get parent ID
+    /* @ts-expect-error */
     const currentPageId = currentPageData.page?.id;
     if (currentPageId) {
       currentPageData = null;
@@ -557,17 +551,6 @@ const renderImage = async (pageAssetsData: AssetData): Promise<boolean> => {
 
     pageAssetsData.banner = cleanBannerURL(pageAssetsData.banner);
 
-    // experimental auto image
-    // if (defaultPageBannerAuto) {
-    //   pageAssetsData.banner = `https://source.unsplash.com/1600x900?${pageAssetsData.title}`;
-    // }
-
-    // const bannerImage = await getImagebyURL(pageAssetsData.banner);
-    // if (bannerImage) {
-    //   pageAssetsData.banner = bannerImage;
-    // } else {
-    //   pageAssetsData.banner = defaultConfig.page.banner;
-    // }
     root.style.setProperty("--pageBanner", `url(${pageAssetsData.banner})`);
 
     return true;
@@ -825,13 +808,19 @@ const replaceAsync = async (str: string, regex: RegExp, asyncFn: (match: any, ..
 const cleanQuote = (text: string) => {
   const tag = widgetsConfig.quote.tag.replace('#', '');
 
+  // User cleanup before
+  let regexps: string[] = additionalSettings?.quoteWidget?.cleanupRegExps_before || [];
+  for (const cleanupRegExp of regexps) {
+    text = text.replaceAll(new RegExp(cleanupRegExp, "g"), "").trim();
+  }
+
   // Delete searched tag
   const regExpTag = new RegExp(`#${tag}\\b`, "gi");
   text = text.replaceAll(regExpTag, "").trim();
 
   // Cleanup
-  for (const cleanupRegexp of widgetsQuoteCleanupRegExps) {
-    text = text.replaceAll(cleanupRegexp, "").trim();
+  for (const cleanupRegExp of widgetsQuoteCleanupRegExps) {
+    text = text.replaceAll(cleanupRegExp, "").trim();
   }
 
   // Add Markdown bold & italic to HTML
@@ -840,6 +829,12 @@ const cleanQuote = (text: string) => {
 
   // Keep lines breaks
   text = text.replaceAll("\n", "<br/>");
+
+  // User cleanup after
+  regexps = additionalSettings?.quoteWidget?.cleanupRegExps_after || [];
+  for (const cleanupRegExp of regexps) {
+    text = text.replaceAll(new RegExp(cleanupRegExp, "g"), "").trim();
+  }
 
   return text;
 }
@@ -993,7 +988,6 @@ const main = async () => {
     })
 
   }, 4000);
-
 }
 
 logseq.ready(main).catch(console.error);
