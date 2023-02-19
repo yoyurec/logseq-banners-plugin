@@ -502,7 +502,6 @@ const getPageData = async (): Promise<any> => {
   currentPageData = await logseq.Editor.getCurrentPage();
   if (currentPageData) {
     // Check if page is a child and get parent ID
-    /* @ts-expect-error */
     const currentPageId = currentPageData.page?.id;
     if (currentPageId) {
       currentPageData = null;
