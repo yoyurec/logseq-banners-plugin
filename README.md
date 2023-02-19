@@ -75,7 +75,7 @@ For more tune use your own `custom.css` to position widgets iframes inside of ba
     * Photo of the day: `https://source.unsplash.com/1600x900/daily`
     * Search terms. Add comma separated terms after `?` at the end (for default settings or in props at specific page): `https://source.unsplash.com/1600x900?red,house`
 
-For ex. "Dafault journal banner" - `https://source.unsplash.com/featured/1600x900?diary`
+For ex. "Default journal banner" - `https://source.unsplash.com/featured/1600x900?diary`
 
 ## What is Logseq?
 Logseq is a privacy-first, open-source knowledge base. Visit https://logseq.com for more information.
