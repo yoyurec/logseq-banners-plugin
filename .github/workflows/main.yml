@@ -32,7 +32,7 @@ jobs:
         run: pnpm install
 
       - name: Build dist
-        run: pnpm build
+        run: pnpm prod
 
       - name: Install zip
         uses: montudor/action-zip@v1

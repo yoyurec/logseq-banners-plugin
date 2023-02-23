@@ -1,9 +1,8 @@
-import "@logseq/libs";
-
-import { logseq as PL } from "../package.json";
 import { SettingSchemaDesc, AppGraphInfo } from "@logseq/libs/dist/LSPlugin.user";
 
 import mainStyles from "./banners.css";
+import { logseq as PL } from "../package.json";
+
 
 type AssetDataList = {
   [prop: string]: AssetData;
@@ -57,16 +56,17 @@ const settingsDefaultPageBanner = "https://wallpaperaccess.com/full/1146672.jpg"
 const settingsDefaultJournalBanner = "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80";
 const settingsWidgetsCustomCode = `<iframe id="banner-widgets-pomo" src="https://pomofocus.io/app"></iframe>`;
 
-const widgetsQuoteCleanupRegExps: RegExp[] = [
-  /\n[^:]+::[^\n]*/g,  // properties
-  /\nDEADLINE:.<[^>]+>/g,  // task attrs
-  /\nSCHEDULED:.<[^>]+>/g,
-  /\[\[/g,  // internal links brackets
-  /\]\]/g,
-  /#[^ #\n]+/g,  // tags
-  /#\[\[[^\]\n]+\]\]/g,  // tags with brackets
-  /==/g,  // markdown hightlights (marks)
-  /\^\^/g,
+export const widgetsQuoteCleanupRegExps: RegExp[] = [
+  /* order is important here */
+  /\n[^:]+::[^\n]*/g,         // properties
+
+  /\nDEADLINE:\s+<[^>]+>/g,   // task attrs
+  /\nSCHEDULED:\s+<[^>]+>/g,
+  /\n:LOGBOOK:(.|\n)*?:END:/g,
+
+  /#\[\[[^\]\n]+\]\]\s*/g,    // tags with brackets
+  /#[^\s\n]+(\s|\n)*/g,       // tags
+  /!\[[^\]\n]+\]\([^\]]+\)/g, // images
 ];
 
 const settingsArray: SettingSchemaDesc[] = [
@@ -327,8 +327,7 @@ const setGlobalCSSVars = () => {
   setWidgetsCSSVars();
 }
 
-// Read settings
-const readPluginSettings = () => {
+export const readPluginSettings = () => {
   isWidgetsCustomCodeChanged = false;
   isWidgetsWeatherChanged = false;
   oldWidgetsConfig = { ...widgetsConfig };
@@ -804,8 +803,8 @@ const replaceAsync = async (str: string, regex: RegExp, asyncFn: (match: any, ..
   return str.replace(regex, () => data.shift())
 }
 
-const cleanQuote = (text: string) => {
-  const tag = widgetsConfig.quote.tag.replace('#', '');
+export const cleanQuote = (text: string) => {
+  const tag = widgetsConfig.quote.tag.replace("#", "");
 
   // User cleanup before
   let regexps: string[] = additionalSettings?.quoteWidget?.cleanupRegExps_before || [];
@@ -819,12 +818,19 @@ const cleanQuote = (text: string) => {
 
   // Cleanup
   for (const cleanupRegExp of widgetsQuoteCleanupRegExps) {
-    text = text.replaceAll(cleanupRegExp, "").trim();
+    text = text.replaceAll(cleanupRegExp, "")
   }
 
-  // Add Markdown bold & italic to HTML
+  // Add Markdown bold, italics, strikethrough, highlight & code to HTML
   text = text.replaceAll(/\*\*(.*?)\*\*/g, "<b>$1</b>").replaceAll(/__(.*?)__/g, "<b>$1</b>");
   text = text.replaceAll(/\*(.*?)\*/g, "<i>$1</i>").replaceAll(/_(.*?)_/g, "<i>$1</i>");
+  text = text.replaceAll(/==(.*?)==/g, "<mark>$1</mark>").replaceAll(/\^\^(.*?)\^\^/g, "<mark>$1</mark>");
+  text = text.replaceAll(/~~(.*?)~~/g, "<s>$1</s>");
+  text = text.replaceAll(/`(.*?)`/g, "<code>$1</code>");
+
+  // Clear Markdown links & wiki-links
+  text = text.replaceAll(/\[\[(.*?)\]\]/g, "$1");
+  text = text.replaceAll(/\[([^\]\n]+)\]\([^\]]+\)/g, "$1");
 
   // Keep lines breaks
   text = text.replaceAll("\n", "<br/>");
@@ -989,4 +995,6 @@ const main = async () => {
   }, 4000);
 }
 
-logseq.ready(main).catch(console.error);
+export const App = (logseq: any) => {
+  logseq?.ready(main).catch(console.error);
+}

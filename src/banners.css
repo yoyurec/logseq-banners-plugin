@@ -258,7 +258,6 @@ body[data-page="all-journals"].is-icon-active #journals .journal-item:first-of-t
     font-size: calc(var(--widgetsQuoteFS) * 0.8);
     text-align: right;
     border-radius: 6px;
-    text-shadow: 1px 1px 0px rgba(var(--widgetsBgColor), 0.8);
     background-color: rgba(var(--widgetsBgColor), 0.7);
 }
 @media (min-width: 1024px) {
