@@ -8,8 +8,8 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "vite",
     "test": "node --loader tsx --no-warnings --test ./tests/*.test.ts",
-    "build": "tsc && vite build --sourcemap --minify false",
-    "prod": "tsc && npm run test && vite build --minify 'esbuild'"
+    "build": "tsc && vite build --mode=dev",
+    "prod": "tsc && npm run test && vite build"
   },
   "config": {
     "commitizen": {

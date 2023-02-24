@@ -30,11 +30,10 @@ function initLogseq(settingsOverride) {
 }
 
 
-function overrideCleanupRegExps(values) {
-  return (f) => {
+function disableQuoteCleanup() {
+  return (func) => {
     const orig = widgetsQuoteCleanupRegExps.splice(0)
-    widgetsQuoteCleanupRegExps.push(...values)
-    f()
+    func()
     widgetsQuoteCleanupRegExps.push(...orig)
   }
 }
@@ -47,7 +46,7 @@ describe('Cleaning quote rules', () => {
 
   it('should erase quote tag', () => {
     // disable all cleanup rules, so cleans only qoute tag
-    overrideCleanupRegExps([]) (() => {
+    disableQuoteCleanup() (() => {
       equal(cleanQuote("text #quote-test word"), "text  word")
       equal(cleanQuote("text #quote"), "text #quote")
     })
@@ -55,21 +54,21 @@ describe('Cleaning quote rules', () => {
 
   it('should trim the qoute', () => {
     // disable all cleanup rules, so cleans only qoute tag
-    overrideCleanupRegExps([]) (() => {
+    disableQuoteCleanup() (() => {
       equal(cleanQuote("text #quote-test "), "text")
     })
   })
 
   it('should erase at the border of word', () => {
     // disable all cleanup rules, so cleans only qoute tag
-    overrideCleanupRegExps([]) (() => {
+    disableQuoteCleanup() (() => {
       equal(cleanQuote("text #quote-testword"), "text #quote-testword")
     })
   })
 
   it('should use tag setting', () => {
     // disable all cleanup rules, so cleans only qoute tag
-    overrideCleanupRegExps([]) (() => {
+    disableQuoteCleanup() (() => {
       equal(cleanQuote("text #test"), "text #test")
 
       initLogseq({widgetsQuoteTag: "#test"})
