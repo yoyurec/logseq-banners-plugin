@@ -1,3 +1,10 @@
+## [3.4.11](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.10...v3.4.11) (2023-02-25)
+
+
+### Bug Fixes
+
+* **quotes:** cleaning + markdown. add test runner. upd elsint ([932c51a](https://github.com/yoyurec/logseq-banners-plugin/commit/932c51ac21ee275b79be074b2d803369a7a0cb55))
+
 ## [3.4.10](https://github.com/yoyurec/logseq-banners-plugin/compare/v3.4.9...v3.4.10) (2023-02-19)
 
 
