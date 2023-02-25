@@ -1,5 +1,4 @@
-import "@logseq/libs"
-import { App } from "./banners"
+import '@logseq/libs'
+import { App } from './banners'
 
-
-App(logseq)
+App(logseq);
