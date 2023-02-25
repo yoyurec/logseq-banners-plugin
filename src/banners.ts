@@ -818,7 +818,7 @@ export const cleanQuote = (text: string) => {
 
   // Cleanup
   for (const cleanupRegExp of widgetsQuoteCleanupRegExps) {
-    text = text.replaceAll(cleanupRegExp, "")
+    text = text.replaceAll(cleanupRegExp, "").trim()
   }
 
   // Add Markdown bold, italics, strikethrough, highlight & code to HTML

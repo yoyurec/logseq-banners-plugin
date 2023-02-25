@@ -1,7 +1,7 @@
-import 'global-jsdom/register'
+import "global-jsdom/register"
 
-import register from 'ignore-styles'
-register(['.css'])
+import register from "ignore-styles"
+register([".css"])
 
 import { equal } from "node:assert/strict"
 import { describe, it, beforeEach } from "node:test"
@@ -10,10 +10,7 @@ import { App, cleanQuote, readPluginSettings, widgetsQuoteCleanupRegExps } from 
 
 
 // @logseq/libs mock
-function initLogseq(settingsOverride) {
-  if (!settingsOverride)
-    settingsOverride = {}
-
+function initLogseq(settingsOverride: object = {}) {
   const logseq = {
     settings: {
       widgetsQuoteTag: "#quote-test",
@@ -153,5 +150,10 @@ describe('Cleaning quote rules', () => {
   it('should erase internal links` brackets', () => {
     equal(cleanQuote("text [[word  link]] end"), "text word  link end")
     equal(cleanQuote("text [[word  link]]end"), "text word  linkend")
+  })
+
+  it('should trim whitespaces', () => {
+    equal(cleanQuote("  text word "), "text word")
+    equal(cleanQuote("\n\ttext word  \t\t\n"), "text word")
   })
 })
