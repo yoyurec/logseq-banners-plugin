@@ -459,15 +459,36 @@ const getPageType = () => {
   }
 }
 
+const getGraphOverrides = async (id?: number): Promise<{[key: string]: number}> => {
+  const graphConfig = await logseq.App.getCurrentGraphConfigs();
+  const bannersQuery = graphConfig['custom/banners-query'];
+  if (!bannersQuery) {
+    return {};
+  }
+  try {
+    const res = await logseq.DB.datascriptQuery(bannersQuery, id);
+    if (res instanceof Object && res.constructor === Object) {
+      return res;
+    } else {
+      console.warn(`custom/banners-query didn't return a map`);
+      return {};
+    }
+  } catch (e) {
+    console.warn(`evaluating custom/banners-query failed:`, e);
+    return {};
+  }
+}
+
 const getPageAssetsData = async (): Promise<AssetData> => {
-  let pageAssetsData = { ...defaultConfig.journal };
   let currentPageProps: any = {};
+  const currentPageData = await getPageData();
+  const graphOverrides = await getGraphOverrides(currentPageData?.id);
+  let pageAssetsData = { ...defaultConfig.journal, ...graphOverrides };
   // home = journal page?
   if (isHome) {
     console.debug(`#${pluginId}: Homepage`);
     return pageAssetsData;
   }
-  const currentPageData = await getPageData();
   // journal page?
   isJournal = currentPageData['journal?'];
   if (isJournal) {
@@ -480,10 +501,10 @@ const getPageAssetsData = async (): Promise<AssetData> => {
   if (currentPageProps) {
     // get custom config, override it with high proirity page props
     const customAssetData = getCustomAssetData(currentPageProps);
-    pageAssetsData = { ...defaultConfig.page, ...customAssetData, ...currentPageProps }
+    pageAssetsData = { ...defaultConfig.page, ...customAssetData, ...currentPageProps, ...graphOverrides }
   } else {
     console.debug(`#${pluginId}: Default page`);
-    pageAssetsData = { ...defaultConfig.page };
+    pageAssetsData = { ...defaultConfig.page, ...graphOverrides };
   }
   // Add title
   if (currentPageData.name) {
